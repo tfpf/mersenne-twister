@@ -16,10 +16,11 @@ Members:
     table: list of lists (sudoku table)
 '''
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, deletions, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.table = [None for _ in range(9)]
         self.stop = threading.Event()
+        self.deletions = deletions
 
     ###########################################################################
 
@@ -91,29 +92,27 @@ Returns:
                 if self.is_satisfactory(i):
                     break
 
+        # Delete some numbers from each block.
+        block_deletions = self.deletions // 9
+        for i in range(3):
+            for j in range(3):
+                for k in random.sample(range(9), block_deletions):
+                    self.table[3 * i + k // 3][3 * j + k % 3] = '-'
+
+        # Delete the remaining numbers.
+        other_deletions = self.deletions - block_deletions * 9
+        while other_deletions > 0:
+            i = random.choice(range(81))
+            if self.table[i // 9][i % 9] != '-':
+                self.table[i // 9][i % 9] = '-'
+                other_deletions -= 1
+
 ###############################################################################
 
 def main():
     '''\
 Main function.
 '''
-
-    # This is the initial number of seconds the main thread will wait for. If
-    # the sudoku is not generated in this much time, it will request the other
-    # thread to stop and try again.
-    timeout = 5
-
-    for i in range(1, 5):
-        st = SudokuThread()
-        st.start()
-        time.sleep(timeout)
-        st.stop.set()
-        st.join()
-        if st.table is not None:
-            break
-
-        print(f'Failed to generate a sudoku puzzle in {timeout:2d} seconds. Trying again …')
-        timeout += 2 * i
 
     try:
         difficulty = int(sys.argv[1])
@@ -123,22 +122,19 @@ Main function.
     print(f'Difficulty Level: {difficulty:2d}/20')
     deletions = round(difficulty / 20 * 81)
 
-    # Delete some numbers from each block.
-    block_deletions = deletions // 9
-    for i in range(3):
-        for j in range(3):
-            for k in random.sample(range(9), block_deletions):
-                st.table[3 * i + k // 3][3 * j + k % 3] = '-'
+    # Start a thread to generate a sudoku puzzle. If that thread does not
+    # terminate in some time, ask it to stop and try again.
+    for timeout in range(4, 24, 4):
+        st = SudokuThread(deletions)
+        st.start()
+        time.sleep(timeout)
+        st.stop.set()
+        st.join()
+        if st.table is not None:
+            st.show()
+            return
 
-    # Delete the remaining numbers.
-    deletions -= block_deletions * 9
-    while deletions > 0:
-        i = random.choice(range(81))
-        if st.table[i // 9][i % 9] != '-':
-            st.table[i // 9][i % 9] = '-'
-            deletions -= 1
-
-    st.show()
+        print(f'Failed to generate a sudoku puzzle in {timeout:2d} seconds. Trying again …')
 
 ###############################################################################
 
