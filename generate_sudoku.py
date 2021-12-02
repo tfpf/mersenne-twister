@@ -14,6 +14,8 @@ puzzle: building the rows by repeatedly permuting the numbers from 1 to 9.
 
 Members:
     table: list of lists (sudoku table)
+    stop: threading.Event (flag which tells this thread to stop)
+    deletions: int (number of numbers in `self.table' to be removed)
 '''
 
     def __init__(self, deletions, *args, **kwargs):
@@ -58,8 +60,8 @@ Returns:
     False (if there are violations)
 '''
 
-        # Look for repeated numbers in columns. Compare row `i' with rows above
-        # it.
+        # Look for repeated numbers in columns. Compare row `i' with the rows
+        # above it.
         for j in range(i):
             if any(x == y for x, y in zip(self.table[i], self.table[j])):
                 return False
@@ -72,6 +74,7 @@ Returns:
                 for num in row[j : j + 3]:
                     if num in seen_numbers:
                         return False
+
                     seen_numbers.add(num)
 
         return True
@@ -99,9 +102,9 @@ Returns:
                 for k in random.sample(range(9), block_deletions):
                     self.table[3 * i + k // 3][3 * j + k % 3] = '-'
 
-        # Delete the remaining numbers.
+        # Delete some more numbers randomly.
         other_deletions = self.deletions - block_deletions * 9
-        while other_deletions > 0:
+        while other_deletions:
             i = random.choice(range(81))
             if self.table[i // 9][i % 9] != '-':
                 self.table[i // 9][i % 9] = '-'
