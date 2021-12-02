@@ -110,6 +110,9 @@ Returns:
                 self.table[i // 9][i % 9] = '-'
                 other_deletions -= 1
 
+        # Signal to the main thread that we're done.
+        self.stop.set()
+
 ###############################################################################
 
 def main():
@@ -130,7 +133,7 @@ Main function.
     for timeout in range(4, 24, 4):
         st = SudokuThread(deletions)
         st.start()
-        time.sleep(timeout)
+        st.stop.wait(timeout=timeout)
         st.stop.set()
         st.join()
         if st.table is not None:
