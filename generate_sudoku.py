@@ -19,7 +19,7 @@ Members:
 
     def __init__(self, deletions, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.table = [None for _ in range(9)]
+        self.table = [None] * 9
         self.stop = threading.Event()
         self.deletions = deletions
 
