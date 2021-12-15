@@ -141,6 +141,8 @@ Main function.
 
         print(f'Failed to generate a sudoku puzzle in {timeout:2d} seconds. Trying again …')
 
+    raise SystemExit(1)
+
 ###############################################################################
 
 if __name__ == '__main__':
