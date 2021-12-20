@@ -1,15 +1,16 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function
-// Read a sudoku problem into a two-dimensional array. Zeros are used to
+// Read a sudoku puzzle into a two-dimensional array. Zeros are used to
 // represent blank cells. The format of the input file is the same as that
 // output by the program `generate_sudoku.py'.
 //
 // Args:
-//     fname: char const * (name of the input file to read the problem from)
+//     fname: char const * (name of the input file to read the puzzle from)
 //     table: int [][] (sudoku table)
 //
 // Returns:
@@ -45,28 +46,29 @@ bool read_sudoku(char const *fname, int table[][9])
 
 ///////////////////////////////////////////////////////////////////////////////
 // Function
-// Check whether there are any empty cells.
+// Count the empty cells (i.e. the positions filled with zeros).
 //
 // Args:
 //     table: int [][] (sudoku table)
 //
 // Returns:
-//     bool (`true' if there is at least one empty cell, else `false')
+//     int
 ///////////////////////////////////////////////////////////////////////////////
-bool is_solved(int table[][9])
+int number_of_empty_cells(int table[][9])
 {
+    int zeros = 0;
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
             if(table[i][j] == 0)
             {
-                return false;
+                ++zeros;
             }
         }
     }
 
-    return true;
+    return zeros;
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -206,15 +208,18 @@ bool allowed_at_position(int table[][9], int row, int col, int num)
 ///////////////////////////////////////////////////////////////////////////////
 // Function
 // Check how many numbers are allowed at the given position. If only a single
-// number is allowed, assign it at that position. Otherwise, do nothing. At the
-// time of calling this function, it must be true that `table[row][col] == 0'.
+// number is allowed, assign it at that position. Otherwise, do nothing.
+// (Alternatively, assign a number at that position randomly, if told to do
+// so.) At the time of calling this function, it must be true that
+// `table[row][col] == 0'.
 //
 // Args:
 //     table: int [][] (sudoku table)
 //     row: int (a number from 1 to 9)
 //     col: int (a number from 1 to 9)
+//     random: bool (whether to assign `table[row][col]' randomly)
 ///////////////////////////////////////////////////////////////////////////////
-void select_allowed(int table[][9], int row, int col)
+void select_allowed(int table[][9], int row, int col, bool random)
 {
     int allowed;
     int count_allowed = 0;
@@ -227,9 +232,14 @@ void select_allowed(int table[][9], int row, int col)
         }
     }
 
-    if(count_allowed == 1)
+    if(count_allowed == 1 || (count_allowed >= 1 && random))
     {
+        // GCC emits a superfluous warning for this line when compiling with
+        // optimisations and warnings enabled.
+        #pragma GCC diagnostic push
+        #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
         table[row][col] = allowed;
+        #pragma GCC diagnostic pop
     }
 }
 
@@ -336,8 +346,9 @@ void select_possible(int table[][9], int num)
 //
 // Args:
 //     table: int [][] (sudoku table)
+//     random: bool (whether to fill a cell randomly)
 ///////////////////////////////////////////////////////////////////////////////
-void single_pass(int table[][9])
+void single_pass(int table[][9], bool random)
 {
     for(int i = 0; i < 9; ++i)
     {
@@ -345,7 +356,9 @@ void single_pass(int table[][9])
         {
             if(table[i][j] == 0)
             {
-                select_allowed(table, i, j);
+                // Only one cell shall be filled randomly per function call.
+                select_allowed(table, i, j, random);
+                random = false;
             }
         }
     }
@@ -353,6 +366,37 @@ void single_pass(int table[][9])
     for(int num = 1; num <= 9; ++num)
     {
         select_possible(table, num);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Solve the sudoku puzzle.
+//
+// Args:
+//     table: int [][] (sudoku table)
+///////////////////////////////////////////////////////////////////////////////
+void solve(int table[][9])
+{
+    int prev_zeros = 81;
+    while(true)
+    {
+        int zeros = number_of_empty_cells(table);
+        if(zeros == 0)
+        {
+            break;
+        }
+
+        // If no cells could be filled in an iteration, ask for a number to
+        // be filled in randomly.
+        bool random = false;
+        if(zeros == prev_zeros)
+        {
+            random = true;
+        }
+
+        single_pass(table, random);
+        prev_zeros = zeros;
     }
 }
 
@@ -375,12 +419,13 @@ int main(int const argc, char const *argv[])
         return EXIT_FAILURE;
     }
 
-    for(int i = 0; i < 200; ++i)
-    {
-        single_pass(table);
-    }
+    clock_t start = clock();
+    solve(table);
+    clock_t end = clock();
+    int delay_micro = (double)(end - start) / CLOCKS_PER_SEC * 1e6;
 
     show(table);
+    printf("Solved in %d μs (CPU time).\n", delay_micro);
 
     return EXIT_SUCCESS;
 }
