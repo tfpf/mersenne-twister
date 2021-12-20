@@ -1,350 +1,389 @@
-#include<stdio.h>
-#include<stdlib.h>
-#include<time.h>
-#include<string.h>
+/*
+gcc -std=c11 -Wall -Wextra -o sudoku sudoku.c
+./sudoku
+*/
 
-// is the number z allowed at M[x][y]
-int is_allowed(int **M, int x, int y, int z)
+#include <stdbool.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Read a sudoku problem into a two-dimensional array. Zeros are used to
+// represent blank cells. The format of the input file is the same as that
+// output by the program `generate_sudoku.py'.
+//
+// Args:
+//     fname: char const * (name of the input file to read the problem from)
+//     table: int [][] (sudoku table)
+//
+// Returns:
+//     bool (`true' for success, `false' for failure)
+///////////////////////////////////////////////////////////////////////////////
+bool read_sudoku(char const *fname, int table[][9])
 {
-	int p, q; // loop counters
+    FILE *fptr = fopen(fname, "r");
+    for(int i = 0; i < 9; ++i)
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            char c;
+            if(fscanf(fptr, " %c", &c) == 0 || (c != '-' && (c < '1' || c > '9')))
+            {
+                printf("%c\n", c);
+                return false;
+            }
 
-	// check for duplicates in 3-by-3 box
-	int m, n; // 3-by-3 box location
-	m = x - x % 3;
-	n = y - y % 3;
-	for(p = m; p < m + 3; p++)
-	{
-		for(q = n; q < n + 3; q++)
-		{
-			if(M[p][q] == z)
-			{
-				return 0;
-			}
-		}
-	}
+            if(c == '-')
+            {
+                table[i][j] = 0;
+            }
+            else
+            {
+                table[i][j] = c - '0';
+            }
+        }
+    }
 
-	// check for duplicates in row (x = constant)
-	for(q = 0; q < 9; q++) // column location
-	{
-		if(M[x][q] == z)
-		{
-			return 0;
-		}
-	}
-
-	// check for duplicates in column (y = constant)
-	for(p = 0; p < 9; p++) // row location
-	{
-		if(M[p][y] == z)
-		{
-			return 0;
-		}
-	}
-
-	// maybe z is allowed
-	return 1;
+    return true;
 }
 
-// is the Sudoku solved or not
-int is_solved(int **M)
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Check whether there are any empty cells.
+//
+// Args:
+//     table: int [][] (sudoku table)
+//
+// Returns:
+//     bool (`true' if there is at least one empty cell, else `false')
+///////////////////////////////////////////////////////////////////////////////
+bool is_solved(int table[][9])
 {
-	int x, y;
-	for(x = 0; x < 9; x++)
-	{
-		for(y = 0; y < 9; y++)
-		{
-			if(M[x][y] == 0)
-			{
-				return 0;
-			}
-		}
-	}
-	return 1;
+    for(int i = 0; i < 9; ++i)
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            if(table[i][j] == 0)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
 }
 
-int main(int argc, char **argv)
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Display the sudoku table. Adacent blocks have different background colours.
+// This is accomplished using an ANSI colour code.
+//
+// Args:
+//     table: int [][] (sudoku table)
+///////////////////////////////////////////////////////////////////////////////
+void show(int table[][9])
 {
-	printf("-----\n");
-	printf("Disclaimer: I cannot solve SuDokus that require guessing.\n\n");
-
-	// check the arguments
-	if(argc != 2)
-	{
-		printf("usage:");
-		printf("\n\tsolve_sudoku.out <input file name>");
-		printf("\n-----\n");
-		return 1;
-	}
-
-	// allocate space for matrix
-	// I don't know why I like dynamic memory allocation
-	int **M;
-	M = (int **)malloc(9 * sizeof(int *));
-	int count;
-	for(count = 0; count < 9; count++)
-	{
-		M[count] = (int *)malloc(9 * sizeof(int));
-	}
-
-	// load and study question
-	FILE *question;
-	question = fopen(argv[1], "r");
-	int x, y; // loop counters
-	int zeros; // number of cells to be filled
-	zeros = 0;
-	for(x = 0; x < 9; x++)
-	{
-		for(y = 0; y < 9; y++)
-		{
-			fscanf(question, "%d", *(M + x) + y);
-			zeros += !M[x][y];
-		}
-	}
-	fclose(question);
-
-	// open a file to write the solution
-	char *out_file;
-	out_file = malloc(64 * sizeof(*out_file));
-	strcat(strcpy(out_file, "solution_"), argv[1]);
-	FILE *answer;
-	answer = fopen(out_file, "w");
-	free(out_file);
-	fprintf(answer, "question:\n\n");
-	for(x = 0; x < 9; x++)
-	{
-		for(y = 0; y < 9; y++)
-		{
-			fprintf(answer, "%d ", M[x][y]);
-			if(y % 3 == 2)
-			{
-				fprintf(answer, " ");
-			}
-		}
-		fprintf(answer, "\n");
-		if(x % 3 == 2)
-		{
-			fprintf(answer, "\n");
-		}
-	}
-
-	// calculate density of the matrix
-	int ones; // ridiculous name, I understand
-	ones = 81 - zeros;
-	fprintf(answer, "number of filled cells\t= %2d\n", ones);
-	fprintf(answer, "number of empty cells\t= %2d\n", zeros);
-	fprintf(answer, "\ndensity of matrix\t= %.2f%%\n", (float)ones / 81 * 100);
-
-	// some variables to use in the loop
-	int r, s, t; // used to analyse results of is_allowed
-	int p, q; // counters to traverse 3-by-3 boxes
-
-	// time variables
-	clock_t start, stop;
-
-	// start time: just before analysis starts
-	start = clock();
-
-	// main loop
-	// I know that time is wasted in checking is_solved
-	while(!is_solved(M))
-	{
-		// traverse one cell at a time
-		for(x = 0; x < 9; x++)
-		{
-			for(y = 0; y < 9; y++)
-			{
-				// if M[x][y] is already filled, continue
-				if(M[x][y])
-				{
-					continue;
-				}
-
-				// how many numbers from 1 to 9 are allowed in M[x][y]
-				r = 0;
-				for(count = 1; count <= 9; count++)
-				{
-					if(is_allowed(M, x, y, count))
-					{
-						s = count;
-						r += 1;
-					}
-				}
-				// if only one number is allowed, fill it here
-				if(r == 1)
-				{
-					M[x][y] = s;
-				}
-			}
-		}
-
-		// traverse one number at a time
-		for(count = 1; count <= 9; count++)
-		{
-			// filling by row
-			for(x = 0; x < 9; x++)
-			{
-				// in this row, how many cells will allow count
-				r = 0;
-				for(y = 0; y < 9; y++)
-				{
-					// if M[x][y] is already filled, continue
-					if(M[x][y])
-					{
-						continue;
-					}
-
-					if(is_allowed(M, x, y, count))
-					{
-						r += 1;
-						s = y;
-					}
-				}
-				// if only one possible place for count exists, write it there
-				if(r == 1)
-				{
-					M[x][s] = count;
-				}
-			}
-
-			// filling by column
-			for(x = 0; x < 9; x++)
-			{
-				// in this column, how many cells will allow count
-				r = 0;
-				for(y = 0; y < 9; y++)
-				{
-					// if M[y][x] is already filled, continue
-					if(M[y][x])
-					{
-						continue;
-					}
-
-					if(is_allowed(M, y, x, count))
-					{
-						r += 1;
-						s = y;
-					}
-				}
-				// if only one possible place for count exists, write it there
-				if(r == 1)
-				{
-					M[s][x] = count;
-				}
-			}
-
-			// filling by 3-by-3 box
-			for(p = 0; p < 3; p++)
-			{
-				for(q = 0; q < 3; q++)
-				{
-					// in this box, how many cells will allow count
-					r = 0;
-					for(x = 3 * p; x < 3 * p + 3; x++)
-					{
-						for(y = 3 * q; y < 3 * q + 3; y++)
-						{
-							// if M[y][x] is already filled, continue
-							if(M[x][y])
-							{
-								continue;
-							}
-
-							if(is_allowed(M, x, y, count))
-							{
-								r += 1;
-								s = x;
-								t = y;
-							}
-						}
-					}
-					// if only one possibile place for count exists, write it there
-					if(r == 1)
-					{
-						M[s][t] = count;
-					}
-				}
-			}
-		}
-	}
-
-	// stop the clock after the analysis ends
-	// some comments are actually unnecessary
-	stop = clock();
-
-	// show what the computer has laboured over
-	for(x = 0; x < 9; x++)
-	{
-		for(y = 0; y < 9; y++)
-		{
-			printf("%d %c", M[x][y], !((y + 1) % 3) * ' ');
-		}
-		printf("\n%c", '\n' * !((x + 1) % 3));
-	}
-
-	// write the solution to the file
-	fprintf(answer, "\n-----\n\nsolution:\n\n");
-	for(x = 0; x < 9; x++)
-	{
-		for(y = 0; y < 9; y++)
-		{
-			fprintf(answer, "%d ", M[x][y]);
-			if(y % 3 == 2)
-			{
-				fprintf(answer, " ");
-			}
-		}
-		fprintf(answer, "\n");
-		if(x % 3 == 2)
-		{
-			fprintf(answer, "\n");
-		}
-	}
-
-	// find the appropriate unit prefix for the time
-	int prefix; // prefix--duh
-	double T; // time taken
-	T = (double)(stop - start) / CLOCKS_PER_SEC; // number of seconds
-
-	// see how many times 1000 has to be multiplied
-	prefix = 0;
-	while(!(int)T)
-	{
-		T *= 1e3;
-		prefix++;
-	}
-
-	// write the time taken with the correct prefix
-	fprintf(answer, "time taken = %.2lf", T);
-	switch(prefix)
-	{
-		case 1:
-		{
-			fprintf(answer, " milliseconds\n");
-			break;
-		}
-		case 2:
-		{
-			fprintf(answer, " microseconds\n");
-			break;
-		}
-		case 3:
-		{
-			fprintf(answer, " nanoseconds\n");
-			break;
-		}
-		default:
-		{
-			// too bad--your processor is too fast
-			fprintf(answer, "e-%d seconds\n", 3 * prefix);
-		}
-	}
-
-	// finally, close the file
-	fclose(answer);
-
-	// clear the memory
-	free(M);
-
-	printf("Solved successfully.\n-----\n");
-	return 0;
+    for(int i = 0; i < 9; ++i)
+    {
+        printf("    ");
+        for(int j = 0; j < 9; ++j)
+        {
+            if((i / 3 + j / 3) % 2 == 0)
+            {
+                printf("\033[100m");
+            }
+            printf("%d", table[i][j]);
+            if(j % 3 == 2)
+            {
+                printf("\033[0m");
+            }
+            printf("  ");
+        }
+        printf("\n");
+    }
 }
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Check whether the number given may be placed in the given row.
+//
+// Args:
+//     table: int [][] (sudoku table)
+//     row: int (a number from 1 to 9)
+//     num: int (a number from 1 to 9)
+//
+// Returns:
+//     bool (`true' if `num' may appear at row index `row', else `false')
+///////////////////////////////////////////////////////////////////////////////
+bool is_allowed_in_row(int table[][9], int row, int num)
+{
+    for(int j = 0; j < 9; ++j)
+    {
+        if(table[row][j] == num)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Check whether the number given may be placed in the given column.
+//
+// Args:
+//     table: int [][] (sudoku table)
+//     col: int (a number from 1 to 9)
+//     num: int (a number from 1 to 9)
+//
+// Returns:
+//     bool (`true' if `num' may appear at column index `col', else `false')
+///////////////////////////////////////////////////////////////////////////////
+bool is_allowed_in_col(int table[][9], int col, int num)
+{
+    for(int i = 0; i < 9; ++i)
+    {
+        if(table[i][col] == num)
+        {
+            return false;
+        }
+    }
+
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Check whether the number given may be placed in the indicated block.
+//
+// Args:
+//     table: int [][] (sudoku table)
+//     row: int (a number from 1 to 9)
+//     col: int (a number from 1 to 9)
+//     num: int (a number from 1 to 9)
+//
+// Returns:
+//     bool (`true' if `num' may appear in the block indicated, else `false')
+///////////////////////////////////////////////////////////////////////////////
+bool is_allowed_in_block(int table[][9], int row, int col, int num)
+{
+    // Find out where the block indicated by `row' and `col' begins.
+    int block_row_start = row - row % 3;
+    int block_col_start = col - col % 3;
+
+    for(int i = block_row_start; i < block_row_start + 3; ++i)
+    {
+        for(int j = block_col_start; j < block_col_start + 3; ++j)
+        {
+            if(i != row && j != col && table[i][j] == num)
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Check whether the number given may be placed at the given position. At the
+// time of calling this function, it must be true that `table[row][col] == 0'.
+//
+// Args:
+//     table: int [][] (sudoku table)
+//     row: int (a number from 1 to 9)
+//     col: int (a number from 1 to 9)
+//     num: int (a number from 1 to 9)
+//
+// Returns:
+//     bool (`true' if `table[row][col]' can be assigned `num', else `false')
+///////////////////////////////////////////////////////////////////////////////
+bool is_allowed(int table[][9], int row, int col, int num)
+{
+    return is_allowed_in_row(table, row, num)
+           && is_allowed_in_col(table, col, num)
+           && is_allowed_in_block(table, row, col, num);
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Check how many numbers are allowed at the given position. If only a single
+// number is allowed, assign it at that position. Otherwise, do nothing. At the
+// time of calling this function, it must be true that `table[row][col] == 0'.
+//
+// Args:
+//     table: int [][] (sudoku table)
+//     row: int (a number from 1 to 9)
+//     col: int (a number from 1 to 9)
+///////////////////////////////////////////////////////////////////////////////
+void select_allowed(int table[][9], int row, int col)
+{
+    int allowed;
+    int count_allowed = 0;
+    for(int num = 1; num <= 9; ++num)
+    {
+        if(is_allowed(table, row, col, num))
+        {
+            allowed = num;
+            ++count_allowed;
+        }
+    }
+
+    if(count_allowed == 1)
+    {
+        table[row][col] = allowed;
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Check how many possible positions the given number may be placed at. If only
+// a single position is present in a row or column or block, assign it at
+// that/those position/positions. Otherwise, do nothing.
+//
+// Args:
+//     table: int [][] (sudoku table)
+//     num: int (a number from 1 to 9)
+///////////////////////////////////////////////////////////////////////////////
+void select_possible(int table[][9], int num)
+{
+    // Possibilities in each row.
+    for(int i = 0; i < 9; ++i)
+    {
+        if(!is_allowed_in_row(table, i, num))
+        {
+            continue;
+        }
+
+        int possible_row, possible_col;
+        int count_possible = 0;
+        for(int j = 0; j < 9; ++j)
+        {
+            if(table[i][j] == 0 && is_allowed(table, i, j, num))
+            {
+                possible_row = i;
+                possible_col = j;
+                ++count_possible;
+            }
+        }
+
+        if(count_possible == 1)
+        {
+            table[possible_row][possible_col] = num;
+        }
+    }
+
+    // Possibilities in each column.
+    for(int j = 0; j < 9; ++j)
+    {
+        if(!is_allowed_in_col(table, j, num))
+        {
+            continue;
+        }
+
+        int possible_row, possible_col;
+        int count_possible = 0;
+        for(int i = 0; i < 9; ++i)
+        {
+            if(table[i][j] == 0 && is_allowed(table, i, j, num))
+            {
+                possible_row = i;
+                possible_col = j;
+                ++count_possible;
+            }
+        }
+
+        if(count_possible == 1)
+        {
+            table[possible_row][possible_col] = num;
+        }
+    }
+
+    // Possibilities in each block.
+    for(int block_row_start = 0; block_row_start < 9; block_row_start += 3)
+    {
+        for(int block_col_start = 0; block_col_start < 9; block_col_start += 3)
+        {
+            if(!is_allowed_in_block(table, block_row_start, block_col_start, num))
+            {
+                continue;
+            }
+
+            int possible_row, possible_col;
+            int count_possible = 0;
+            for(int i = block_row_start; i < block_row_start + 3; ++i)
+            {
+                for(int j = block_col_start; j < block_col_start + 3; ++j)
+                {
+                    if(table[i][j] == 0 && is_allowed(table, i, j, num))
+                    {
+                        possible_row = i;
+                        possible_col = j;
+                        ++count_possible;
+                    }
+                }
+            }
+
+            if(count_possible == 1)
+            {
+                table[possible_row][possible_col] = num;
+            }
+        }
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Function
+// Do one pass of the table, filling cells wherever possible.
+//
+// Args:
+//     table: int [][] (sudoku table)
+///////////////////////////////////////////////////////////////////////////////
+void single_pass(int table[][9])
+{
+    for(int i = 0; i < 9; ++i)
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            if(table[i][j] == 0)
+            {
+                select_allowed(table, i, j);
+            }
+        }
+    }
+
+    for(int num = 1; num <= 9; ++num)
+    {
+        select_possible(table, num);
+    }
+}
+
+///////////////////////////////////////////////////////////////////////////////
+// Main function.
+///////////////////////////////////////////////////////////////////////////////
+int main(int const argc, char const *argv[])
+{
+    if(argc < 2)
+    {
+        printf("Usage:\n");
+        printf("\t%s <input file>\n", argv[0]);
+        return EXIT_FAILURE;
+    }
+
+    int table[9][9];
+    if(!read_sudoku(argv[1], table))
+    {
+        printf("Could not read the file %s.\n", argv[1]);
+        return EXIT_FAILURE;
+    }
+
+    // show(table);
+    for(int i = 0; i < 200; ++i) single_pass(table);
+    show(table);
+
+    return EXIT_SUCCESS;
+}
+
