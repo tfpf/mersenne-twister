@@ -1,4 +1,6 @@
 # Generate and Solve Sudoku Puzzles
+I just wanted to rewrite an old C program of mine using a better style, and
+then verify that it worked correctly.
 
 ## Generate
 ```
