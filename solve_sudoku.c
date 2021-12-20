@@ -1,8 +1,3 @@
-/*
-gcc -std=c11 -Wall -Wextra -o sudoku sudoku.c
-./sudoku
-*/
-
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -116,7 +111,7 @@ void show(int table[][9])
 // Returns:
 //     bool (`true' if `num' may appear at row index `row', else `false')
 ///////////////////////////////////////////////////////////////////////////////
-bool is_allowed_in_row(int table[][9], int row, int num)
+bool allowed_in_row(int table[][9], int row, int num)
 {
     for(int j = 0; j < 9; ++j)
     {
@@ -141,7 +136,7 @@ bool is_allowed_in_row(int table[][9], int row, int num)
 // Returns:
 //     bool (`true' if `num' may appear at column index `col', else `false')
 ///////////////////////////////////////////////////////////////////////////////
-bool is_allowed_in_col(int table[][9], int col, int num)
+bool allowed_in_col(int table[][9], int col, int num)
 {
     for(int i = 0; i < 9; ++i)
     {
@@ -167,7 +162,7 @@ bool is_allowed_in_col(int table[][9], int col, int num)
 // Returns:
 //     bool (`true' if `num' may appear in the block indicated, else `false')
 ///////////////////////////////////////////////////////////////////////////////
-bool is_allowed_in_block(int table[][9], int row, int col, int num)
+bool allowed_in_block(int table[][9], int row, int col, int num)
 {
     // Find out where the block indicated by `row' and `col' begins.
     int block_row_start = row - row % 3;
@@ -201,11 +196,11 @@ bool is_allowed_in_block(int table[][9], int row, int col, int num)
 // Returns:
 //     bool (`true' if `table[row][col]' can be assigned `num', else `false')
 ///////////////////////////////////////////////////////////////////////////////
-bool is_allowed(int table[][9], int row, int col, int num)
+bool allowed_at_position(int table[][9], int row, int col, int num)
 {
-    return is_allowed_in_row(table, row, num)
-           && is_allowed_in_col(table, col, num)
-           && is_allowed_in_block(table, row, col, num);
+    return allowed_in_row(table, row, num)
+           && allowed_in_col(table, col, num)
+           && allowed_in_block(table, row, col, num);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -225,7 +220,7 @@ void select_allowed(int table[][9], int row, int col)
     int count_allowed = 0;
     for(int num = 1; num <= 9; ++num)
     {
-        if(is_allowed(table, row, col, num))
+        if(allowed_at_position(table, row, col, num))
         {
             allowed = num;
             ++count_allowed;
@@ -253,7 +248,7 @@ void select_possible(int table[][9], int num)
     // Possibilities in each row.
     for(int i = 0; i < 9; ++i)
     {
-        if(!is_allowed_in_row(table, i, num))
+        if(!allowed_in_row(table, i, num))
         {
             continue;
         }
@@ -262,7 +257,7 @@ void select_possible(int table[][9], int num)
         int count_possible = 0;
         for(int j = 0; j < 9; ++j)
         {
-            if(table[i][j] == 0 && is_allowed(table, i, j, num))
+            if(table[i][j] == 0 && allowed_at_position(table, i, j, num))
             {
                 possible_row = i;
                 possible_col = j;
@@ -279,7 +274,7 @@ void select_possible(int table[][9], int num)
     // Possibilities in each column.
     for(int j = 0; j < 9; ++j)
     {
-        if(!is_allowed_in_col(table, j, num))
+        if(!allowed_in_col(table, j, num))
         {
             continue;
         }
@@ -288,7 +283,7 @@ void select_possible(int table[][9], int num)
         int count_possible = 0;
         for(int i = 0; i < 9; ++i)
         {
-            if(table[i][j] == 0 && is_allowed(table, i, j, num))
+            if(table[i][j] == 0 && allowed_at_position(table, i, j, num))
             {
                 possible_row = i;
                 possible_col = j;
@@ -307,7 +302,7 @@ void select_possible(int table[][9], int num)
     {
         for(int block_col_start = 0; block_col_start < 9; block_col_start += 3)
         {
-            if(!is_allowed_in_block(table, block_row_start, block_col_start, num))
+            if(!allowed_in_block(table, block_row_start, block_col_start, num))
             {
                 continue;
             }
@@ -318,7 +313,7 @@ void select_possible(int table[][9], int num)
             {
                 for(int j = block_col_start; j < block_col_start + 3; ++j)
                 {
-                    if(table[i][j] == 0 && is_allowed(table, i, j, num))
+                    if(table[i][j] == 0 && allowed_at_position(table, i, j, num))
                     {
                         possible_row = i;
                         possible_col = j;
@@ -380,8 +375,11 @@ int main(int const argc, char const *argv[])
         return EXIT_FAILURE;
     }
 
-    // show(table);
-    for(int i = 0; i < 200; ++i) single_pass(table);
+    for(int i = 0; i < 200; ++i)
+    {
+        single_pass(table);
+    }
+
     show(table);
 
     return EXIT_SUCCESS;
