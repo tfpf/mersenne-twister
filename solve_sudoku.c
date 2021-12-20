@@ -389,11 +389,7 @@ void solve(int table[][9])
 
         // If no cells could be filled in an iteration, ask for a number to
         // be filled in randomly.
-        bool random = false;
-        if(zeros == prev_zeros)
-        {
-            random = true;
-        }
+        bool random = (zeros == prev_zeros) ? true : false;
 
         single_pass(table, random);
         prev_zeros = zeros;
