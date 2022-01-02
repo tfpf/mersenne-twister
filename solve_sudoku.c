@@ -82,9 +82,9 @@ void show(int table[][9])
 {
     for(int i = 0; i < 9; ++i)
     {
-        printf("    ");
         for(int j = 0; j < 9; ++j)
         {
+            printf("  ");
             if((i / 3 + j / 3) % 2 == 0)
             {
                 printf("\033[100m");
@@ -94,7 +94,6 @@ void show(int table[][9])
             {
                 printf("\033[0m");
             }
-            printf("  ");
         }
         printf("\n");
     }
