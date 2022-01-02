@@ -35,14 +35,13 @@ Args:
 '''
 
         for i, row in enumerate(self.table):
-            print('    ', end='')
             for j, num in enumerate(row):
+                print('  ', end = '')
                 if (i // 3 + j // 3) % 2 == 0:
                     print('\033[100m', end = '')
                 print(num, end = '')
                 if j % 3 == 2:
                     print('\033[0m', end = '')
-                print('  ', end = '')
             print()
 
     ###########################################################################
