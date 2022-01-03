@@ -85,12 +85,13 @@ void show(int table[][9])
         for(int j = 0; j < 9; ++j)
         {
             printf("  ");
-            if((i / 3 + j / 3) % 2 == 0)
+            bool colour = !((i / 3 + j / 3) % 2);
+            if(colour && j % 3 == 0)
             {
                 printf("\033[100m");
             }
             printf("%d", table[i][j]);
-            if(j % 3 == 2)
+            if(colour && j % 3 == 2)
             {
                 printf("\033[0m");
             }
@@ -430,7 +431,7 @@ void solve(int table[][9])
 
         // If no cells could be filled in an iteration, ask for a number to
         // be filled in randomly.
-        bool assign_random = (zeros == prev_zeros) ? true : false;
+        bool assign_random = (zeros == prev_zeros);
 
         single_pass(table, assign_random);
         prev_zeros = zeros;
