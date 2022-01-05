@@ -36,13 +36,13 @@ Args:
 
         for i, row in enumerate(self.table):
             for j, num in enumerate(row):
-                print('  ', end = '')
+                print('  ', end='')
                 colour = not (i // 3 + j // 3) % 2
                 if colour and j % 3 == 0:
-                    print('\033[100m', end = '')
-                print(num, end = '')
+                    print('\033[100m', end='')
+                print(num, end='')
                 if colour and j % 3 == 2:
-                    print('\033[0m', end = '')
+                    print('\033[0m', end='')
             print()
 
     ###########################################################################
