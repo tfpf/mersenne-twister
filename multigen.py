@@ -1,6 +1,17 @@
+#! /usr/bin/python3
+
 import datetime
-import subprocess
+import multiprocessing
 import sys
+
+import generate_sudoku
+
+###############################################################################
+
+def wrapper(stdout):
+    sys.stdout = stdout
+    sys.argv[1] = 12
+    generate_sudoku.main()
 
 ###############################################################################
 
@@ -17,9 +28,7 @@ def main():
         today += datetime.timedelta(days=1)
         fname = today.strftime(f'0x{i:02x}_%d_%B_%Y.txt')
         with open(fname, 'w') as stdout:
-            proc[i] = subprocess.Popen(('./generate_sudoku.py', '12'), stdout=stdout)
-
-    _ = [p.wait() for p in proc]
+            multiprocessing.Process(target=wrapper, args=(stdout,)).start()
 
 ###############################################################################
 
