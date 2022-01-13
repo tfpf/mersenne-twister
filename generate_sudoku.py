@@ -120,11 +120,11 @@ Main function.
 '''
 
     try:
-        difficulty = int(sys.argv[1])
+        difficulty = float(sys.argv[1])
         assert 0 <= difficulty <= 20
     except (AssertionError, IndexError, ValueError):
         difficulty = 15
-    print(f'Difficulty Level: {difficulty:2d}/20')
+    print(f'Difficulty Level: {difficulty}/20')
     deletions = round(difficulty / 20 * 81)
 
     # Start a thread to generate a sudoku puzzle. If that thread does not
