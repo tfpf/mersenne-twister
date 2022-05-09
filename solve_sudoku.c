@@ -1,3 +1,5 @@
+#define _POSIX_C_SOURCE 199309L
+
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -457,14 +459,14 @@ int main(int const argc, char const *argv[])
         return EXIT_FAILURE;
     }
 
-    clock_t start = clock();
+    struct timespec begin, end;
+    clock_gettime(CLOCK_REALTIME, &begin);
     solve(table);
-    clock_t end = clock();
-    int delay_micro = (double)(end - start) / CLOCKS_PER_SEC * 1e6;
+    clock_gettime(CLOCK_REALTIME, &end);
+    int long delay_micro = (int long)(end.tv_sec - begin.tv_sec) * 1000000 + (end.tv_nsec - begin.tv_nsec) / 1000;
 
     show(table);
-    printf("Solved in %d μs (CPU time).\n", delay_micro);
+    printf("Solved in %ld μs (real time).\n", delay_micro);
 
     return EXIT_SUCCESS;
 }
-
