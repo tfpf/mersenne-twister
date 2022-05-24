@@ -90,7 +90,7 @@ void show(int table[][9])
             bool colour = !((i / 3 + j / 3) % 2);
             if(colour && j % 3 == 0)
             {
-                printf("\033[100m");
+                printf("\033[37;100m");
             }
             printf("%d", table[i][j]);
             if(colour && j % 3 == 2)
