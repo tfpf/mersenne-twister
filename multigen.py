@@ -10,7 +10,7 @@ import generate_sudoku
 
 def wrapper(stdout):
     sys.stdout = stdout
-    sys.argv[1] = 11.35
+    sys.argv.insert(1, 11.35)
     generate_sudoku.main()
 
 ###############################################################################

@@ -4,9 +4,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <unistd.h>
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Read a sudoku puzzle into a two-dimensional array. Zeros are used to
 // represent blank cells. The format of the input file is the same as that
 // output by the program `generate_sudoku.py'.
@@ -51,7 +51,6 @@ bool read_sudoku(char const *fname, int table[][9])
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Count the empty cells (i.e. the positions filled with zeros).
 //
 // Args:
@@ -78,9 +77,8 @@ int number_of_empty_cells(int table[][9])
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
-// Display the sudoku table. Adacent blocks have different background colours.
-// This is accomplished using an ANSI colour code.
+// Display the sudoku table. Draw adjacent blocks using different background
+// colours if the output is going to a terminal.
 //
 // Args:
 //     table: int [][] (sudoku table)
@@ -92,7 +90,7 @@ void show(int table[][9])
         for(int j = 0; j < 9; ++j)
         {
             printf("  ");
-            bool colour = !((i / 3 + j / 3) % 2);
+            bool colour = !((i / 3 + j / 3) % 2) && isatty(fileno(stdout));
             if(colour && j % 3 == 0)
             {
                 printf("\033[37;100m");
@@ -108,7 +106,6 @@ void show(int table[][9])
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check whether the number given may be placed in the given row.
 //
 // Args:
@@ -133,7 +130,6 @@ bool allowed_in_row(int table[][9], int row, int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check whether the number given may be placed in the given column.
 //
 // Args:
@@ -158,7 +154,6 @@ bool allowed_in_col(int table[][9], int col, int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check whether the number given may be placed in the indicated block.
 //
 // Args:
@@ -191,7 +186,6 @@ bool allowed_in_block(int table[][9], int row, int col, int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check whether the number given may be placed at the given position. At the
 // time of calling this function, it must be true that `table[row][col] == 0'.
 //
@@ -212,7 +206,6 @@ bool allowed_at_position(int table[][9], int row, int col, int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check how many numbers are allowed at the given position. If only a single
 // number is allowed, assign it at that position. Otherwise, do nothing.
 // (Alternatively, assign a number at that position randomly, if told to do
@@ -250,7 +243,6 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check how many positions the given number can be placed at in the given row.
 // If there is only one position, assign it at there. Otherwise, do nothing.
 //
@@ -284,7 +276,6 @@ void select_possible_in_row(int table[][9], int row, int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check how many positions the given number can be placed at in the given
 // column. If there is only one position, assign it at there. Otherwise, do
 // nothing.
@@ -319,7 +310,6 @@ void select_possible_in_col(int table[][9], int col, int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check how many positions the given number can be placed at in the given
 // block. If there is only one position, assign it at there. Otherwise, do
 // nothing.
@@ -359,7 +349,6 @@ void select_possible_in_block(int table[][9], int row, int col, int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Check how many possible positions the given number may be placed at. If only
 // a single position is present in a row or column or block, assign it at
 // that/those position/positions. Otherwise, do nothing.
@@ -390,7 +379,6 @@ void select_possible(int table[][9], int num)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Do one pass of the table, filling cells wherever possible.
 //
 // Args:
@@ -419,7 +407,6 @@ void single_pass(int table[][9], bool assign_random)
 }
 
 ///////////////////////////////////////////////////////////////////////////////
-// Function
 // Solve the sudoku puzzle.
 //
 // Args:

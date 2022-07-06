@@ -27,8 +27,8 @@ Members:
 
     def show(self):
         '''\
-Display the sudoku table. Adacent blocks have different background colours.
-This is accomplished using an ANSI colour code.
+Display the sudoku table. Draw adjacent blocks using different background
+colours if the output is going to a terminal.
 
 Args:
     nothing
@@ -37,7 +37,7 @@ Args:
         for i, row in enumerate(self.table):
             for j, num in enumerate(row):
                 print('  ', end='')
-                colour = not (i // 3 + j // 3) % 2
+                colour = not (i // 3 + j // 3) % 2 and sys.stdout.isatty()
                 if colour and j % 3 == 0:
                     print('\033[37;100m', end='')
                 print(num, end='')
