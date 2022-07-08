@@ -34,10 +34,11 @@ Args:
     nothing
 '''
 
+        stdout_is_terminal = sys.stdout.isatty()
         for i, row in enumerate(self.table):
             for j, num in enumerate(row):
                 print('  ', end='')
-                colour = not (i // 3 + j // 3) % 2 and sys.stdout.isatty()
+                colour = not (i // 3 + j // 3) % 2 and stdout_is_terminal
                 if colour and j % 3 == 0:
                     print('\033[37;100m', end='')
                 print(num, end='')
