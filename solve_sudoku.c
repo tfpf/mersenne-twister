@@ -3,6 +3,7 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -414,6 +415,71 @@ void solve(int table[][9])
 }
 
 /******************************************************************************
+ * Check whether the cells in the sudoku table are filled correctly.
+ *
+ * @param table Sudoku table.
+ *****************************************************************************/
+bool valid(int table[][9])
+{
+    for(int i = 0; i < 9; ++i)
+    {
+        for(int j = 0; j < 9; ++j)
+        {
+            if(table[i][j] < 1 || table[i][j] > 9)
+            {
+                return false;
+            }
+        }
+    }
+
+    int expected_frequency[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    for(int i = 0; i < 9; ++i)
+    {
+        int frequency[9] = {0};
+        for(int j = 0; j < 9; ++j)
+        {
+            ++frequency[table[i][j] - 1];
+        }
+        if(memcmp(frequency, expected_frequency, sizeof frequency))
+        {
+            return false;
+        }
+    }
+    for(int j = 0; j < 9; ++j)
+    {
+        int frequency[9] = {0};
+        for(int i = 0; i < 9; ++i)
+        {
+            ++frequency[table[i][j] - 1];
+        }
+        if(memcmp(frequency, expected_frequency, sizeof frequency))
+        {
+            return false;
+        }
+    }
+    for(int i = 0; i < 9; i += 3)
+    {
+        for(int j = 0; j < 9; j += 3)
+        {
+            int frequency[9] = {0};
+            for(int k = i; k < i + 3; ++k)
+            {
+                for(int l = j; l < j + 3; ++l)
+                {
+                    ++frequency[table[k][l] - 1];
+                }
+            }
+            if(memcmp(frequency, expected_frequency, sizeof frequency))
+            {
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+/******************************************************************************
  * Main function.
  *****************************************************************************/
 int main(int const argc, char const *argv[])
@@ -439,6 +505,12 @@ int main(int const argc, char const *argv[])
     int long delay_micro = (int long)(end.tv_sec - begin.tv_sec) * 1000000 + (end.tv_nsec - begin.tv_nsec) / 1000;
 
     show(table);
+    if(!valid(table))
+    {
+        printf("Could not solve.\n");
+        return EXIT_FAILURE;
+    }
+
     printf("Solved in %ld μs (real time).\n", delay_micro);
 
     return EXIT_SUCCESS;
