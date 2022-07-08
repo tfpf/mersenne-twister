@@ -6,18 +6,16 @@
 #include <time.h>
 #include <unistd.h>
 
-///////////////////////////////////////////////////////////////////////////////
-// Read a sudoku puzzle into a two-dimensional array. Zeros are used to
-// represent blank cells. The format of the input file is the same as that
-// output by the program `generate_sudoku.py'.
-//
-// Args:
-//     fname: char const * (name of the input file to read the puzzle from)
-//     table: int [][] (sudoku table)
-//
-// Returns:
-//     bool (`true' for success, `false' for failure)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Read a sudoku puzzle into a two-dimensional array. Zeros are used to
+ * represent blank cells. The format of the input file is the same as that
+ * output by the program `generate_sudoku.py`.
+ *
+ * @param fname Name of the input file to read the puzzle from.
+ * @param table Sudoku table.
+ *
+ * @return `true` if read successfully, `false` otherwise.
+ *****************************************************************************/
 bool read_sudoku(char const *fname, int table[][9])
 {
     FILE *fptr = fopen(fname, "r");
@@ -36,29 +34,20 @@ bool read_sudoku(char const *fname, int table[][9])
                 return false;
             }
 
-            if(c == '-')
-            {
-                table[i][j] = 0;
-            }
-            else
-            {
-                table[i][j] = c - '0';
-            }
+            table[i][j] = (c == '-') ? 0 : c - '0';
         }
     }
 
     return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Count the empty cells (i.e. the positions filled with zeros).
-//
-// Args:
-//     table: int [][] (sudoku table)
-//
-// Returns:
-//     int
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Count the empty cells (i.e. the positions filled with zeros) in the sudoku.
+ *
+ * @param table Sudoku table.
+ *
+ * @return Number of empty cells.
+ *****************************************************************************/
 int number_of_empty_cells(int table[][9])
 {
     int zeros = 0;
@@ -76,21 +65,21 @@ int number_of_empty_cells(int table[][9])
     return zeros;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Display the sudoku table. Draw adjacent blocks using different background
-// colours if the output is going to a terminal.
-//
-// Args:
-//     table: int [][] (sudoku table)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Display the sudoku table. Draw adjacent blocks using different background
+ * colours if the output is going to a terminal.
+ *
+ * @param table Sudoku table.
+ *****************************************************************************/
 void show(int table[][9])
 {
+    bool stdout_is_terminal = isatty(fileno(stdout));
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
             printf("  ");
-            bool colour = !((i / 3 + j / 3) % 2) && isatty(fileno(stdout));
+            bool colour = !((i / 3 + j / 3) % 2) && stdout_is_terminal;
             if(colour && j % 3 == 0)
             {
                 printf("\033[37;100m");
@@ -105,17 +94,15 @@ void show(int table[][9])
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check whether the number given may be placed in the given row.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     row: int (a number from 0 to 8)
-//     num: int (a number from 0 to 8)
-//
-// Returns:
-//     bool (`true' if `num' may appear at row index `row', else `false')
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check whether the number given may be placed in the given row.
+ *
+ * @param table Sudoku table.
+ * @param row Number from 0 to 8.
+ * @param num Number from 1 to 9.
+ *
+ * @return `true` if `num` isn't in the row indexed `row`, else `false`.
+ *****************************************************************************/
 bool allowed_in_row(int table[][9], int row, int num)
 {
     for(int j = 0; j < 9; ++j)
@@ -129,17 +116,15 @@ bool allowed_in_row(int table[][9], int row, int num)
     return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check whether the number given may be placed in the given column.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     col: int (a number from 0 to 8)
-//     num: int (a number from 0 to 8)
-//
-// Returns:
-//     bool (`true' if `num' may appear at column index `col', else `false')
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check whether the number given may be placed in the given column.
+ *
+ * @param table Sudoku table.
+ * @param col Number from 0 to 8.
+ * @param num Number from 1 to 9.
+ *
+ * @return `true` if `num` isn't in the column indexed `col`, else `false`.
+ *****************************************************************************/
 bool allowed_in_col(int table[][9], int col, int num)
 {
     for(int i = 0; i < 9; ++i)
@@ -153,21 +138,25 @@ bool allowed_in_col(int table[][9], int col, int num)
     return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check whether the number given may be placed in the indicated block.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     row: int (a number from 0 to 8)
-//     col: int (a number from 0 to 8)
-//     num: int (a number from 1 to 9)
-//
-// Returns:
-//     bool (`true' if `num' may appear in the block indicated, else `false')
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check whether the number given may be placed in the indicated block. Scan
+ * only those positions whose row and column indices differ from `row` and
+ * `col` respectively, since the other positions will be checked by
+ * `allowed_in_row` and `allowed_in_col`.
+ *
+ * @param table Sudoku table.
+ * @param row Number from 0 to 8.
+ * @param col Number from 0 to 8.
+ * @param num Number from 1 to 9.
+ *
+ * @return `true` if `num` isn't in the block which contains the cell
+ *     with row index `row` and column index `col` at a position with row
+ *     index different from `row` and column index different from `col`, else
+ *     `false`.
+ *****************************************************************************/
 bool allowed_in_block(int table[][9], int row, int col, int num)
 {
-    // Find out where the block indicated by `row' and `col' begins.
+    // Find out where the block indicated by `row` and `col` begins.
     int block_row_start = row - row % 3;
     int block_col_start = col - col % 3;
 
@@ -185,19 +174,18 @@ bool allowed_in_block(int table[][9], int row, int col, int num)
     return true;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check whether the number given may be placed at the given position. At the
-// time of calling this function, it must be true that `table[row][col] == 0'.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     row: int (a number from 0 to 8)
-//     col: int (a number from 0 to 8)
-//     num: int (a number from 1 to 9)
-//
-// Returns:
-//     bool (`true' if `table[row][col]' can be assigned `num', else `false')
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check whether the number given may be placed at the given position. At the
+ * time of calling this function, it must be true that `table[row][col] == 0`.
+ *
+ * @param table Sudoku table.
+ * @param row Number from 0 to 8.
+ * @param col Number from 0 to 8.
+ * @param num Number from 1 to 9.
+ *
+ * @return `true` if `num` may appear at row index `row` and column index
+ *     `col`, else `false`.
+ *****************************************************************************/
 bool allowed_at_position(int table[][9], int row, int col, int num)
 {
     return allowed_in_row(table, row, num)
@@ -205,19 +193,18 @@ bool allowed_at_position(int table[][9], int row, int col, int num)
            && allowed_in_block(table, row, col, num);
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check how many numbers are allowed at the given position. If only a single
-// number is allowed, assign it at that position. Otherwise, do nothing.
-// (Alternatively, assign a number at that position randomly, if told to do
-// so.) At the time of calling this function, it must be true that
-// `table[row][col] == 0'.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     row: int (a number from 0 to 8)
-//     col: int (a number from 0 to 8)
-//     assign_random: bool (whether to assign `table[row][col]' randomly)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check how many numbers are allowed at the given position. If only a single
+ * number is allowed, assign it at that position. Otherwise, do nothing.
+ * (Alternatively, assign a permitted number at that position randomly, if told
+ * to do so.) At the time of calling this function, it must be true that
+ * `table[row][col] == 0`.
+ *
+ * @param table Sudoku table.
+ * @param row Number from 0 to 8.
+ * @param col Number from 0 to 8.
+ * @param assign_random Whether to assign `table[row][col]` randomly or not.
+ *****************************************************************************/
 void select_allowed(int table[][9], int row, int col, bool assign_random)
 {
     int allowed;
@@ -242,15 +229,14 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check how many positions the given number can be placed at in the given row.
-// If there is only one position, assign it at there. Otherwise, do nothing.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     row: int (a number from 0 to 8)
-//     num: int (a number from 0 to 8)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check how many positions the given number can be placed at in the given row.
+ * If there is only one position, assign it there. Otherwise, do nothing.
+ *
+ * @param table Sudoku table.
+ * @param row Number from 0 to 8.
+ * @param num Number from 1 to 9.
+ *****************************************************************************/
 void select_possible_in_row(int table[][9], int row, int num)
 {
     if(!allowed_in_row(table, row, num))
@@ -275,16 +261,15 @@ void select_possible_in_row(int table[][9], int row, int num)
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check how many positions the given number can be placed at in the given
-// column. If there is only one position, assign it at there. Otherwise, do
-// nothing.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     col: int (a number from 0 to 8)
-//     num: int (a number from 0 to 8)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check how many positions the given number can be placed at in the given
+ * column. If there is only one position, assign it there. Otherwise, do
+ * nothing.
+ *
+ * @param table Sudoku table.
+ * @param col Number from 0 to 8.
+ * @param num Number from 1 to 9.
+ *****************************************************************************/
 void select_possible_in_col(int table[][9], int col, int num)
 {
     if(!allowed_in_col(table, col, num))
@@ -309,17 +294,16 @@ void select_possible_in_col(int table[][9], int col, int num)
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check how many positions the given number can be placed at in the given
-// block. If there is only one position, assign it at there. Otherwise, do
-// nothing.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     row: int (0, 3 or 6)
-//     col: int (0, 3 or 6)
-//     num: int (a number from 1 to 9)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check how many positions the given number can be placed at in the indicated
+ * block. If there is only one position, assign it at there. Otherwise, do
+ * nothing.
+ *
+ * @param table Sudoku table.
+ * @param row Row index of the first cell of a block. One of 0, 3 and 6.
+ * @param col Column index of the first cell of a block. One of 0, 3 and 6.
+ * @param num Number from 1 to 9.
+ *****************************************************************************/
 void select_possible_in_block(int table[][9], int row, int col, int num)
 {
     if(!allowed_in_block(table, row, col, num))
@@ -348,15 +332,14 @@ void select_possible_in_block(int table[][9], int row, int col, int num)
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Check how many possible positions the given number may be placed at. If only
-// a single position is present in a row or column or block, assign it at
-// that/those position/positions. Otherwise, do nothing.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     num: int (a number from 1 to 9)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Check how many possible positions the given number may be placed at. If only
+ * a single position is present in a row or column or block, assign it at
+ * that/those position/positions. Otherwise, do nothing.
+ *
+ * @param table Sudoku table.
+ * @param num Number from 1 to 9.
+ *****************************************************************************/
 void select_possible(int table[][9], int num)
 {
     for(int i = 0; i < 9; ++i)
@@ -378,13 +361,13 @@ void select_possible(int table[][9], int num)
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Do one pass of the table, filling cells wherever possible.
-//
-// Args:
-//     table: int [][] (sudoku table)
-//     assign_random: bool (whether to fill a cell randomly)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Do one pass of the table, filling cells wherever possible.
+ *
+ * @param table Sudoku table.
+ * @param assign_random Whether to fill a cell randomly. At most one cell shall
+ *     be filled randomly per function call.
+ *****************************************************************************/
 void single_pass(int table[][9], bool assign_random)
 {
     for(int i = 0; i < 9; ++i)
@@ -393,7 +376,6 @@ void single_pass(int table[][9], bool assign_random)
         {
             if(table[i][j] == 0)
             {
-                // At most one cell shall be filled randomly per function call.
                 select_allowed(table, i, j, assign_random);
                 assign_random = false;
             }
@@ -406,12 +388,11 @@ void single_pass(int table[][9], bool assign_random)
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Solve the sudoku puzzle.
-//
-// Args:
-//     table: int [][] (sudoku table)
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Solve the sudoku puzzle.
+ *
+ * @param table Sudoku table.
+ *****************************************************************************/
 void solve(int table[][9])
 {
     int prev_zeros = 81;
@@ -432,9 +413,9 @@ void solve(int table[][9])
     }
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// Main function.
-///////////////////////////////////////////////////////////////////////////////
+/******************************************************************************
+ * Main function.
+ *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
     if(argc < 2)
