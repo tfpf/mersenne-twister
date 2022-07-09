@@ -87,7 +87,7 @@ void show(int table[][9])
             {
                 printf("\033[37;100m");
             }
-            printf("%d", table[i][j]);
+            (table[i][j] == 0) ? printf("-") : printf("%d", table[i][j]);
             if(colour && j % 3 == 2)
             {
                 printf("\033[0m");
@@ -399,6 +399,7 @@ void single_pass(int table[][9], bool assign_random)
 void solve(int table[][9])
 {
     int prev_zeros = 81;
+    bool assign_random = false;
     while(true)
     {
         int zeros = number_of_empty_cells(table);
@@ -408,9 +409,15 @@ void solve(int table[][9])
         }
 
         // If no cells could be filled in an iteration, ask for a number to
-        // be filled in randomly.
-        bool assign_random = (zeros == prev_zeros);
-
+        // be filled in randomly. If that didn't work, give up.
+        if(zeros == prev_zeros)
+        {
+            if(assign_random)
+            {
+                break;
+            }
+            assign_random = true;
+        }
         single_pass(table, assign_random);
         prev_zeros = zeros;
     }
