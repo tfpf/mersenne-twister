@@ -69,6 +69,26 @@ int number_of_empty_cells(int const table[][9])
 }
 
 /******************************************************************************
+ * Choose a random element from the given array.
+ *
+ * @param allowed The array to choose from.
+ * @param count_allowed Number of elements in `allowed`.
+ *
+ * @return A random element of `allowed`.
+ *****************************************************************************/
+int random_choice(int allowed[], int count_allowed)
+{
+    int upper = RAND_MAX - RAND_MAX % count_allowed;
+    int r;
+    do
+    {
+        r = rand();
+    }
+    while(r >= upper);
+    return allowed[r % count_allowed];
+}
+
+/******************************************************************************
  * Display the sudoku table. Draw adjacent blocks using different background
  * colours if the output is going to a terminal.
  *
@@ -210,25 +230,28 @@ bool allowed_at_position(int const table[][9], int row, int col, int num)
  *****************************************************************************/
 void select_allowed(int table[][9], int row, int col, bool assign_random)
 {
-    int allowed;
+    int allowed[9];
     int count_allowed = 0;
     for(int num = 1; num <= 9; ++num)
     {
         if(allowed_at_position(table, row, col, num))
         {
-            allowed = num;
+            allowed[count_allowed] = num;
             ++count_allowed;
+            if(count_allowed > 1 && !assign_random)
+            {
+                return;
+            }
         }
     }
 
-    if(count_allowed == 1 || (count_allowed >= 1 && assign_random))
+    if(count_allowed == 1)
     {
-        // GCC emits a superfluous warning for this line when compiling with
-        // optimisations and warnings enabled.
-        #pragma GCC diagnostic push
-        #pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
-        table[row][col] = allowed;
-        #pragma GCC diagnostic pop
+        table[row][col] = allowed[0];
+    }
+    else if(count_allowed > 1 && assign_random)
+    {
+        table[row][col] = random_choice(allowed, count_allowed);
     }
 }
 
@@ -255,6 +278,10 @@ void select_possible_in_row(int table[][9], int row, int num)
         {
             possible_col = j;
             ++count_possible;
+            if(count_possible > 1)
+            {
+                return;
+            }
         }
     }
 
@@ -288,6 +315,10 @@ void select_possible_in_col(int table[][9], int col, int num)
         {
             possible_row = i;
             ++count_possible;
+            if(count_possible > 1)
+            {
+                return;
+            }
         }
     }
 
@@ -325,6 +356,10 @@ void select_possible_in_block(int table[][9], int row, int col, int num)
                 possible_row = i;
                 possible_col = j;
                 ++count_possible;
+                if(count_possible > 1)
+                {
+                    return;
+                }
             }
         }
     }
@@ -398,8 +433,11 @@ void single_pass(int table[][9], bool assign_random)
  *****************************************************************************/
 void solve(int table[][9])
 {
+    int backup[9][9];
+    memcpy(backup, table, sizeof backup);
+
     int prev_zeros = 81;
-    bool assign_random = false;
+    bool prev_assign_random = false;
     while(true)
     {
         int zeros = number_of_empty_cells(table);
@@ -409,17 +447,19 @@ void solve(int table[][9])
         }
 
         // If no cells could be filled in an iteration, ask for a number to
-        // be filled in randomly. If that didn't work, give up.
-        if(zeros == prev_zeros)
+        // be filled in randomly. If that didn't work, give up and try again
+        // from the beginning.
+        bool assign_random = (zeros == prev_zeros);
+        if(prev_assign_random && assign_random)
         {
-            if(assign_random)
-            {
-                break;
-            }
-            assign_random = true;
+            memcpy(table, backup, sizeof backup);
+            prev_zeros = 81;
+            prev_assign_random = false;
+            continue;
         }
         single_pass(table, assign_random);
         prev_zeros = zeros;
+        prev_assign_random = assign_random;
     }
 }
 
@@ -493,6 +533,9 @@ bool valid(int const table[][9])
  *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
+    time_t unix_time = time(NULL);
+    srand(unix_time);
+
     int table[9][9];
     char const *fname = (argc < 2) ? NULL : argv[1];
     if(!read_sudoku(fname, table))
@@ -510,7 +553,7 @@ int main(int const argc, char const *argv[])
     show(table);
     if(!valid(table))
     {
-        fprintf(stderr, "Could not solve.\n");
+        fprintf(stderr, "Could not find the solution.\n");
         return EXIT_FAILURE;
     }
 

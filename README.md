@@ -27,5 +27,6 @@ python3 generate_sudoku.py 12 | ./solve_sudoku
 but that is probably not what you want to do, since it doesn't show the puzzle
 first.
 
-The solver is rather primitive; it can only work out easy sudoku puzzles. I
-will update it if I can.
+The solver is rather primitive. If it cannot fill any cell in the puzzle after
+multiple attempts, it makes a random guess. If, as a result of this, the puzzle
+becomes unsolvable, it bins everything and starts a fresh attempt.
