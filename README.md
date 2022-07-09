@@ -4,16 +4,28 @@ then verify that it worked correctly.
 
 ## Generate
 ```
-python3 generate_sudoku.py
+python3 generate_sudoku.py 12
 ```
-will print a sudoku puzzle to standard output. Copy it to a file, say,
+will print a sudoku puzzle of difficulty level 12 to standard output. Copy it
+to a file, say, `sudoku.txt`. Alternatively, just redirect the output to
 `sudoku.txt`.
+```
+python3 generate_sudoku.py 12 > sudoku.txt
+```
+A puzzle of difficulty level 0 (the minimum) is a solved puzzle, while one of
+difficulty level 20 (the maximum) is an empty puzzle.
 
 ## Solve
 ```
 gcc -O2 -std=c11 -Wall -Wextra -o solve_sudoku solve_sudoku.c
 ./solve_sudoku sudoku.txt
 ```
-will display the solution. The solver is quite primitive; it can only work out
-easy sudoku puzzles. I will update it when I can.
+will display the solution. You can also pipe the puzzle directly to the solver:
+```
+python3 generate_sudoku.py 12 | ./solve_sudoku
+```
+but that is probably not what you want to do, since it doesn't show the puzzle
+first.
 
+The solver is rather primitive; it can only work out easy sudoku puzzles. I
+will update it if I can.

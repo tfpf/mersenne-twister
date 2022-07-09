@@ -124,8 +124,8 @@ Main function.
         difficulty = float(sys.argv[1])
         assert 0 <= difficulty <= 20
     except (AssertionError, IndexError, ValueError):
-        difficulty = 15
-    print(f'Difficulty Level: {difficulty}/20')
+        difficulty = 12
+    print(f'Difficulty Level: {difficulty}/20', file=sys.stderr)
     deletions = round(difficulty / 20 * 81)
 
     # Start a thread to generate a sudoku puzzle. If that thread does not
@@ -140,7 +140,7 @@ Main function.
             st.show()
             return
 
-        print(f'Failed to generate a sudoku puzzle in {timeout:2d} seconds. Trying again …')
+        print(f'Failed to generate a sudoku puzzle in {timeout:2d} seconds. Trying again …', file=sys.stderr)
 
     raise SystemExit(1)
 

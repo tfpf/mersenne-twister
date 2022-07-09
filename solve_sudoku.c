@@ -12,14 +12,15 @@
  * represent blank cells. The format of the input file is the same as that
  * output by the program `generate_sudoku.py`.
  *
- * @param fname Name of the input file to read the puzzle from.
+ * @param fname Name of the input file to read the puzzle from. If `NULL`, the
+ *     puzzle will be read from standard input.
  * @param table Sudoku table.
  *
  * @return `true` if read successfully, `false` otherwise.
  *****************************************************************************/
 bool read_sudoku(char const *fname, int table[][9])
 {
-    FILE *fptr = fopen(fname, "r");
+    FILE *fptr = (fname == NULL) ? stdin : fopen(fname, "r");
     if(fptr == NULL)
     {
         return false;
@@ -38,6 +39,7 @@ bool read_sudoku(char const *fname, int table[][9])
             table[i][j] = (c == '-') ? 0 : c - '0';
         }
     }
+    fclose(fptr);
 
     return true;
 }
@@ -484,17 +486,11 @@ bool valid(int table[][9])
  *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
-    if(argc < 2)
-    {
-        printf("Usage:\n");
-        printf("\t%s <input file>\n", argv[0]);
-        return EXIT_FAILURE;
-    }
-
     int table[9][9];
-    if(!read_sudoku(argv[1], table))
+    char const *fname = (argc < 2) ? NULL : argv[1];
+    if(!read_sudoku(fname, table))
     {
-        printf("Could not read the file %s.\n", argv[1]);
+        fprintf(stderr, "Could not read the puzzle.\n");
         return EXIT_FAILURE;
     }
 
@@ -507,7 +503,7 @@ int main(int const argc, char const *argv[])
     show(table);
     if(!valid(table))
     {
-        printf("Could not solve.\n");
+        fprintf(stderr, "Could not solve.\n");
         return EXIT_FAILURE;
     }
 
