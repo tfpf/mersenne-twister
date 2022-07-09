@@ -70,23 +70,22 @@ int number_of_empty_cells(int const table[][9])
 }
 
 /******************************************************************************
- * Choose a random element from the given array.
+ * Choose a random residue of the given modulus.
  *
- * @param allowed The array to choose from.
- * @param count_allowed Number of elements in `allowed`.
+ * @param modulus
  *
- * @return A random element of `allowed`.
+ * @return A random integer from 0 (inclusive) to `modulus` (exclusive).
  *****************************************************************************/
-int random_choice(int allowed[], int count_allowed)
+int random_integer(int modulus)
 {
-    int upper = RAND_MAX - RAND_MAX % count_allowed;
+    int upper = RAND_MAX - RAND_MAX % modulus;
     int r;
     do
     {
         r = rand();
     }
     while(r >= upper);
-    return allowed[r % count_allowed];
+    return r % modulus;
 }
 
 /******************************************************************************
@@ -252,7 +251,7 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
     }
     else if(count_allowed > 1 && assign_random)
     {
-        table[row][col] = random_choice(allowed, count_allowed);
+        table[row][col] = allowed[random_integer(count_allowed)];
     }
 }
 
