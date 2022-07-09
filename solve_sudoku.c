@@ -51,7 +51,7 @@ bool read_sudoku(char const *fname, int table[][9])
  *
  * @return Number of empty cells.
  *****************************************************************************/
-int number_of_empty_cells(int table[][9])
+int number_of_empty_cells(int const table[][9])
 {
     int zeros = 0;
     for(int i = 0; i < 9; ++i)
@@ -74,7 +74,7 @@ int number_of_empty_cells(int table[][9])
  *
  * @param table Sudoku table.
  *****************************************************************************/
-void show(int table[][9])
+void show(int const table[][9])
 {
     bool stdout_is_terminal = isatty(fileno(stdout));
     for(int i = 0; i < 9; ++i)
@@ -106,7 +106,7 @@ void show(int table[][9])
  *
  * @return `true` if `num` isn't in the row indexed `row`, else `false`.
  *****************************************************************************/
-bool allowed_in_row(int table[][9], int row, int num)
+bool allowed_in_row(int const table[][9], int row, int num)
 {
     for(int j = 0; j < 9; ++j)
     {
@@ -128,7 +128,7 @@ bool allowed_in_row(int table[][9], int row, int num)
  *
  * @return `true` if `num` isn't in the column indexed `col`, else `false`.
  *****************************************************************************/
-bool allowed_in_col(int table[][9], int col, int num)
+bool allowed_in_col(int const table[][9], int col, int num)
 {
     for(int i = 0; i < 9; ++i)
     {
@@ -157,7 +157,7 @@ bool allowed_in_col(int table[][9], int col, int num)
  *     index different from `row` and column index different from `col`, else
  *     `false`.
  *****************************************************************************/
-bool allowed_in_block(int table[][9], int row, int col, int num)
+bool allowed_in_block(int const table[][9], int row, int col, int num)
 {
     // Find out where the block indicated by `row` and `col` begins.
     int block_row_start = row - row % 3;
@@ -189,7 +189,7 @@ bool allowed_in_block(int table[][9], int row, int col, int num)
  * @return `true` if `num` may appear at row index `row` and column index
  *     `col`, else `false`.
  *****************************************************************************/
-bool allowed_at_position(int table[][9], int row, int col, int num)
+bool allowed_at_position(int const table[][9], int row, int col, int num)
 {
     return allowed_in_row(table, row, num)
            && allowed_in_col(table, col, num)
@@ -428,7 +428,7 @@ void solve(int table[][9])
  *
  * @param table Sudoku table.
  *****************************************************************************/
-bool valid(int table[][9])
+bool valid(int const table[][9])
 {
     for(int i = 0; i < 9; ++i)
     {
@@ -441,7 +441,7 @@ bool valid(int table[][9])
         }
     }
 
-    int expected_frequency[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    int const expected_frequency[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
     for(int i = 0; i < 9; ++i)
     {
         int frequency[9] = {0};
