@@ -33,6 +33,7 @@ bool read_sudoku(char const *fname, int table[][9])
             char c;
             if(fscanf(fptr, " %c", &c) == 0 || (c != '-' && (c < '1' || c > '9')))
             {
+                fclose(fptr);
                 return false;
             }
 
