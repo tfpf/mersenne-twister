@@ -468,60 +468,66 @@ void solve(int table[][9])
  * Check whether the cells in the sudoku table are filled correctly.
  *
  * @param table Sudoku table.
+ * @param initial Whether `table` is in its initial state (i.e. it contains the
+ *     original unsolved puzzle) or not (i.e. the `solve` function has already
+ *     been called on it).
  *****************************************************************************/
-bool valid(int const table[][9])
+bool valid(int const table[][9], bool initial)
 {
+    // Before solving, every element must be a number from 0 to 9. After
+    // solving, every element must be a number from 1 to 9.
     for(int i = 0; i < 9; ++i)
     {
         for(int j = 0; j < 9; ++j)
         {
-            if(table[i][j] < 1 || table[i][j] > 9)
+            if(table[i][j] < 0 || table[i][j] > 9 || (!initial && table[i][j] == 0))
             {
                 return false;
             }
         }
     }
 
-    int const expected_frequency[9] = {1, 1, 1, 1, 1, 1, 1, 1, 1};
+    // No element (other than 0) may appear more than once in any row, column
+    // or block.
     for(int i = 0; i < 9; ++i)
     {
-        int frequency[9] = {0};
+        int frequency[10] = {0};
         for(int j = 0; j < 9; ++j)
         {
-            ++frequency[table[i][j] - 1];
-        }
-        if(memcmp(frequency, expected_frequency, sizeof frequency))
-        {
-            return false;
+            ++frequency[table[i][j]];
+            if(table[i][j] != 0 && frequency[table[i][j]] > 1)
+            {
+                return false;
+            }
         }
     }
     for(int j = 0; j < 9; ++j)
     {
-        int frequency[9] = {0};
+        int frequency[10] = {0};
         for(int i = 0; i < 9; ++i)
         {
-            ++frequency[table[i][j] - 1];
-        }
-        if(memcmp(frequency, expected_frequency, sizeof frequency))
-        {
-            return false;
+            ++frequency[table[i][j]];
+            if(table[i][j] != 0 && frequency[table[i][j]] > 1)
+            {
+                return false;
+            }
         }
     }
     for(int i = 0; i < 9; i += 3)
     {
         for(int j = 0; j < 9; j += 3)
         {
-            int frequency[9] = {0};
+            int frequency[10] = {0};
             for(int k = i; k < i + 3; ++k)
             {
                 for(int l = j; l < j + 3; ++l)
                 {
-                    ++frequency[table[k][l] - 1];
+                    ++frequency[table[k][l]];
+                    if(table[k][l] != 0 && frequency[table[k][l]] > 1)
+                    {
+                        return false;
+                    }
                 }
-            }
-            if(memcmp(frequency, expected_frequency, sizeof frequency))
-            {
-                return false;
             }
         }
     }
@@ -544,6 +550,11 @@ int main(int const argc, char const *argv[])
         fprintf(stderr, "Could not read the puzzle.\n");
         return EXIT_FAILURE;
     }
+    if(!valid(table, true))
+    {
+        fprintf(stderr, "The puzzle is malformed.\n");
+        return EXIT_FAILURE;
+    }
 
     struct timespec begin, end;
     clock_gettime(CLOCK_REALTIME, &begin);
@@ -552,7 +563,7 @@ int main(int const argc, char const *argv[])
     int long delay_micro = (int long)(end.tv_sec - begin.tv_sec) * 1000000 + (end.tv_nsec - begin.tv_nsec) / 1000;
 
     show(table);
-    if(!valid(table))
+    if(!valid(table, false))
     {
         fprintf(stderr, "Could not find the solution.\n");
         return EXIT_FAILURE;
