@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 199309L
 
+#include <math.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -10,7 +11,7 @@
 /******************************************************************************
  * Read a sudoku puzzle into a two-dimensional array. Zeros are used to
  * represent blank cells. The format of the input file is the same as that
- * output by the program `generate_sudoku.py`.
+ * output by this program when generating a puzzle.
  *
  * @param fname Name of the input file to read the puzzle from. If `NULL`, the
  *     puzzle will be read from standard input.
@@ -464,6 +465,58 @@ void solve(int table[][9])
 }
 
 /******************************************************************************
+ * Generate a sudoku puzzle by solving an empty puzzle and then removing some
+ * numbers from it.
+ *
+ * @param table Sudoku table.
+ * @param difficulty Difficulty level on a scale of 0 to 20.
+ *****************************************************************************/
+void generate(int table[][9], double difficulty)
+{
+    solve(table);
+
+    if(difficulty < 0 || difficulty > 20)
+    {
+        difficulty = 12;
+    }
+    int deletions = lround(81 * difficulty / 20);
+
+    // Delete some numbers from each block.
+    int block_deletions = deletions / 9;
+    for(int i = 0; i < 9; i += 3)
+    {
+        for(int j = 0; j < 9; j += 3)
+        {
+            for(int k = 0; k < block_deletions;)
+            {
+                int ii = random_integer(3);
+                int jj = random_integer(3);
+                if(table[i + ii][j + jj] != 0)
+                {
+                    table[i + ii][j + jj] = 0;
+                    ++k;
+                }
+            }
+        }
+    }
+
+    // Delete some more numbers randomly.
+    int other_deletions = deletions % 9;
+    for(int k = 0; k < other_deletions;)
+    {
+        int ii = random_integer(9);
+        int jj = random_integer(9);
+        if(table[ii][jj] != 0)
+        {
+            table[ii][jj] = 0;
+            ++k;
+        }
+    }
+
+    show(table);
+}
+
+/******************************************************************************
  * Check whether the cells in the sudoku table are filled correctly.
  *
  * @param table Sudoku table.
@@ -539,11 +592,25 @@ bool valid(int const table[][9], bool initial)
  *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
-    time_t unix_time = time(NULL);
-    srand(unix_time);
+    srand(time(NULL));
 
-    int table[9][9];
-    char const *fname = (argc < 2) ? NULL : argv[1];
+    // Generate a puzzle if the first argument is a number.
+    int table[9][9] = {{0}};
+    char const *fname = NULL;
+    if(argc >= 2)
+    {
+        char *endptr;
+        double difficulty = strtod(argv[1], &endptr);
+        if(*endptr == '\0')
+        {
+            generate(table, difficulty);
+            return EXIT_SUCCESS;
+        }
+        fname = argv[1];
+    }
+
+    // Solve the given puzzle if the first argument is a file name (or isn't
+    // provided).
     if(!read_sudoku(fname, table))
     {
         fprintf(stderr, "Could not read the puzzle.\n");
