@@ -29,4 +29,5 @@ first.
 
 The solver is rather primitive. If it cannot fill any cell in the puzzle after
 multiple attempts, it makes a random guess. If, as a result of this, the puzzle
-becomes unsolvable, it bins everything and starts a fresh attempt.
+becomes unsolvable, it bins everything and starts a fresh attempt. This has a
+rather hilarious consequence: the solver can solve even an empty puzzle!
