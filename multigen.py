@@ -1,35 +1,27 @@
 #! /usr/bin/python3
 
 import datetime
-import multiprocessing
+import os
 import sys
-
-import generate_sudoku
-
-###############################################################################
-
-def wrapper(stdout):
-    sys.stdout = stdout
-    sys.argv.insert(1, 11.35)
-    generate_sudoku.main()
 
 ###############################################################################
 
 def main():
+    if not os.access('solve_sudoku', os.X_OK):
+        raise SystemExit('Compile the C program first.')
+
     try:
-        NUM_OF_PROC = int(sys.argv[1])
+        num_of_puzzles = int(sys.argv[1])
     except (IndexError, ValueError):
-        NUM_OF_PROC = 10
+        num_of_puzzles = 10
 
     today = datetime.date.today()
-    for i in range(NUM_OF_PROC):
+    for i in range(num_of_puzzles):
         today += datetime.timedelta(days=1)
         fname = today.strftime(f'S{i:02d}_%d_%B_%Y.txt')
-        with open(fname, 'w') as stdout:
-            multiprocessing.Process(target=wrapper, args=(stdout,)).start()
+        os.system(f'./solve_sudoku 11.35 > {fname} 2> /dev/null &')
 
 ###############################################################################
 
 if __name__ == '__main__':
     main()
-
