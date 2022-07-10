@@ -5,6 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -593,7 +594,7 @@ bool valid(int const table[][9], bool initial)
  *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
-    srand(time(NULL));
+    srand(time(NULL) + getpid());
 
     // Generate a puzzle if the first argument is a number.
     int table[9][9] = {{0}};
