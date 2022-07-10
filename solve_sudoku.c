@@ -237,12 +237,12 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
     {
         if(allowed_at_position(table, row, col, num))
         {
-            allowed[count_allowed] = num;
-            ++count_allowed;
-            if(count_allowed > 1 && !assign_random)
+            if(count_allowed > 0 && !assign_random)
             {
                 return;
             }
+            allowed[count_allowed] = num;
+            ++count_allowed;
         }
     }
 
@@ -277,12 +277,12 @@ void select_possible_in_row(int table[][9], int row, int num)
     {
         if(table[row][j] == 0 && allowed_in_col(table, j, num) && allowed_in_block(table, row, j, num))
         {
-            possible_col = j;
-            ++count_possible;
-            if(count_possible > 1)
+            if(count_possible > 0)
             {
                 return;
             }
+            possible_col = j;
+            ++count_possible;
         }
     }
 
@@ -314,12 +314,12 @@ void select_possible_in_col(int table[][9], int col, int num)
     {
         if(table[i][col] == 0 && allowed_in_row(table, i, num) && allowed_in_block(table, i, col, num))
         {
-            possible_row = i;
-            ++count_possible;
-            if(count_possible > 1)
+            if(count_possible > 0)
             {
                 return;
             }
+            possible_row = i;
+            ++count_possible;
         }
     }
 
@@ -354,13 +354,13 @@ void select_possible_in_block(int table[][9], int row, int col, int num)
         {
             if(table[i][j] == 0 && allowed_at_position(table, i, j, num))
             {
-                possible_row = i;
-                possible_col = j;
-                ++count_possible;
-                if(count_possible > 1)
+                if(count_possible > 0)
                 {
                     return;
                 }
+                possible_row = i;
+                possible_col = j;
+                ++count_possible;
             }
         }
     }
@@ -513,6 +513,7 @@ void generate(int table[][9], double difficulty)
         }
     }
 
+    fprintf(stderr, "Difficulty Level: %g/20\n", difficulty);
     show(table);
 }
 
@@ -546,11 +547,11 @@ bool valid(int const table[][9], bool initial)
         int frequency[10] = {0};
         for(int j = 0; j < 9; ++j)
         {
-            ++frequency[table[i][j]];
-            if(table[i][j] != 0 && frequency[table[i][j]] > 1)
+            if(table[i][j] != 0 && frequency[table[i][j]] > 0)
             {
                 return false;
             }
+            ++frequency[table[i][j]];
         }
     }
     for(int j = 0; j < 9; ++j)
@@ -558,11 +559,11 @@ bool valid(int const table[][9], bool initial)
         int frequency[10] = {0};
         for(int i = 0; i < 9; ++i)
         {
-            ++frequency[table[i][j]];
-            if(table[i][j] != 0 && frequency[table[i][j]] > 1)
+            if(table[i][j] != 0 && frequency[table[i][j]] > 0)
             {
                 return false;
             }
+            ++frequency[table[i][j]];
         }
     }
     for(int i = 0; i < 9; i += 3)
@@ -574,11 +575,11 @@ bool valid(int const table[][9], bool initial)
             {
                 for(int l = j; l < j + 3; ++l)
                 {
-                    ++frequency[table[k][l]];
-                    if(table[k][l] != 0 && frequency[table[k][l]] > 1)
+                    if(table[k][l] != 0 && frequency[table[k][l]] > 0)
                     {
                         return false;
                     }
+                    ++frequency[table[k][l]];
                 }
             }
         }
