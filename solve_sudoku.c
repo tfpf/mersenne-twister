@@ -9,6 +9,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "mt19937.h"
+
 /******************************************************************************
  * Read a sudoku puzzle into a two-dimensional array. Zeros are used to
  * represent blank cells. The format of the input file is the same as that
@@ -69,25 +71,6 @@ int number_of_empty_cells(int const table[][9])
     }
 
     return zeros;
-}
-
-/******************************************************************************
- * Choose a random residue of the given modulus.
- *
- * @param modulus
- *
- * @return A random integer from 0 (inclusive) to `modulus` (exclusive).
- *****************************************************************************/
-int random_integer(int modulus)
-{
-    int upper = RAND_MAX - RAND_MAX % modulus;
-    int r;
-    do
-    {
-        r = rand();
-    }
-    while(r >= upper);
-    return r % modulus;
 }
 
 /******************************************************************************
@@ -253,7 +236,7 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
     }
     else if(count_allowed > 1 && assign_random)
     {
-        table[row][col] = allowed[random_integer(count_allowed)];
+        table[row][col] = allowed[mt19937_rand_integer(count_allowed)];
     }
 }
 
@@ -490,8 +473,8 @@ void generate(int table[][9], double difficulty)
         {
             for(int k = 0; k < block_deletions;)
             {
-                int ii = random_integer(3);
-                int jj = random_integer(3);
+                int ii = mt19937_rand_integer(3);
+                int jj = mt19937_rand_integer(3);
                 if(table[i + ii][j + jj] != 0)
                 {
                     table[i + ii][j + jj] = 0;
@@ -505,8 +488,8 @@ void generate(int table[][9], double difficulty)
     int other_deletions = deletions % 9;
     for(int k = 0; k < other_deletions;)
     {
-        int ii = random_integer(9);
-        int jj = random_integer(9);
+        int ii = mt19937_rand_integer(9);
+        int jj = mt19937_rand_integer(9);
         if(table[ii][jj] != 0)
         {
             table[ii][jj] = 0;
@@ -525,6 +508,8 @@ void generate(int table[][9], double difficulty)
  * @param initial Whether `table` is in its initial state (i.e. it contains the
  *     original unsolved puzzle) or not (i.e. the `solve` function has already
  *     been called on it).
+ *
+ * @return `true` if `table` is a valid sudoku puzzle/solution, else `false`.
  *****************************************************************************/
 bool valid(int const table[][9], bool initial)
 {
@@ -594,7 +579,12 @@ bool valid(int const table[][9], bool initial)
  *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
-    srand(time(NULL) + getpid());
+    if(!mt19937_test())
+    {
+        fprintf(stderr, "Warning: pseudorandom number generator not working as expected.\n");
+    }
+
+    mt19937_seed(time(NULL) + getpid());
 
     // Generate a puzzle if the first argument is a number.
     int table[9][9] = {{0}};
