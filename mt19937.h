@@ -17,7 +17,8 @@ struct
 mt19937;
 
 /******************************************************************************
- * Seed MT19937.
+ * Seed MT19937. This function must be called before any other function
+ * included from this file.
  *
  * @param seed 32-bit number. Must not be 0.
  *****************************************************************************/
@@ -34,8 +35,7 @@ void mt19937_seed(uint32_t seed)
 }
 
 /******************************************************************************
- * Generate a pseudorandom number using MT19937. Seed it using `mt19937_seed`
- * before calling this function.
+ * Generate a pseudorandom number.
  *
  * @return Pseudorandom 32-bit number.
  *****************************************************************************/
@@ -125,6 +125,43 @@ uint32_t mt19937_rand_integer(uint32_t modulus)
     }
     while(r >= upper);
     return r % modulus;
+}
+
+/******************************************************************************
+ * Choose a pseudorandom number in the unit interval.
+ *
+ * @return Pseudorandom real from 0 (inclusive) to 1 (inclusive), subject to
+ *     the limitations of the return type.
+ *****************************************************************************/
+double mt19937_rand_real(void)
+{
+    return (double)mt19937_rand() / 0xFFFFFFFFU;
+}
+
+/******************************************************************************
+ * Shuffle an array in place.
+ *
+ * @param items Array to shuffle.
+ * @param items_length Number of elements in the array. Must not be 0.
+ * @param item_size Size of each element of the array in bytes.
+ *****************************************************************************/
+void mt19937_rand_shuffle(void *items, uint32_t items_length, size_t item_size)
+{
+    char *temp = malloc(item_size);
+    char *items_ = (char *)items;
+    for(uint32_t i = items_length - 1; i > 0; --i)
+    {
+        uint32_t j = mt19937_rand_integer(i + 1);
+        if(i != j)
+        {
+            char *items_i = items_ + i * item_size;
+            char *items_j = items_ + j * item_size;
+            memcpy(temp, items_i, item_size);
+            memcpy(items_i, items_j, item_size);
+            memcpy(items_j, temp, item_size);
+        }
+    }
+    free(temp);
 }
 
 #endif // MERSENNE_TWISTER_SUDOKU_SOLVER_MT19937_H
