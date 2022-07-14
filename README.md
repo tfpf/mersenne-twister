@@ -1,4 +1,8 @@
-# Generate and Solve Sudoku Puzzles
+# Mersenne Twister
+`mt19937.h` contains a 32-bit Mersenne Twister implementation and some utility
+functions, which are intended as replacements for `rand`.
+
+# Sudoku Generator and Solver
 I just wanted to rewrite an old C program of mine using a better style, and
 then verify that it worked correctly.
 
@@ -11,7 +15,7 @@ gcc -O2 -std=c11 -Wall -Wextra -o solve_sudoku solve_sudoku.c -lm
 ```
 ./solve_sudoku 12
 ```
-will print a sudoku puzzle of difficulty level 12 to standard output. Copy it
+will write a sudoku puzzle of difficulty level 12 to standard output. Copy it
 to a file, say, `sudoku.txt`. Alternatively, just redirect the output to
 `sudoku.txt`.
 ```
@@ -35,8 +39,8 @@ to the solver
 though that is probably of no use, since it doesn't show the puzzle first.
 
 The solver is rather primitive. If it cannot fill any cell in the puzzle after
-multiple attempts, it makes a random guess. If, as a result of this, the puzzle
-becomes unsolvable, it bins everything and starts a fresh attempt. This has a
-rather hilarious consequence: the solver can solve even an empty puzzle!
-Indeed, that's how the generator works: it solves an empty puzzle and then
-removes some of the numbers!
+multiple attempts, it makes a random guess (using MT19937). If, as a result of
+this, the puzzle becomes unsolvable, it bins everything and starts a fresh
+attempt. This has a rather hilarious consequence: the solver can solve even an
+empty puzzle! Indeed, that's how the generator works: it solves an empty puzzle
+and then removes some of the numbers!
