@@ -3,6 +3,9 @@
 
 #include <inttypes.h>
 #include <stdbool.h>
+#include <stddef.h>
+#include <stdlib.h>
+#include <string.h>
 
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
@@ -163,5 +166,10 @@ void mt19937_rand_shuffle(void *items, uint32_t items_length, size_t item_size)
     }
     free(temp);
 }
+
+#undef MT19937_STATE_LENGTH
+#undef MT19937_STATE_MIDDLE
+#undef MT19937_UPPER_MASK
+#undef MT19937_LOWER_MASK
 
 #endif // MERSENNE_TWISTER_SUDOKU_SOLVER_MT19937_H
