@@ -88,7 +88,7 @@ int number_of_empty_cells(int const table[][9])
  *
  * @param table Sudoku table.
  *****************************************************************************/
-void show(int const table[][9])
+void write_sudoku(int const table[][9])
 {
     bool stdout_is_terminal = isatty(fileno(stdout));
     for(int i = 0; i < 9; ++i)
@@ -507,7 +507,7 @@ void generate(int table[][9], double difficulty)
     }
 
     fprintf(stderr, "Difficulty Level: %g/20\n", difficulty);
-    show(table);
+    write_sudoku(table);
 }
 
 /******************************************************************************
@@ -624,7 +624,7 @@ int main(int const argc, char const *argv[])
     }
 
     REPORT_RUNNING_TIME(solve(table), delay_micro)
-    show(table);
+    write_sudoku(table);
     if(!valid(table, false))
     {
         fprintf(stderr, "Could not find the solution.\n");
