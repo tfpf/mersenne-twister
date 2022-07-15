@@ -5,7 +5,6 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <sys/types.h>
 #include <time.h>
 #include <unistd.h>
 
@@ -584,7 +583,7 @@ int main(int const argc, char const *argv[])
         fprintf(stderr, "Warning: pseudorandom number generator not working as expected.\n");
     }
 
-    mt19937_seed(time(NULL) + getpid());
+    mt19937_seed(0);
 
     // Generate a puzzle if the first argument is a number.
     int table[9][9] = {{0}};

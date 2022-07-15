@@ -6,6 +6,8 @@
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
+#include <unistd.h>
 
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
@@ -23,10 +25,15 @@ mt19937;
  * Seed MT19937. This function must be called before any other function
  * included from this file.
  *
- * @param seed 32-bit number. Must not be 0.
+ * @param seed 32-bit number. If this is 0, MT19937 will be seeded with the
+ *     sum of the Unix time and the process ID.
  *****************************************************************************/
 void mt19937_seed(uint32_t seed)
 {
+    if(seed == 0)
+    {
+        seed = time(NULL) + getpid();
+    }
     mt19937.state[0] = seed;
     for(int i = 1; i < MT19937_STATE_LENGTH; ++i)
     {
@@ -88,7 +95,7 @@ uint32_t mt19937_rand(void)
  *****************************************************************************/
 bool mt19937_test(void)
 {
-    uint32_t expected[][2] =
+    uint32_t const expected[][2] =
     {
         {    1, 3510405877}, {    2, 4290933890}, {    4,  564929546}, {    8,  268830360}, {   16, 1452005258},
         {   32,  675678546}, {   64, 1413475797}, {  128,  979144237}, {  256, 2950091998}, {  512, 3769042770},
