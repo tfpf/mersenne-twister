@@ -10,6 +10,16 @@
 
 #include "mt19937.h"
 
+#define REPORT_RUNNING_TIME(function_call, delay_micro) \
+int long delay_micro; \
+{ \
+    struct timespec begin, end; \
+    clock_gettime(CLOCK_REALTIME, &begin); \
+    function_call; \
+    clock_gettime(CLOCK_REALTIME, &end); \
+    delay_micro = (int long)(end.tv_sec - begin.tv_sec) * 1000000 + (end.tv_nsec - begin.tv_nsec) / 1000; \
+}
+
 /******************************************************************************
  * Read a sudoku puzzle into a two-dimensional array. Zeros are used to
  * represent blank cells. The format of the input file is the same as that
@@ -613,12 +623,7 @@ int main(int const argc, char const *argv[])
         return EXIT_FAILURE;
     }
 
-    struct timespec begin, end;
-    clock_gettime(CLOCK_REALTIME, &begin);
-    solve(table);
-    clock_gettime(CLOCK_REALTIME, &end);
-    int long delay_micro = (int long)(end.tv_sec - begin.tv_sec) * 1000000 + (end.tv_nsec - begin.tv_nsec) / 1000;
-
+    REPORT_RUNNING_TIME(solve(table), delay_micro)
     show(table);
     if(!valid(table, false))
     {
