@@ -2,6 +2,7 @@
 
 import datetime
 import os
+import subprocess
 import sys
 
 ###############################################################################
@@ -19,7 +20,8 @@ def main():
     for i in range(num_of_puzzles):
         today += datetime.timedelta(days=1)
         fname = today.strftime(f'S{i:02d}_%d_%B_%Y.txt')
-        os.system(f'./solve_sudoku 11.35 > {fname} 2> /dev/null &')
+        with open(fname, 'w') as stdout, open(os.devnull, 'w') as stderr:
+            subprocess.Popen(('./solve_sudoku', '11.35'), stdout=stdout, stderr=stderr)
 
 ###############################################################################
 
