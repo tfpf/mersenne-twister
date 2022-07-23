@@ -13,6 +13,15 @@
 #define MT19937_STATE_MIDDLE 397
 #define MT19937_UPPER_MASK 0x80000000U
 #define MT19937_LOWER_MASK 0x7FFFFFFFU
+#define MT19937_TWIST_MASK 0x9908B0DFU
+#define MT19937_MULTIPLIER 0x00010DCDU
+#define MT19937_TEMPER_B 0x9D2C5680U
+#define MT19937_TEMPER_C 0xEFC60000U
+#define MT19937_TEMPER_D 0xFFFFFFFFU
+#define MT19937_TEMPER_I 18
+#define MT19937_TEMPER_S 7
+#define MT19937_TEMPER_T 15
+#define MT19937_TEMPER_U 11
 
 struct
 {
@@ -39,7 +48,7 @@ void mt19937_seed(uint32_t seed)
     {
         // Overflow is okay. We only want the bottom 32 bits, and unsigned
         // overflow is defined behaviour.
-        mt19937.state[i] = 69069U * mt19937.state[i - 1];
+        mt19937.state[i] = MT19937_MULTIPLIER * mt19937.state[i - 1];
     }
     mt19937.index = MT19937_STATE_LENGTH;
 }
@@ -55,7 +64,7 @@ uint32_t mt19937_rand(void)
     if(mt19937.index == MT19937_STATE_LENGTH)
     {
         mt19937.index = 0;
-        uint32_t twist[] = {0, 0x9908B0DFU};
+        uint32_t twist[] = {0, MT19937_TWIST_MASK};
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
             uint32_t masked = (MT19937_UPPER_MASK & mt19937.state[i]) | (MT19937_LOWER_MASK & mt19937.state[i + 1]);
@@ -75,10 +84,10 @@ uint32_t mt19937_rand(void)
 
     // Generate.
     uint32_t curr = mt19937.state[mt19937.index++];
-    curr ^= curr >> 11;
-    curr ^= (curr << 7) & 0x9D2C5680U;
-    curr ^= (curr << 15) & 0xEFC60000U;
-    curr ^= curr >> 18;
+    curr ^= (curr >> MT19937_TEMPER_U) & MT19937_TEMPER_D;
+    curr ^= (curr << MT19937_TEMPER_S) & MT19937_TEMPER_B;
+    curr ^= (curr << MT19937_TEMPER_T) & MT19937_TEMPER_C;
+    curr ^= curr >> MT19937_TEMPER_I;
     return curr;
 }
 
@@ -178,5 +187,14 @@ void mt19937_rand_shuffle(void *items, uint32_t items_length, size_t item_size)
 #undef MT19937_STATE_MIDDLE
 #undef MT19937_UPPER_MASK
 #undef MT19937_LOWER_MASK
+#undef MT19937_TWIST_MASK
+#undef MT19937_MULTIPLIER
+#undef MT19937_TEMPER_B
+#undef MT19937_TEMPER_C
+#undef MT19937_TEMPER_D
+#undef MT19937_TEMPER_I
+#undef MT19937_TEMPER_S
+#undef MT19937_TEMPER_T
+#undef MT19937_TEMPER_U
 
 #endif // MERSENNE_TWISTER_SUDOKU_SOLVER_MT19937_H
