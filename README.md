@@ -1,3 +1,8 @@
+* Makoto Matsumoto and Takuji Nishimura, "Mersenne Twister: A 623-dimensionally
+Equidistributed Uniform Pseudo-random Number Generator", in ACM Transactions on
+Modeling and Computer Simulation, vol. 8, no. 1, pp. 3-30, January 1998,
+doi:10.1145/272991.272995.
+
 # Mersenne Twister
 `mt19937.h` contains a 32-bit Mersenne Twister implementation and some utility
 functions, which are intended as replacements for `rand`.

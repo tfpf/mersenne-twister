@@ -95,7 +95,7 @@ uint32_t mt19937_rand(void)
  * Test MT19937. The results of this implementation must match those of the one
  * given in the original paper.
  *
- * Makoto Matsumoto and Takuji Nishimura, "Mersenne twister: A
+ * Makoto Matsumoto and Takuji Nishimura, "Mersenne Twister: A
  * 623-dimensionally Equidistributed Uniform Pseudo-random Number Generator",
  * in ACM Transactions on Modeling and Computer Simulation, vol. 8, no. 1,
  * pp. 3-30, January 1998, doi:10.1145/272991.272995.
