@@ -426,7 +426,7 @@ void single_pass(int table[][9], bool assign_random)
  *
  * @param table Sudoku table.
  *****************************************************************************/
-void solve(int table[][9])
+void solve_sudoku(int table[][9])
 {
     int backup[9][9];
     memcpy(backup, table, sizeof backup);
@@ -465,9 +465,9 @@ void solve(int table[][9])
  * @param table Sudoku table.
  * @param difficulty Difficulty level on a scale of 0 to 20.
  *****************************************************************************/
-void generate(int table[][9], double difficulty)
+void generate_sudoku(int table[][9], double difficulty)
 {
-    solve(table);
+    solve_sudoku(table);
 
     if(difficulty < 0 || difficulty > 20)
     {
@@ -516,12 +516,12 @@ void generate(int table[][9], double difficulty)
  *
  * @param table Sudoku table.
  * @param initial Whether `table` is in its initial state (i.e. it contains the
- *     original unsolved puzzle) or not (i.e. the `solve` function has already
- *     been called on it).
+ *     original unsolved puzzle) or not (i.e. the `solve_sudoku` function has
+ *     already been called on it).
  *
  * @return `true` if `table` is a valid sudoku puzzle/solution, else `false`.
  *****************************************************************************/
-bool valid(int const table[][9], bool initial)
+bool validate_sudoku(int const table[][9], bool initial)
 {
     // Before solving, every element must be a number from 0 to 9. After
     // solving, every element must be a number from 1 to 9.
@@ -605,7 +605,7 @@ int main(int const argc, char const *argv[])
         double difficulty = strtod(argv[1], &endptr);
         if(*endptr == '\0')
         {
-            generate(table, difficulty);
+            generate_sudoku(table, difficulty);
             return EXIT_SUCCESS;
         }
         fname = argv[1];
@@ -618,15 +618,15 @@ int main(int const argc, char const *argv[])
         fprintf(stderr, "Could not read the puzzle.\n");
         return EXIT_FAILURE;
     }
-    if(!valid(table, true))
+    if(!validate_sudoku(table, true))
     {
         fprintf(stderr, "The puzzle is malformed.\n");
         return EXIT_FAILURE;
     }
 
-    REPORT_RUNNING_TIME(solve(table), delay_micro)
+    REPORT_RUNNING_TIME(solve_sudoku(table), delay_micro)
     write_sudoku(table);
-    if(!valid(table, false))
+    if(!validate_sudoku(table, false))
     {
         fprintf(stderr, "Could not find the solution.\n");
         return EXIT_FAILURE;
