@@ -6,6 +6,8 @@
 #include <time.h>
 #include <unistd.h>
 
+#include "mt19937.h"
+
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
 #define MT19937_UPPER_MASK 0x80000000U

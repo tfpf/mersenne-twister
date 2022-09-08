@@ -636,3 +636,5 @@ int main(int const argc, char const *argv[])
 
     return EXIT_SUCCESS;
 }
+
+#undef REPORT_RUNNING_TIME

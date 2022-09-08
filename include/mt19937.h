@@ -3,6 +3,7 @@
 
 #include <inttypes.h>
 #include <stdbool.h>
+#include <stddef.h>
 
 void mt19937_seed(uint32_t seed);
 uint32_t mt19937_rand(void);
