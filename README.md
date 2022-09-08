@@ -4,7 +4,7 @@ Modeling and Computer Simulation, vol. 8, no. 1, pp. 3-30, January 1998,
 doi:10.1145/272991.272995.
 
 # Mersenne Twister
-`mt19937.h` contains a 32-bit Mersenne Twister implementation and some utility
+`mt19937.c` contains a 32-bit Mersenne Twister implementation and some utility
 functions, which are intended as replacements for `rand`.
 
 # Sudoku Generator and Solver
@@ -13,7 +13,7 @@ then verify that it worked correctly.
 
 ## Compile
 ```
-gcc -O2 -std=c11 -Wall -Wextra -o solve_sudoku solve_sudoku.c -lm
+make
 ```
 
 ## Generate

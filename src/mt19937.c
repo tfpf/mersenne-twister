@@ -1,6 +1,3 @@
-#ifndef MERSENNE_TWISTER_SUDOKU_SOLVER_MT19937_H
-#define MERSENNE_TWISTER_SUDOKU_SOLVER_MT19937_H
-
 #include <inttypes.h>
 #include <stdbool.h>
 #include <stddef.h>
@@ -196,5 +193,3 @@ void mt19937_rand_shuffle(void *items, uint32_t items_length, size_t item_size)
 #undef MT19937_TEMPER_S
 #undef MT19937_TEMPER_T
 #undef MT19937_TEMPER_U
-
-#endif // MERSENNE_TWISTER_SUDOKU_SOLVER_MT19937_H
