@@ -8,9 +8,7 @@ Sources    = $(wildcard src/*.c)
 Objects    = $(Sources:.c=.o)
 Executable = solve_sudoku
 
-.PHONY: comp clean
-
-comp: $(Objects) $(Executable)
+.PHONY: clean
 
 $(Executable): $(Objects)
 	$(LINK.c) -o $(Executable) $(Objects) $(LDLIBS)
