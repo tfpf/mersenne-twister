@@ -10,7 +10,9 @@ Executable = solve_sudoku
 
 .PHONY: comp clean
 
-comp: $(Objects)
+comp: $(Objects) $(Executable)
+
+$(Executable):
 	$(LINK.c) -o $(Executable) $(Objects) $(LDLIBS)
 
 clean:
