@@ -12,7 +12,7 @@ Executable = solve_sudoku
 
 comp: $(Objects) $(Executable)
 
-$(Executable):
+$(Executable): $(Objects)
 	$(LINK.c) -o $(Executable) $(Objects) $(LDLIBS)
 
 clean:
