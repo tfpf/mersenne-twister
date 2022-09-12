@@ -181,17 +181,3 @@ void mt19937_rand_shuffle(void *items, uint32_t items_length, size_t item_size)
     }
     free(temp);
 }
-
-#undef MT19937_STATE_LENGTH
-#undef MT19937_STATE_MIDDLE
-#undef MT19937_UPPER_MASK
-#undef MT19937_LOWER_MASK
-#undef MT19937_TWIST_MASK
-#undef MT19937_MULTIPLIER
-#undef MT19937_TEMPER_B
-#undef MT19937_TEMPER_C
-#undef MT19937_TEMPER_D
-#undef MT19937_TEMPER_I
-#undef MT19937_TEMPER_S
-#undef MT19937_TEMPER_T
-#undef MT19937_TEMPER_U

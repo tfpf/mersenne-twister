@@ -475,35 +475,35 @@ void generate_sudoku(int table[][9], double difficulty)
     }
     int deletions = lround(81 * difficulty / 20);
 
-    // Delete some numbers from each block.
-    int block_deletions = deletions / 9;
+    // Determine how many numbers have to be deleted from each block. The
+    // difference between the number of deletions in any two blocks must be at
+    // most 1.
+    div_t qr = div(deletions, 9);
+    int block_deletions[9];
+    for(int i = 0; i < 9; ++i)
+    {
+        block_deletions[i] = qr.quot;
+        if(qr.rem > 0)
+        {
+            ++block_deletions[i];
+            --qr.rem;
+        }
+    }
+    mt19937_rand_shuffle(block_deletions, 9, sizeof block_deletions[0]);
+
+    // From each block, randomly delete the determined number of numbers.
+    int indices[][2] = {{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}, {2, 0}, {2, 1}, {2, 2}};
+    int block_number = 0;
     for(int i = 0; i < 9; i += 3)
     {
         for(int j = 0; j < 9; j += 3)
         {
-            for(int k = 0; k < block_deletions;)
+            mt19937_rand_shuffle(indices, 9, sizeof indices[0]);
+            for(int k = 0; k < block_deletions[block_number]; ++k)
             {
-                int ii = mt19937_rand_integer(3);
-                int jj = mt19937_rand_integer(3);
-                if(table[i + ii][j + jj] != 0)
-                {
-                    table[i + ii][j + jj] = 0;
-                    ++k;
-                }
+                table[i + indices[k][0]][j + indices[k][1]] = 0;
             }
-        }
-    }
-
-    // Delete some more numbers randomly.
-    int other_deletions = deletions % 9;
-    for(int k = 0; k < other_deletions;)
-    {
-        int ii = mt19937_rand_integer(9);
-        int jj = mt19937_rand_integer(9);
-        if(table[ii][jj] != 0)
-        {
-            table[ii][jj] = 0;
-            ++k;
+            ++block_number;
         }
     }
 
@@ -631,10 +631,6 @@ int main(int const argc, char const *argv[])
         fprintf(stderr, "Could not find the solution.\n");
         return EXIT_FAILURE;
     }
-
     printf("Solved in %ld μs (real time).\n", delay_micro);
-
     return EXIT_SUCCESS;
 }
-
-#undef REPORT_RUNNING_TIME
