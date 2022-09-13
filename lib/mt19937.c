@@ -22,7 +22,7 @@
 #define MT19937_TEMPER_T 15
 #define MT19937_TEMPER_U 11
 
-struct
+static struct
 {
     uint32_t state[MT19937_STATE_LENGTH];
     int index;
