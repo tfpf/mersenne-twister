@@ -1,6 +1,8 @@
 #ifndef MERSENNE_TWISTER_SUDOKU_SOLVER_INCLUDE_SUDOKU_UTILS_H_
 #define MERSENNE_TWISTER_SUDOKU_SOLVER_INCLUDE_SUDOKU_UTILS_H_
 
+#include <stdbool.h>
+
 bool read_sudoku(char const *fname, int table[][9]);
 int number_of_empty_cells(int const table[][9]);
 void write_sudoku(int const table[][9]);
