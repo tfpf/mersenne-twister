@@ -122,7 +122,6 @@ bool mt19937_test(void)
             ++j;
         }
     }
-
     return true;
 }
 

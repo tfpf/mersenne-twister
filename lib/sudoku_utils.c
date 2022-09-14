@@ -45,7 +45,6 @@ bool read_sudoku(char const *fname, int table[][9])
         }
     }
     fclose(fptr);
-
     return true;
 }
 
@@ -69,7 +68,6 @@ int number_of_empty_cells(int const table[][9])
             }
         }
     }
-
     return zeros;
 }
 
@@ -120,7 +118,6 @@ bool allowed_in_row(int const table[][9], int row, int num)
             return false;
         }
     }
-
     return true;
 }
 
@@ -142,7 +139,6 @@ bool allowed_in_col(int const table[][9], int col, int num)
             return false;
         }
     }
-
     return true;
 }
 
@@ -178,7 +174,6 @@ bool allowed_in_block(int const table[][9], int row, int col, int num)
             }
         }
     }
-
     return true;
 }
 
@@ -229,7 +224,6 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
             ++count_allowed;
         }
     }
-
     if(count_allowed == 1)
     {
         table[row][col] = allowed[0];
@@ -269,7 +263,6 @@ void select_possible_in_row(int table[][9], int row, int num)
             ++count_possible;
         }
     }
-
     if(count_possible == 1)
     {
         table[row][possible_col] = num;
@@ -306,7 +299,6 @@ void select_possible_in_col(int table[][9], int col, int num)
             ++count_possible;
         }
     }
-
     if(count_possible == 1)
     {
         table[possible_row][col] = num;
@@ -348,7 +340,6 @@ void select_possible_in_block(int table[][9], int row, int col, int num)
             }
         }
     }
-
     if(count_possible == 1)
     {
         table[possible_row][possible_col] = num;
@@ -369,12 +360,10 @@ void select_possible(int table[][9], int num)
     {
         select_possible_in_row(table, i, num);
     }
-
     for(int j = 0; j < 9; ++j)
     {
         select_possible_in_col(table, j, num);
     }
-
     for(int i = 0; i < 9; i += 3)
     {
         for(int j = 0; j < 9; j += 3)
@@ -404,7 +393,6 @@ void single_pass(int table[][9], bool assign_random)
             }
         }
     }
-
     for(int num = 1; num <= 9; ++num)
     {
         select_possible(table, num);
@@ -570,6 +558,5 @@ bool validate_sudoku(int const table[][9], bool initial)
             }
         }
     }
-
     return true;
 }
