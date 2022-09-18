@@ -476,10 +476,32 @@ void generate_sudoku(int table[][9], double difficulty)
     {
         for(int j = 0; j < 9; j += 3)
         {
+            int backup[9][9];
+            memcpy(backup, table, sizeof backup);
             mt19937_rand_shuffle(indices, 9, sizeof indices[0]);
+            int multiple_solutions_fixes = (difficulty > 13) ? 0 : 4095;
             for(int k = 0; k < block_deletions[block_number]; ++k)
             {
                 table[i + indices[k][0]][j + indices[k][1]] = 0;
+                if(multiple_solutions_fixes == 0)
+                {
+                    continue;
+                }
+
+                // As a consequence of deleting this number, does the puzzle
+                // now have multiple solutions? If yes, restart this loop.
+                int puzzle1[9][9], puzzle2[9][9];
+                memcpy(puzzle1, table, sizeof puzzle1);
+                memcpy(puzzle2, table, sizeof puzzle2);
+                solve_sudoku(puzzle1);
+                solve_sudoku(puzzle2);
+                if(memcmp(puzzle1, puzzle2, sizeof puzzle1))
+                {
+                    memcpy(table, backup, sizeof backup);
+                    mt19937_rand_shuffle(indices, 9, sizeof indices[0]);
+                    --multiple_solutions_fixes;
+                    k = -1;
+                }
             }
             ++block_number;
         }
