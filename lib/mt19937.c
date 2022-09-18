@@ -66,19 +66,25 @@ uint32_t mt19937_rand(void)
         uint32_t twist[] = {0, MT19937_TWIST_MASK};
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
-            uint32_t masked = (MT19937_UPPER_MASK & mt19937.state[i]) | (MT19937_LOWER_MASK & mt19937.state[i + 1]);
-            uint32_t masked_twisted = (masked >> 1) ^ twist[masked & 1];
-            mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE] ^ masked_twisted;
+            uint32_t upper = MT19937_UPPER_MASK & mt19937.state[i];
+            uint32_t lower = MT19937_LOWER_MASK & mt19937.state[i + 1];
+            uint32_t masked = upper | lower;
+            uint32_t twisted = (masked >> 1) ^ twist[masked & 1];
+            mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE] ^ twisted;
         }
         for(int i = MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; i < MT19937_STATE_LENGTH - 1; ++i)
         {
-            uint32_t masked = (MT19937_UPPER_MASK & mt19937.state[i]) | (MT19937_LOWER_MASK & mt19937.state[i + 1]);
-            uint32_t masked_twisted = (masked >> 1) ^ twist[masked & 1];
-            mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE - MT19937_STATE_LENGTH] ^ masked_twisted;
+            uint32_t upper = MT19937_UPPER_MASK & mt19937.state[i];
+            uint32_t lower = MT19937_LOWER_MASK & mt19937.state[i + 1];
+            uint32_t masked = upper | lower;
+            uint32_t twisted = (masked >> 1) ^ twist[masked & 1];
+            mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE - MT19937_STATE_LENGTH] ^ twisted;
         }
-        uint32_t masked = (MT19937_UPPER_MASK & mt19937.state[MT19937_STATE_LENGTH - 1]) | (MT19937_LOWER_MASK & mt19937.state[0]);
-        uint32_t masked_twisted = (masked >> 1) ^ twist[masked & 1];
-        mt19937.state[MT19937_STATE_LENGTH - 1] = mt19937.state[MT19937_STATE_MIDDLE - 1] ^ masked_twisted;
+        uint32_t upper = MT19937_UPPER_MASK & mt19937.state[MT19937_STATE_LENGTH - 1];
+        uint32_t lower = MT19937_LOWER_MASK & mt19937.state[0];
+        uint32_t masked = upper | lower;
+        uint32_t twisted = (masked >> 1) ^ twist[masked & 1];
+        mt19937.state[MT19937_STATE_LENGTH - 1] = mt19937.state[MT19937_STATE_MIDDLE - 1] ^ twisted;
     }
 
     // Generate.
