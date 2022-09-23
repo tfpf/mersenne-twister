@@ -85,7 +85,7 @@ void write_sudoku(int const table[][9])
         for(int j = 0; j < 9; ++j)
         {
             printf("  ");
-            bool colour = !((i / 3 + j / 3) % 2) && stdout_is_terminal;
+            bool colour = ((i / 3 + j / 3) & 1) == 0 && stdout_is_terminal;
             if(colour && j % 3 == 0)
             {
                 printf("\033[07m");
