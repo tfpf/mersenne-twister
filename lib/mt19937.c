@@ -64,6 +64,9 @@ uint32_t mt19937_rand(void)
     {
         mt19937.index = 0;
         uint32_t twist[] = {0, MT19937_TWIST_MASK};
+
+        // I benchmarked this function and found that a single loop with modulo
+        // operations runs slower than this.
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
             uint32_t upper = MT19937_UPPER_MASK & mt19937.state[i];
