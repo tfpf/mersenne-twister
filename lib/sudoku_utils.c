@@ -72,8 +72,9 @@ int number_of_empty_cells(int const table[][9])
 }
 
 /******************************************************************************
- * Display the sudoku table. Draw adjacent blocks using different background
- * colours if the output is going to a terminal.
+ * Display the sudoku table. If standard output is a terminal, draw adjacent
+ * blocks with different background colours using ANSI escape sequences.
+ * Otherwise, separate them with conspicuous spaces.
  *
  * @param table Sudoku table.
  *****************************************************************************/
@@ -82,18 +83,31 @@ void write_sudoku(int const table[][9])
     bool stdout_is_terminal = isatty(fileno(stdout));
     for(int i = 0; i < 9; ++i)
     {
+        div_t idiv3 = div(i, 3);
+        if(!stdout_is_terminal && i > 0 && idiv3.rem == 0)
+        {
+            printf("\n");
+        }
         for(int j = 0; j < 9; ++j)
         {
             printf("  ");
-            bool colour = ((i / 3 + j / 3) & 1) == 0 && stdout_is_terminal;
-            if(colour && j % 3 == 0)
+            div_t jdiv3 = div(j, 3);
+            bool colour = stdout_is_terminal && ((idiv3.quot + jdiv3.quot) & 1) == 0;
+            if(jdiv3.rem == 0)
             {
-                printf("\033[07m");
+                if(colour)
+                {
+                    printf("[7m");
+                }
+                else if(j > 0)
+                {
+                    printf(" ");
+                }
             }
             (table[i][j] == 0) ? printf("-") : printf("%d", table[i][j]);
-            if(colour && j % 3 == 2)
+            if(jdiv3.rem == 2 && colour)
             {
-                printf("\033[0m");
+                printf("[0m");
             }
         }
         printf("\n");
@@ -422,7 +436,7 @@ void solve_sudoku(int table[][9])
         // If no cells could be filled in an iteration, ask for a number to
         // be filled in randomly. If that didn't work, give up and try again
         // from the beginning.
-        bool assign_random = (zeros == prev_zeros);
+        bool assign_random = zeros == prev_zeros;
         if(prev_assign_random && assign_random)
         {
             memcpy(table, backup, sizeof backup);
