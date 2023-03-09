@@ -1,6 +1,6 @@
 SHELL  = /bin/sh
 CC     = gcc
-CFLAGS = -O2 -std=c11 -Wall -Wextra -I./include
+CFLAGS = -O2 -flto -std=c11 -Wall -Wextra -I./include
 LDLIBS = -lm
 RM     = rm -f
 
