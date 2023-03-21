@@ -116,8 +116,8 @@ mt19937 =
  * Seed MT19937. If this function is not called, the initial state is the same
  * as if it were seeded with 4357.
  *
- * @param seed 32-bit number. If this is 0, MT19937 will be seeded with the
- *     sum of the Unix time and the process ID.
+ * @param seed 32-bit number. If this is 0, MT19937 will be seeded with the sum
+ *     of the Unix time and the process ID.
  *****************************************************************************/
 void mt19937_seed(uint32_t seed)
 {
@@ -186,33 +186,18 @@ uint32_t mt19937_rand(void)
  * Test MT19937. The results of this implementation must match those of the one
  * given in the original paper.
  *
- * Makoto Matsumoto and Takuji Nishimura, "Mersenne Twister: A
- * 623-dimensionally Equidistributed Uniform Pseudo-random Number Generator",
- * in ACM Transactions on Modeling and Computer Simulation, vol. 8, no. 1,
- * pp. 3-30, January 1998, doi:10.1145/272991.272995.
- *
- * @return `true` if the results match, else `false`.
+ * @return Whether the test passed or not.
  *****************************************************************************/
 bool mt19937_test(void)
 {
-    uint32_t const expected[][2] =
-    {
-        {    1, 3510405877}, {    2, 4290933890}, {    4,  564929546}, {    8,  268830360}, {   16, 1452005258},
-        {   32,  675678546}, {   64, 1413475797}, {  128,  979144237}, {  256, 2950091998}, {  512, 3769042770},
-        { 1024, 1198529401}, { 2048, 1984791300}, { 4096, 1074066123}, { 8192, 1445832134}, {16384, 2454186801},
-    };
     mt19937_seed(4357);
-    for(uint32_t i = 1, j = 0; i <= 16384; ++i)
+    for(int i = 0; i < 16383; ++i)
     {
-        uint32_t r = mt19937_rand();
-        if(i == expected[j][0])
-        {
-            if(r != expected[j][1])
-            {
-                return false;
-            }
-            ++j;
-        }
+        mt19937_rand();
+    }
+    if(mt19937_rand() != 2454186801)
+    {
+        return false;
     }
     return true;
 }

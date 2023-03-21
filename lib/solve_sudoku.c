@@ -6,7 +6,6 @@
 #include <stdlib.h>
 #include <time.h>
 
-#include "mt19937.h"
 #include "sudoku_utils.h"
 
 #define REPORT_RUNNING_TIME(function_call, delay_micro) \
@@ -24,13 +23,6 @@ int long delay_micro; \
  *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
-    if(!mt19937_test())
-    {
-        fprintf(stderr, "Warning: pseudorandom number generator not working as expected.\n");
-    }
-
-    mt19937_seed(0);
-
     // Generate a puzzle if the first argument is a number.
     int table[9][9] = {{0}};
     char const *fname = NULL;

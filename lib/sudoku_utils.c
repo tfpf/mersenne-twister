@@ -420,6 +420,13 @@ void single_pass(int table[][9], bool assign_random)
  *****************************************************************************/
 void solve_sudoku(int table[][9])
 {
+    if(!mt19937_test())
+    {
+        fprintf(stderr, "Error: pseudorandom number generator not working as expected.\n");
+        exit(EXIT_FAILURE);
+    }
+
+    mt19937_seed(0);
     int backup[9][9];
     memcpy(backup, table, sizeof backup);
 
