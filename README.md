@@ -7,16 +7,44 @@ doi:10.1145/272991.272995.
 `mt19937.c` contains a 32-bit Mersenne Twister implementation and some utility
 functions, which are intended as replacements for `rand`.
 
+### Usage
+In case you want to use it in your own project, here's a minimal working
+example to get you started.
+
+```C
+$ cat example.c
+#include <stdio.h>
+
+#include "mt19937.h"
+
+int main(void)
+{
+    // Seed the PRNG. Optional.
+    mt19937_seed(0);
+
+    // Generate some random numbers.
+    for(int i = 0; i < 100; ++i)
+    {
+        printf("%lu\n", mt19937_rand());
+    }
+}
+$ gcc -I./include -o example example.c ./lib/mt19937.c -lm
+$ ./example
+```
+
+See [`lib/mt19937.c`](lib/mt19937.c) for the documentation of all available
+functions.
+
 # Sudoku Generator and Solver
 I just wanted to rewrite an old C program of mine using a better style, and
 then verify that it worked correctly.
 
-## Compile
+### Compile
 ```
 make
 ```
 
-## Generate
+### Generate
 ```
 ./solve_sudoku 12
 ```
@@ -29,7 +57,7 @@ to a file, say, `sudoku.txt`. Alternatively, just redirect the output to
 A puzzle of difficulty level 0 (the minimum) is a solved puzzle, while one of
 difficulty level 20 (the maximum) is an empty puzzle.
 
-## Solve
+### Solve
 ```
 ./solve_sudoku sudoku.txt
 ```
