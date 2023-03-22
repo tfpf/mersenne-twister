@@ -6,7 +6,6 @@ import os.path
 import subprocess
 import sys
 
-###############################################################################
 
 def main():
     if not os.access('solve_sudoku', os.X_OK):
@@ -31,7 +30,6 @@ def main():
         with open(fname, 'w') as stdout, open(os.devnull, 'w') as stderr:
             subprocess.Popen(('./solve_sudoku', '11.35'), stdout=stdout, stderr=stderr)
 
-###############################################################################
 
 if __name__ == '__main__':
     main()
