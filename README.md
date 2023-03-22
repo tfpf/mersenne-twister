@@ -4,14 +4,16 @@ Modeling and Computer Simulation, vol. 8, no. 1, pp. 3-30, January 1998,
 doi:10.1145/272991.272995.
 
 # Mersenne Twister
-`mt19937.c` contains a 32-bit Mersenne Twister implementation and some utility
-functions, which are intended as replacements for `rand`.
+`mt19937.c` contains a 32-bit global-state Mersenne Twister implementation and
+some utility functions, which are intended as replacements for `rand`.
 
 ### Usage
 In case you want to use it in your own project, here's a minimal working
 example to get you started.
 
 ```C
+$ ls
+example.c  mt19937.c  mt19937.h
 $ cat example.c
 #include <stdio.h>
 
@@ -28,7 +30,7 @@ int main(void)
         printf("%lu\n", mt19937_rand());
     }
 }
-$ gcc -I./include -o example example.c ./lib/mt19937.c -lm
+$ gcc -o example example.c mt19937.c
 $ ./example
 ```
 
