@@ -234,8 +234,7 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
             {
                 return;
             }
-            allowed[count_allowed] = num;
-            ++count_allowed;
+            allowed[count_allowed++] = num;
         }
     }
     if(count_allowed == 1)
