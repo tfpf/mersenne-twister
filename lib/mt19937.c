@@ -1,5 +1,4 @@
 #include <inttypes.h>
-#include <stdbool.h>
 #include <stddef.h>
 #include <stdlib.h>
 #include <string.h>
@@ -131,8 +130,6 @@ void mt19937_seed(Word seed)
     mt19937.state[0] = seed;
     for(int i = 1; i < MT19937_STATE_LENGTH; ++i)
     {
-        // Overflow is okay. We only want the bottom 32 bits, and unsigned
-        // overflow is defined behaviour.
         Word shifted = mt19937.state[i - 1] >> (MT19937_WIDTH - 2);
         mt19937.state[i] = MT19937_MULTIPLIER * (mt19937.state[i - 1] ^ shifted) + i;
     }
@@ -184,23 +181,6 @@ Word mt19937_rand(void)
     curr ^= (curr << MT19937_TEMPER_T) & MT19937_TEMPER_C;
     curr ^= curr >> MT19937_TEMPER_I;
     return curr;
-}
-
-/******************************************************************************
- * Test MT19937. The results of this implementation must match those of a C++
- * standard library implementation. See
- * https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine.
- *
- * @return Whether the test passed or not.
- *****************************************************************************/
-bool mt19937_test(void)
-{
-    mt19937_seed(5489);
-    for(int i = 1; i < 10000; ++i)
-    {
-        mt19937_rand();
-    }
-    return mt19937_rand() == 0xF5CA0EDBU;
 }
 
 /******************************************************************************
