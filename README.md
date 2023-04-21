@@ -5,7 +5,8 @@ doi:10.1145/272991.272995.
 
 # Mersenne Twister
 `mt19937.c` contains a 32-bit global-state Mersenne Twister implementation and
-some utility functions, which are intended as replacements for `rand`.
+some utility functions, which are intended as replacements for `rand`. A 64-bit
+version can be found in `mt19937_64.c`.
 
 ### Usage
 In case you want to use it in your own project, here's a minimal working
@@ -13,29 +14,37 @@ example to get you started.
 
 ```C
 $ ls
-example.c  mt19937.c  mt19937.h
+example.c  mt19937_64.c  mt19937_64.h  mt19937.c  mt19937.h
 $ cat example.c
 #include <stdio.h>
 
 #include "mt19937.h"
+#include "mt19937_64.h"
 
 int main(void)
 {
-    // Seed the PRNG. Optional.
+    // Seed the 32-bit PRNG. Optional.
     mt19937_seed(0);
-
-    // Generate some random numbers.
-    for(int i = 0; i < 100; ++i)
+    for(int i = 0; i < 10; ++i)
     {
+        // Generate a random 32-bit number.
         printf("%lu\n", mt19937_rand());
     }
+
+    // Seed the 64-bit PRNG. Optional.
+    mt19937_64_seed(0);
+    for(int i = 0; i < 10; ++i)
+    {
+        // Generate a random 64-bit number.
+        printf("%llu\n", mt19937_64_rand());
+    }
 }
-$ gcc -o example example.c mt19937.c
+$ gcc -o example example.c mt19937.c mt19937_64.c
 $ ./example
 ```
 
-See [`lib/mt19937.c`](lib/mt19937.c) for the documentation of all available
-functions.
+See [`lib/mt19937.c`](lib/mt19937.c) and [`lib/mt19937_64.c`](lib/mt19937_64.c)
+for the documentation of all available functions.
 
 # Sudoku Generator and Solver
 I just wanted to rewrite an old C program of mine using a better style, and
