@@ -23,9 +23,11 @@
 #define MT19937_TEMPER_T 15
 #define MT19937_TEMPER_U 11
 
+typedef uint32_t Word;
+
 static struct
 {
-    uint32_t state[MT19937_STATE_LENGTH];
+    Word state[MT19937_STATE_LENGTH];
     int index;
 }
 mt19937 =
@@ -120,7 +122,7 @@ mt19937 =
  * @param seed 32-bit number. If this is 0, MT19937 will be seeded with the sum
  *     of the Unix time and the process ID.
  *****************************************************************************/
-void mt19937_seed(uint32_t seed)
+void mt19937_seed(Word seed)
 {
     if(seed == 0)
     {
@@ -131,7 +133,7 @@ void mt19937_seed(uint32_t seed)
     {
         // Overflow is okay. We only want the bottom 32 bits, and unsigned
         // overflow is defined behaviour.
-        uint32_t shifted = mt19937.state[i - 1] >> (MT19937_WIDTH - 2);
+        Word shifted = mt19937.state[i - 1] >> (MT19937_WIDTH - 2);
         mt19937.state[i] = MT19937_MULTIPLIER * (mt19937.state[i - 1] ^ shifted) + i;
     }
     mt19937.index = MT19937_STATE_LENGTH;
@@ -142,41 +144,41 @@ void mt19937_seed(uint32_t seed)
  *
  * @return Pseudorandom 32-bit number.
  *****************************************************************************/
-uint32_t mt19937_rand(void)
+Word mt19937_rand(void)
 {
     // Twist.
     if(mt19937.index == MT19937_STATE_LENGTH)
     {
         mt19937.index = 0;
-        uint32_t twist[] = {0, MT19937_MASK_TWIST};
+        Word twist[] = {0, MT19937_MASK_TWIST};
 
         // I benchmarked this function and found that a single loop with modulo
         // operations runs slower than this.
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
-            uint32_t upper = MT19937_MASK_UPPER & mt19937.state[i];
-            uint32_t lower = MT19937_MASK_LOWER & mt19937.state[i + 1];
-            uint32_t masked = upper | lower;
-            uint32_t twisted = (masked >> 1) ^ twist[masked & 1];
+            Word upper = MT19937_MASK_UPPER & mt19937.state[i];
+            Word lower = MT19937_MASK_LOWER & mt19937.state[i + 1];
+            Word masked = upper | lower;
+            Word twisted = (masked >> 1) ^ twist[masked & 1];
             mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE] ^ twisted;
         }
         for(int i = MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; i < MT19937_STATE_LENGTH - 1; ++i)
         {
-            uint32_t upper = MT19937_MASK_UPPER & mt19937.state[i];
-            uint32_t lower = MT19937_MASK_LOWER & mt19937.state[i + 1];
-            uint32_t masked = upper | lower;
-            uint32_t twisted = (masked >> 1) ^ twist[masked & 1];
+            Word upper = MT19937_MASK_UPPER & mt19937.state[i];
+            Word lower = MT19937_MASK_LOWER & mt19937.state[i + 1];
+            Word masked = upper | lower;
+            Word twisted = (masked >> 1) ^ twist[masked & 1];
             mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE - MT19937_STATE_LENGTH] ^ twisted;
         }
-        uint32_t upper = MT19937_MASK_UPPER & mt19937.state[MT19937_STATE_LENGTH - 1];
-        uint32_t lower = MT19937_MASK_LOWER & mt19937.state[0];
-        uint32_t masked = upper | lower;
-        uint32_t twisted = (masked >> 1) ^ twist[masked & 1];
+        Word upper = MT19937_MASK_UPPER & mt19937.state[MT19937_STATE_LENGTH - 1];
+        Word lower = MT19937_MASK_LOWER & mt19937.state[0];
+        Word masked = upper | lower;
+        Word twisted = (masked >> 1) ^ twist[masked & 1];
         mt19937.state[MT19937_STATE_LENGTH - 1] = mt19937.state[MT19937_STATE_MIDDLE - 1] ^ twisted;
     }
 
     // Generate.
-    uint32_t curr = mt19937.state[mt19937.index++];
+    Word curr = mt19937.state[mt19937.index++];
     curr ^= (curr >> MT19937_TEMPER_U) & MT19937_TEMPER_D;
     curr ^= (curr << MT19937_TEMPER_S) & MT19937_TEMPER_B;
     curr ^= (curr << MT19937_TEMPER_T) & MT19937_TEMPER_C;
@@ -208,10 +210,10 @@ bool mt19937_test(void)
  *
  * @return Pseudorandom integer from 0 (inclusive) to `modulus` (exclusive).
  *****************************************************************************/
-uint32_t mt19937_rand_integer(uint32_t modulus)
+Word mt19937_rand_integer(Word modulus)
 {
-    uint32_t upper = 0xFFFFFFFFU - 0xFFFFFFFFU % modulus;
-    uint32_t r;
+    Word upper = 0xFFFFFFFFU - 0xFFFFFFFFU % modulus;
+    Word r;
     do
     {
         r = mt19937_rand();
@@ -238,13 +240,13 @@ double mt19937_rand_real(void)
  * @param items_length Number of elements in the array. Must not be 0.
  * @param item_size Size of each element of the array in bytes.
  *****************************************************************************/
-void mt19937_rand_shuffle(void *items, uint32_t items_length, size_t item_size)
+void mt19937_rand_shuffle(void *items, Word items_length, size_t item_size)
 {
     char *temp = malloc(item_size);
     char *items_ = (char *)items;
-    for(uint32_t i = items_length - 1; i > 0; --i)
+    for(Word i = items_length - 1; i > 0; --i)
     {
-        uint32_t j = mt19937_rand_integer(i + 1);
+        Word j = mt19937_rand_integer(i + 1);
         if(i != j)
         {
             char *items_i = items_ + i * item_size;
