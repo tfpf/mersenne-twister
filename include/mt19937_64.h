@@ -2,7 +2,6 @@
 #define MERSENNE_TWISTER_SUDOKU_SOLVER_INCLUDE_MT19937_64_H_
 
 #include <inttypes.h>
-#include <stddef.h>
 
 void mt19937_64_seed(uint64_t seed);
 uint64_t mt19937_64_rand(void);
