@@ -19,6 +19,13 @@
 #define MT19937_TEMPER_T 37
 #define MT19937_TEMPER_U 29
 
+#define MT19937_TWIST_LOOP_ITERATION(i, j, k)  \
+Word upper = MT19937_MASK_UPPER & mt19937.state[i];  \
+Word lower = MT19937_MASK_LOWER & mt19937.state[j];  \
+Word masked = upper | lower;  \
+Word twisted = masked >> 1 ^ twist[masked & 1];  \
+mt19937.state[i] = mt19937.state[k] ^ twisted;
+
 typedef uint64_t Word;
 
 static struct
@@ -144,31 +151,16 @@ Word mt19937_64_rand(void)
     if(mt19937.index == MT19937_STATE_LENGTH)
     {
         mt19937.index = 0;
-        Word twist[] = {0, MT19937_MASK_TWIST};
-
-        // I benchmarked this function and found that a single loop with modulo
-        // operations runs slower than this.
+        static Word const twist[] = {0, MT19937_MASK_TWIST};
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
-            Word upper = MT19937_MASK_UPPER & mt19937.state[i];
-            Word lower = MT19937_MASK_LOWER & mt19937.state[i + 1];
-            Word masked = upper | lower;
-            Word twisted = (masked >> 1) ^ twist[masked & 1];
-            mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE] ^ twisted;
+            MT19937_TWIST_LOOP_ITERATION(i, i + 1, i + MT19937_STATE_MIDDLE)
         }
         for(int i = MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; i < MT19937_STATE_LENGTH - 1; ++i)
         {
-            Word upper = MT19937_MASK_UPPER & mt19937.state[i];
-            Word lower = MT19937_MASK_LOWER & mt19937.state[i + 1];
-            Word masked = upper | lower;
-            Word twisted = (masked >> 1) ^ twist[masked & 1];
-            mt19937.state[i] = mt19937.state[i + MT19937_STATE_MIDDLE - MT19937_STATE_LENGTH] ^ twisted;
+            MT19937_TWIST_LOOP_ITERATION(i, i + 1, i + MT19937_STATE_MIDDLE - MT19937_STATE_LENGTH)
         }
-        Word upper = MT19937_MASK_UPPER & mt19937.state[MT19937_STATE_LENGTH - 1];
-        Word lower = MT19937_MASK_LOWER & mt19937.state[0];
-        Word masked = upper | lower;
-        Word twisted = (masked >> 1) ^ twist[masked & 1];
-        mt19937.state[MT19937_STATE_LENGTH - 1] = mt19937.state[MT19937_STATE_MIDDLE - 1] ^ twisted;
+        MT19937_TWIST_LOOP_ITERATION(MT19937_STATE_LENGTH - 1, 0, MT19937_STATE_MIDDLE - 1)
     }
 
     // Generate.
