@@ -3,12 +3,12 @@ CC     = gcc
 CFLAGS = -O2 -std=c11 -Wall -Wextra -I../include
 RM     = rm -f
 
-Sources    = tests.c $(wildcard ../lib/mt19937*.c)
+Sources    = tests.c ../lib/mt19937.c
 Executable = tests
 
 .PHONY: clean
 
-$(Executable): $(Sources)
+$(Executable): $(Sources) ../lib/mt19937_common.c
 	$(CC) $(CFLAGS) -o $(Executable) $(Sources)
 
 clean:
