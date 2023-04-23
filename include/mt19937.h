@@ -1,5 +1,5 @@
-#ifndef MERSENNE_TWISTER_SUDOKU_SOLVER_INCLUDE_MT19937_H_
-#define MERSENNE_TWISTER_SUDOKU_SOLVER_INCLUDE_MT19937_H_
+#ifndef MERSENNE_TWISTER_INCLUDE_MT19937_H_
+#define MERSENNE_TWISTER_INCLUDE_MT19937_H_
 
 #include <inttypes.h>
 #include <stddef.h>
@@ -79,4 +79,4 @@ double mt19937_64_rand_real(void);
  *****************************************************************************/
 void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_item);
 
-#endif  // MERSENNE_TWISTER_SUDOKU_SOLVER_INCLUDE_MT19937_H_
+#endif  // MERSENNE_TWISTER_INCLUDE_MT19937_H_
