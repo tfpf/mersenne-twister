@@ -120,6 +120,28 @@ mt19937 =
 #include "mt19937_common.c"
 
 /******************************************************************************
+ * Array shuffler. Uses 32-bit MT19937, but deserves a separate section.
+ *****************************************************************************/
+void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_item)
+{
+    char *temp = malloc(size_of_item);
+    char *items_ = (char *)items;
+    for(uint32_t i = num_of_items - 1; i > 0; --i)
+    {
+        uint32_t j = mt19937_rand_integer(i + 1);
+        if(i != j)
+        {
+            char *items_i = items_ + i * size_of_item;
+            char *items_j = items_ + j * size_of_item;
+            memcpy(temp, items_i, size_of_item);
+            memcpy(items_i, items_j, size_of_item);
+            memcpy(items_j, temp, size_of_item);
+        }
+    }
+    free(temp);
+}
+
+/******************************************************************************
  * 64-bit MT19937.
  *****************************************************************************/
 #undef MT19937_WORD
@@ -254,25 +276,3 @@ mt19937_64 =
 #define mt19937_rand_real mt19937_64_rand_real
 
 #include "mt19937_common.c"
-
-/******************************************************************************
- * Array shuffler. Uses 32-bit MT19937, but deserves to be written separately.
- *****************************************************************************/
-void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_item)
-{
-    char *temp = malloc(size_of_item);
-    char *items_ = (char *)items;
-    for(uint32_t i = num_of_items - 1; i > 0; --i)
-    {
-        uint32_t j = mt19937_rand_integer(i + 1);
-        if(i != j)
-        {
-            char *items_i = items_ + i * size_of_item;
-            char *items_j = items_ + j * size_of_item;
-            memcpy(temp, items_i, size_of_item);
-            memcpy(items_i, items_j, size_of_item);
-            memcpy(items_j, temp, size_of_item);
-        }
-    }
-    free(temp);
-}
