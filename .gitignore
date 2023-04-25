@@ -1,3 +1,4 @@
 *.o
+*.so
 solve_sudoku
 Problems
