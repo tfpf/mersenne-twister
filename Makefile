@@ -1,29 +1,32 @@
 SHELL  = /bin/sh
 CC     = gcc
 CFLAGS = -O2 -flto -std=c11 -Wall -Wextra -I./include
-LDLIBS = -lm
+LDLIBS = -lm -l$(Package)
 RM     = rm -f
+CP     = cp
 
-Sources = mt19937.c solve_sudoku.c sudoku_utils.c
+Package = mt19937
+Sources = solve_sudoku.c sudoku_utils.c
 Objects = $(Sources:%.c=lib/%.o)
-SharedObject = lib/mt19937.so
+SharedObject = lib/$(Package).so
+Header = include/$(Package).h
 Executable = solve_sudoku
 
-.PHONY: clean install
+.PHONY: clean install uninstall
 
 $(Executable): $(Objects)
 	$(LINK.c) -o $(Executable) $(Objects) $(LDLIBS)
 
-# Override the rule for this file, because it includes another file.
-lib/mt19937.o: lib/mt19937.c lib/mt19937_common.c
-	$(CC) $(CFLAGS) -c -o $@ $<
+install: $(SharedObject)
+	$(CP) $(Header) /usr/include/$(Package).h
+	$(CP) $(SharedObject) /usr/lib/lib$(Package).so
 
-%.so: %.o
+%.so: %.c %_common.c
 	$(CC) $(CFLAGS) -shared -o $@ $<
 
-install: $(SharedObject)
-	cp include/mt19937.h /usr/include/mt19937.h
-	cp $(SharedObject) /usr/lib/libmt19937.so
+uninstall:
+	$(RM) /usr/include/$(Package).h
+	$(RM) /usr/lib/lib$(Package).so
 
 clean:
 	$(RM) $(Objects) $(SharedObject) $(Executable)

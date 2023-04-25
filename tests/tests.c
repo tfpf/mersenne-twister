@@ -1,9 +1,8 @@
 #include <assert.h>
 #include <inttypes.h>
+#include <mt19937.h>
 #include <stdbool.h>
 #include <stdio.h>
-
-#include "mt19937.h"
 
 /******************************************************************************
  * Test MT19937. The results of this implementation must match those of a C++

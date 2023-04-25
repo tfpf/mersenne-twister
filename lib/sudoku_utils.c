@@ -1,6 +1,7 @@
 #define _POSIX_C_SOURCE 199309L
 
 #include <math.h>
+#include <mt19937.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -8,7 +9,6 @@
 #include <string.h>
 #include <unistd.h>
 
-#include "mt19937.h"
 #include "sudoku_utils.h"
 
 /******************************************************************************

@@ -2,67 +2,63 @@ Makoto Matsumoto and Takuji Nishimura, "Mersenne Twister: A 623-dimensionally Eq
 Number Generator", in ACM Transactions on Modeling and Computer Simulation, vol. 8, no. 1, pp. 3-30, January 1998,
 doi:10.1145/272991.272995.
 
-# Mersenne Twister
+# Mersenne Twister (MT19937)
 This package provides Mersenne Twister implementations and some utility functions, which are intended as replacements
-for the `rand` family of functions.
+for the `rand` family of functions of the C standard library.
 
 See [`include/mt19937.h`](include/mt19937.h) for the documentation of all available functions.
 
-## Usage
-### Without Installation
-Download [`include/mt19937.h`](include/mt19937.h), [`lib/mt19937.c`](lib/mt19937.c) and
-[`lib/mt19937_common.c`](lib/mt19937_common.c). Place them in the same directory. Create a file `example.c` in that
-directory with the following contents.
+## Install
+```
+sudo make install
+```
+This will create `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so`, which should be enough on most Linux systems.
+**Be sure that you don't already have those two files (perhaps from some other package) to avoid breaking your
+system.**
 
+To see it in action, put the following code in a file `example.c`:
 ```C
+#include <mt19937.h>
 #include <stdio.h>
-
-#include "mt19937.h"
 
 int main(void)
 {
-    // Seed the 32-bit PRNG. Optional.
+    // 32-bit MT19937.
     mt19937_seed(0);
     for(int i = 0; i < 10; ++i)
     {
-        // Generate a random 32-bit number.
         printf("%lu\n", mt19937_rand());
     }
 
-    // Seed the 64-bit PRNG. Optional.
+    // 64-bit MT19937.
     mt19937_64_seed(0);
     for(int i = 0; i < 10; ++i)
     {
-        // Generate a random 64-bit number.
         printf("%llu\n", mt19937_64_rand());
     }
 }
 ```
-
-Compile the program using
+compile it with
 ```
-gcc -o example example.c mt19937.c
+gcc -o example example.c -lmt19937
 ```
-and run it with
+and run it using
 ```
 ./example
 ```
 to see some random numbers.
 
-### With Installation
+## Uninstall
 ```
-sudo make install
+sudo make uninstall
 ```
-This will create `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so`. **Be sure that you don't already have those two
-files (perhaps from some other package) to avoid breaking your system.** On most Linux systems, you will then be able
-to compile the above program with just
-```
-gcc -o example example.c -lmt19937
-```
-without having `mt19937.h`, `mt19937.c` and `mt19937_common.c` in the working directory.
+**Do not run this command if you already had the files `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so` before
+installing this package.**
 
 # Sudoku Generator and Solver
 I just wanted to rewrite an old C program of mine using a better style, and then verify that it worked correctly.
+
+To use the sudoku generator and solver, install this package first. (See the previous section.)
 
 ## Compile
 ```

@@ -1,15 +1,16 @@
 SHELL  = /bin/sh
 CC     = gcc
-CFLAGS = -O2 -std=c11 -Wall -Wextra -I../include
+CFLAGS = -O2 -std=c11 -Wall -Wextra
+LDLIBS = -lmt19937
 RM     = rm -f
 
-Sources    = tests.c ../lib/mt19937.c
+Sources    = tests.c
 Executable = tests
 
 .PHONY: clean
 
-$(Executable): $(Sources) ../lib/mt19937_common.c
-	$(CC) $(CFLAGS) -o $(Executable) $(Sources)
+$(Executable): $(Sources)
+	$(CC) $(CFLAGS) -o $(Executable) $(Sources) $(LDLIBS)
 
 clean:
 	$(RM) $(Executable)
