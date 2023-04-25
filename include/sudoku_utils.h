@@ -1,5 +1,5 @@
-#ifndef MERSENNE_TWISTER_INCLUDE_SUDOKU_UTILS_H_
-#define MERSENNE_TWISTER_INCLUDE_SUDOKU_UTILS_H_
+#ifndef TFPF_MERSENNE_TWISTER_INCLUDE_SUDOKU_UTILS_H_
+#define TFPF_MERSENNE_TWISTER_INCLUDE_SUDOKU_UTILS_H_
 
 #include <stdbool.h>
 
@@ -20,4 +20,4 @@ void solve_sudoku(int table[][9]);
 void generate_sudoku(int table[][9], double difficulty);
 bool validate_sudoku(int const table[][9], bool initial);
 
-#endif  // MERSENNE_TWISTER_INCLUDE_SUDOKU_UTILS_H_
+#endif  // TFPF_MERSENNE_TWISTER_INCLUDE_SUDOKU_UTILS_H_
