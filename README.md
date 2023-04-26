@@ -14,7 +14,8 @@ sudo make install
 ```
 This will create `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so`, which should be enough on most Linux systems.
 **Be sure that you don't already have those two files (perhaps from some other package) to avoid breaking your
-system.**
+system.** (You can change `Prefix` in [`Makefile`](Makefile) to install it elsewhere, but then you may additionally
+have to configure the search paths of your compiler and linker.)
 
 To see it in action, put the following code in a file `example.c`:
 ```C
