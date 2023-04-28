@@ -7,7 +7,7 @@ This package provides Mersenne Twister implementations and some utility function
 for the `rand` family of functions of the C standard library. The behaviours of these implementations are consistent
 with those of `std::mt19937` and `std::mt19937_64` of the C++ standard library.
 
-See [`doc`](doc) for the documentation of all available functions.
+See [`doc`](doc) for the documentation of this package.
 
 ## Install
 ```
