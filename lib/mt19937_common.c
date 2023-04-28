@@ -4,13 +4,13 @@ void mt19937_seed(MT19937_WORD seed)
     {
         seed = time(NULL) + getpid();
     }
-    mt19937.state[0] = seed;
+    MT19937_OBJECT.state[0] = seed;
     for(int i = 1; i < MT19937_STATE_LENGTH; ++i)
     {
-        MT19937_WORD shifted = mt19937.state[i - 1] >> (MT19937_WORD_WIDTH - 2);
-        mt19937.state[i] = MT19937_MULTIPLIER * (mt19937.state[i - 1] ^ shifted) + i;
+        MT19937_WORD shifted = MT19937_OBJECT.state[i - 1] >> (MT19937_WORD_WIDTH - 2);
+        MT19937_OBJECT.state[i] = MT19937_MULTIPLIER * (MT19937_OBJECT.state[i - 1] ^ shifted) + i;
     }
-    mt19937.index = MT19937_STATE_LENGTH;
+    MT19937_OBJECT.index = MT19937_STATE_LENGTH;
 }
 
 
@@ -19,19 +19,19 @@ void mt19937_seed(MT19937_WORD seed)
 // To reduce code repetition, I have factored the loop body out.
 #ifndef MT19937_TWIST_LOOP_BODY
 #define MT19937_TWIST_LOOP_BODY(i, j, k)  \
-MT19937_WORD upper = MT19937_MASK_UPPER & mt19937.state[i];  \
-MT19937_WORD lower = MT19937_MASK_LOWER & mt19937.state[j];  \
+MT19937_WORD upper = MT19937_MASK_UPPER & MT19937_OBJECT.state[i];  \
+MT19937_WORD lower = MT19937_MASK_LOWER & MT19937_OBJECT.state[j];  \
 MT19937_WORD masked = upper | lower;  \
 MT19937_WORD twisted = masked >> 1 ^ twist[masked & 1];  \
-mt19937.state[i] = mt19937.state[k] ^ twisted;
+MT19937_OBJECT.state[i] = MT19937_OBJECT.state[k] ^ twisted;
 #endif
 
 MT19937_WORD mt19937_rand(void)
 {
     // Twist.
-    if(mt19937.index == MT19937_STATE_LENGTH)
+    if(MT19937_OBJECT.index == MT19937_STATE_LENGTH)
     {
-        mt19937.index = 0;
+        MT19937_OBJECT.index = 0;
         static MT19937_WORD const twist[] = {0, MT19937_MASK_TWIST};
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
@@ -45,7 +45,7 @@ MT19937_WORD mt19937_rand(void)
     }
 
     // Generate.
-    MT19937_WORD curr = mt19937.state[mt19937.index++];
+    MT19937_WORD curr = MT19937_OBJECT.state[MT19937_OBJECT.index++];
     curr ^= (curr >> MT19937_TEMPER_U) & MT19937_TEMPER_D;
     curr ^= (curr << MT19937_TEMPER_S) & MT19937_TEMPER_B;
     curr ^= (curr << MT19937_TEMPER_T) & MT19937_TEMPER_C;

@@ -13,6 +13,8 @@
 #define MT19937_WORD uint32_t
 #define MT19937_WORD_WIDTH 32
 #define MT19937_WORD_MAX 0xFFFFFFFFU
+#define MT19937_OBJECT_TYPE struct mt19937_t
+#define MT19937_OBJECT mt19937
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
 #define MT19937_MASK_UPPER 0x80000000U
@@ -27,7 +29,7 @@
 #define MT19937_TEMPER_T 15
 #define MT19937_TEMPER_U 11
 
-static struct mt19937_t mt19937 =
+static MT19937_OBJECT_TYPE MT19937_OBJECT =
 {
     {
         0x00001571U, 0x4D98EE96U, 0xAF25F095U, 0xAFD9BA96U, 0x6FCBD068U, 0x2CD06A72U, 0x384F0100U, 0x85B46507U,
@@ -142,6 +144,8 @@ void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_ite
 #undef MT19937_WORD
 #undef MT19937_WORD_WIDTH
 #undef MT19937_WORD_MAX
+#undef MT19937_OBJECT_TYPE
+#undef MT19937_OBJECT
 #undef MT19937_STATE_LENGTH
 #undef MT19937_STATE_MIDDLE
 #undef MT19937_MASK_UPPER
@@ -159,6 +163,8 @@ void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_ite
 #define MT19937_WORD uint64_t
 #define MT19937_WORD_WIDTH 64
 #define MT19937_WORD_MAX 0xFFFFFFFFFFFFFFFFU
+#define MT19937_OBJECT_TYPE struct mt19937_64_t
+#define MT19937_OBJECT mt19937_64
 #define MT19937_STATE_LENGTH 312
 #define MT19937_STATE_MIDDLE 156
 #define MT19937_MASK_UPPER 0xFFFFFFFF80000000U
@@ -173,7 +179,7 @@ void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_ite
 #define MT19937_TEMPER_T 37
 #define MT19937_TEMPER_U 29
 
-static struct mt19937_64_t mt19937_64 =
+static MT19937_OBJECT_TYPE MT19937_OBJECT =
 {
     {
         0x0000000000001571U, 0xB5347F47116BD3DEU, 0x9165B5762D1A61AEU, 0xD139B6BBED337F3FU,
@@ -259,8 +265,6 @@ static struct mt19937_64_t mt19937_64 =
 };
 
 // Rename everything which will result in name conflicts.
-#define mt19937_t mt19937_64_t
-#define mt19937 mt19937_64
 #define mt19937_seed mt19937_64_seed
 #define mt19937_rand mt19937_64_rand
 #define mt19937_rand_integer mt19937_64_rand_integer
