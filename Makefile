@@ -18,7 +18,7 @@ Executable = solve_sudoku
 $(Executable): $(Objects)
 	$(LINK.c) -o $(Executable) $(Objects) $(LDLIBS)
 
-install: $(SharedObject)
+install: uninstall $(SharedObject)
 	$(CP) $(Header) $(Prefix)/include/$(Package).h
 	$(CP) $(SharedObject) $(Prefix)/lib/lib$(Package).so
 
