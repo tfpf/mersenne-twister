@@ -1,7 +1,3 @@
-// This file is not supposed to be used directly. It will be included by
-// another file after all tokens used here have been defined.
-
-
 void mt19937_seed(MT19937_WORD seed)
 {
     if(seed == 0)
