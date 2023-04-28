@@ -3,11 +3,12 @@ Number Generator", in ACM Transactions on Modeling and Computer Simulation, vol.
 doi:10.1145/272991.272995.
 
 # Mersenne Twister (MT19937)
-This package provides Mersenne Twister implementations and some utility functions, which are intended as replacements
-for the `rand` family of functions of the C standard library. The behaviours of these implementations are consistent
-with those of `std::mt19937` and `std::mt19937_64` of the C++ standard library.
+This package provides 32- and 64-bit global-state (non-reentrant) and reentrant Mersenne Twister implementations and
+some utility functions, which are intended as replacements for the `rand` family of functions of the C standard
+library. The behaviours of these implementations are consistent with those of `std::mt19937` and `std::mt19937_64` of
+the C++ standard library.
 
-See [`doc`](doc) for the documentation of this package.
+See [`doc`](doc) for the documentation of this package. See [`examples`](examples) for usage examples.
 
 ## Install
 ```
