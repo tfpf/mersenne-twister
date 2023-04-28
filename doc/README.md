@@ -1,23 +1,24 @@
 These are all macros, not functions. However, they are written to behave like functions, so I document them as if they
 are functions.
 
-In each of the following, `mt` is an optional argument, denoting the MT19937 object to use. If it is not provided, an
-internal MT19937 object will be used instead.
+In each of the following, `mt` is an optional argument, denoting the 32- or 64-bit MT19937 object to use. If it is not
+provided, the internal 32- or 64-bit MT19937 object will be used instead. The initial states of both of these internal
+objects are the same as if they were seeded with 5489.
 
 ---
 
 ```C
 void mt19937_seed(uint32_t seed, struct mt19937_t *mt);
 ```
-Seed 32-bit MT19937. If this function is not called, its initial state is the same as if it were seeded with 5489.
-* `seed` 32-bit number. If this is 0, MT19937 will be seeded with the sum of the Unix time and the process ID.
+Seed 32-bit MT19937.
+* `seed` 32-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID.
 * `mt` MT19937 object to seed.
 
 ```C
 void mt19937_64_seed(uint64_t seed, struct mt19937_64_t *mt);
 ```
-Seed 64-bit MT19937. If this function is not called, its initial state is the same as if it were seeded with 5489.
-* `seed` 64-bit number. If this is 0, MT19937 will be seeded with the sum of the Unix time and the process ID.
+Seed 64-bit MT19937.
+* `seed` 64-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID.
 * `mt` MT19937 object to seed.
 
 ---
