@@ -4,6 +4,17 @@
 #include <inttypes.h>
 #include <stddef.h>
 
+struct mt19937_t
+{
+    uint32_t state[624];
+    int index;
+};
+struct mt19937_64_t
+{
+    uint64_t state[312];
+    int index;
+};
+
 /******************************************************************************
  * Seed 32-bit MT19937. If this function is not called, the initial state is
  * the same as if it were seeded with 5489.
