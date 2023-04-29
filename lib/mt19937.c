@@ -27,6 +27,7 @@
 #define MT19937_WORD_MAX 0xFFFFFFFFU
 #define MT19937_OBJECT_TYPE struct mt19937_t
 #define MT19937_OBJECT mt19937
+#define MT19937_REAL_TYPE double
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
 #define MT19937_MASK_UPPER 0x80000000U
@@ -158,6 +159,7 @@ void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_ite
 #undef MT19937_WORD_MAX
 #undef MT19937_OBJECT_TYPE
 #undef MT19937_OBJECT
+#undef MT19937_REAL_TYPE
 #undef MT19937_STATE_LENGTH
 #undef MT19937_STATE_MIDDLE
 #undef MT19937_MASK_UPPER
@@ -177,6 +179,7 @@ void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_ite
 #define MT19937_WORD_MAX 0xFFFFFFFFFFFFFFFFU
 #define MT19937_OBJECT_TYPE struct mt19937_64_t
 #define MT19937_OBJECT mt19937_64
+#define MT19937_REAL_TYPE double long
 #define MT19937_STATE_LENGTH 312
 #define MT19937_STATE_MIDDLE 156
 #define MT19937_MASK_UPPER 0xFFFFFFFF80000000U

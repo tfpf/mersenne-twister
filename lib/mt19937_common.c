@@ -76,7 +76,7 @@ MT19937_WORD mt19937_rand_integer(MT19937_WORD modulus, MT19937_OBJECT_TYPE *mt)
 }
 
 
-double mt19937_rand_real(MT19937_OBJECT_TYPE *mt)
+MT19937_REAL_TYPE mt19937_rand_real(MT19937_OBJECT_TYPE *mt)
 {
-    return (double)mt19937_rand(mt) / MT19937_WORD_MAX;
+    return (MT19937_REAL_TYPE)mt19937_rand(mt) / MT19937_WORD_MAX;
 }

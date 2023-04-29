@@ -68,7 +68,7 @@ Generate a pseudorandom fraction.
 * → Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive).
 
 ```C
-double mt19937_64_rand_real(struct mt19937_64_t *mt);
+double long mt19937_64_rand_real(struct mt19937_64_t *mt);
 ```
 Generate a pseudorandom fraction.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.

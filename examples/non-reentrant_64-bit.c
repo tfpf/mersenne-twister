@@ -10,7 +10,7 @@ int main(void)
     }
     for(int i = 0; i < 4; ++i)
     {
-        printf("%lf ", mt19937_64_rand_real());
+        printf("%Lf ", mt19937_64_rand_real());
     }
     printf("\n");
 }

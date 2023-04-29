@@ -48,7 +48,7 @@ double mt19937_rand_real(struct mt19937_t *mt);
 #define mt19937_rand_real(...)  \
 mt19937_rand_real(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 
-double mt19937_64_rand_real(struct mt19937_64_t *mt);
+double long mt19937_64_rand_real(struct mt19937_64_t *mt);
 #define mt19937_64_rand_real(...)  \
 mt19937_64_rand_real(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 
