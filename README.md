@@ -12,7 +12,7 @@ See [`doc`](doc) for the documentation of this package. See [`examples`](example
 
 ## Install
 The fastest way to install this is to run the following command in a terminal window.
-```
+```sh
 curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
 ```
 This may prompt you for the superuser's password, and will create `/usr/include/mt19937.h` and
@@ -20,7 +20,7 @@ This may prompt you for the superuser's password, and will create `/usr/include/
 files (perhaps from some other package) to avoid breaking your system.**
 
 Alternatively, download/clone this repository and run
-```
+```sh
 sudo make install
 ```
 from the topmost directory of the repository. The above comments apply to this mode of installation as well. You can
@@ -51,17 +51,17 @@ int main(void)
 }
 ```
 compile it with
-```
+```sh
 gcc -o example example.c -lmt19937
 ```
 and run it using
-```
+```sh
 ./example
 ```
 to see some random numbers.
 
 ## Uninstall
-```
+```sh
 sudo make uninstall
 ```
 **Do not run this command if you already had the files `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so` before
@@ -73,31 +73,31 @@ I just wanted to rewrite an old C program of mine using a better style, and then
 To use the sudoku generator and solver, install this package first. (See the previous section.)
 
 ## Compile
-```
+```sh
 make
 ```
 
 ## Generate
-```
+```sh
 ./solve_sudoku 12
 ```
 will write a sudoku puzzle of difficulty level 12 to standard output. Copy it to a file, say, `sudoku.txt`.
 Alternatively, directly write the output to `sudoku.txt`.
-```
+```sh
 ./solve_sudoku 12 | tee sudoku.txt
 ```
 A puzzle of difficulty level 0 (the minimum) is a solved puzzle, while one of difficulty level 20 (the maximum) is an
 empty puzzle.
 
 ## Solve
-```
+```sh
 ./solve_sudoku sudoku.txt
 ```
 will display the solution.
 
 The solver will read from standard input if you don't provide any command line arguments. Interestingly, this means you
 can pipe the output of the generator to the solver
-```
+```sh
 ./solve_sudoku 12 | ./solve_sudoku
 ```
 though that is probably of no use, since it doesn't show the puzzle first.
