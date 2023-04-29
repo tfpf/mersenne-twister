@@ -7,6 +7,18 @@
 
 #include "mt19937.h"
 
+// Disable variadic macros, exposing the wrapped functions. I will be careful
+// to pass the last argument to the functions.
+#undef mt19937_seed
+#undef mt19937_64_seed
+#undef mt19937_rand
+#undef mt19937_64_rand
+#undef mt19937_rand_integer
+#undef mt19937_64_rand_integer
+#undef mt19937_rand_real
+#undef mt19937_64_rand_real
+#undef mt19937_rand_shuffle
+
 /******************************************************************************
  * 32-bit MT19937.
  *****************************************************************************/
@@ -119,13 +131,13 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 /******************************************************************************
  * Array shuffler. Uses 32-bit MT19937, but deserves a separate section.
  *****************************************************************************/
-void mt19937_rand_shuffle_(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_t *mt)
+void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_t *mt)
 {
     char *temp = malloc(size_of_item);
     char *items_ = (char *)items;
     for(uint32_t i = num_of_items - 1; i > 0; --i)
     {
-        uint32_t j = mt19937_rand_integer_(i + 1, mt);
+        uint32_t j = mt19937_rand_integer(i + 1, mt);
         if(i != j)
         {
             char *items_i = items_ + i * size_of_item;
@@ -265,9 +277,9 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 };
 
 // Rename everything which will result in name conflicts.
-#define mt19937_seed_ mt19937_64_seed_
-#define mt19937_rand_ mt19937_64_rand_
-#define mt19937_rand_integer_ mt19937_64_rand_integer_
-#define mt19937_rand_real_ mt19937_64_rand_real_
+#define mt19937_seed mt19937_64_seed
+#define mt19937_rand mt19937_64_rand
+#define mt19937_rand_integer mt19937_64_rand_integer
+#define mt19937_rand_real mt19937_64_rand_real
 
 #include "mt19937_common.c"
