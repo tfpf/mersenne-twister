@@ -13,7 +13,7 @@ See [`doc`](doc) for the documentation of this package. See [`examples`](example
 ## Installation Requirements
 These are the versions I have tested the installation with. Older versions may also work.
 * cURL ≥ 7.74.0
-* GCC ≥ 10.2.1
+* GCC ≥ 10.2.1 or Clang ≥ 13.0.1
 * Git ≥ 2.30.2
 * GNU Make ≥ 4.3
 
