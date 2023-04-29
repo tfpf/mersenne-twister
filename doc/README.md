@@ -45,7 +45,7 @@ Generate a pseudorandom number.
 ```C
 uint32_t mt19937_rand_integer(uint32_t modulus, struct mt19937_t *mt);
 ```
-Generate a pseudorandom number.
+Generate a pseudorandom residue.
 * `modulus` 32-bit number. Must not be 0.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
 * → Uniform pseudorandom 32-bit number from 0 (inclusive) to `modulus` (exclusive).
@@ -53,7 +53,7 @@ Generate a pseudorandom number.
 ```C
 uint64_t mt19937_64_rand_integer(uint64_t modulus, struct mt19937_64_t *mt);
 ```
-Generate a pseudorandom number.
+Generate a pseudorandom residue.
 * `modulus` 64-bit number. Must not be 0.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
 * → Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive).
@@ -63,14 +63,14 @@ Generate a pseudorandom number.
 ```C
 double mt19937_rand_real(struct mt19937_t *mt);
 ```
-Generate a pseudorandom number.
+Generate a pseudorandom fraction.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
 * → Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive).
 
 ```C
 double mt19937_64_rand_real(struct mt19937_64_t *mt);
 ```
-Generate a pseudorandom number.
+Generate a pseudorandom fraction.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
 * → Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive).
 
