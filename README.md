@@ -10,7 +10,14 @@ the C++ standard library.
 
 See [`doc`](doc) for the documentation of this package. See [`examples`](examples) for usage examples.
 
-## Install
+## Installation Requirements
+These are the versions I have tested the installation with. Older versions may also work.
+* cURL ≥ 7.74.0
+* GCC ≥ 10.2.1
+* Git ≥ 2.30.2
+* GNU Make ≥ 4.3
+
+## Installation
 The fastest way to install this is to run the following command in a terminal window.
 ```sh
 curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
