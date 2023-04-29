@@ -7,7 +7,7 @@ int main(void)
     mt19937_64_seed(1, &mt);
     for(int i = 0; i < 4; ++i)
     {
-        printf("%lu ", mt19937_64_rand(&mt));
+        printf("%llu ", mt19937_64_rand(&mt));
     }
     for(int i = 0; i < 4; ++i)
     {
