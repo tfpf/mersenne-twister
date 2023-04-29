@@ -7,6 +7,7 @@
   * For instance, `mt19937_rand();` and `mt19937_rand(foo);` are both valid invocations of `mt19937_rand`—the former
     generates a pseudorandom number using the internal 32-bit MT19937 object, and the latter does so using `foo`.
   * The internal 32- and 64-bit MT19937 objects are initialised by default as if they were seeded with 5489.
+* Further arguments beyond `mt`, if given, are ignored without warnings.
 
 ---
 
