@@ -11,14 +11,23 @@ the C++ standard library.
 See [`doc`](doc) for the documentation of this package. See [`examples`](examples) for usage examples.
 
 ## Install
+The fastest way to install this is to run the following command in a terminal window.
+```
+curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
+```
+This may prompt you for the superuser's password, and will create `/usr/include/mt19937.h` and
+`/usr/lib/libmt19937.so`, which should be enough on most Linux systems. **Be sure that you don't already have those two
+files (perhaps from some other package) to avoid breaking your system.**
+
+Alternatively, download/clone this repository and run
 ```
 sudo make install
 ```
-This will create `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so`, which should be enough on most Linux systems.
-**Be sure that you don't already have those two files (perhaps from some other package) to avoid breaking your
-system.** (You can change `Prefix` in [`Makefile`](Makefile) to install it elsewhere, but then you may additionally
-have to configure the search paths of your compiler and linker.)
+from the topmost directory of the repository. The above comments apply to this mode of installation as well. You can
+change `Prefix` in [`Makefile`](Makefile) to install it elsewhere, but then you may additionally have to configure the
+search paths of your compiler and linker.
 
+## Demo
 To see it in action, put the following code in a file `example.c`:
 ```C
 #include <mt19937.h>
