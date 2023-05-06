@@ -3,14 +3,14 @@
 
 int main(void)
 {
-    mt19937_seed(1);
+    mt19937_seed32(1);
     for(int i = 0; i < 4; ++i)
     {
-        std::cout << mt19937_rand() << ' ';
+        std::cout << mt19937_rand32() << ' ';
     }
     for(int i = 0; i < 4; ++i)
     {
-        std::cout << mt19937_rand_real() << ' ';
+        std::cout << mt19937_real32() << ' ';
     }
     std::cout << '\n';
 }

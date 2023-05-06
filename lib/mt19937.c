@@ -7,17 +7,18 @@
 
 #include "mt19937.h"
 
-// Disable variadic macros, exposing the wrapped functions. I will be careful
-// to pass the last argument to the functions.
-#undef mt19937_seed
-#undef mt19937_64_seed
-#undef mt19937_rand
-#undef mt19937_64_rand
-#undef mt19937_rand_integer
-#undef mt19937_64_rand_integer
-#undef mt19937_rand_real
-#undef mt19937_64_rand_real
-#undef mt19937_rand_shuffle
+// Disable variadic macros, exposing the wrapped functions. This will make
+// error messages more specific, ensuring that I remember to pass the last
+// argument of those functions.
+#undef mt19937_seed32
+#undef mt19937_seed64
+#undef mt19937_rand32
+#undef mt19937_rand64
+#undef mt19937_uint32
+#undef mt19937_uint64
+#undef mt19937_real32
+#undef mt19937_real64
+#undef mt19937_shuffle32
 
 /******************************************************************************
  * 32-bit MT19937.
@@ -25,9 +26,13 @@
 #define MT19937_WORD uint32_t
 #define MT19937_WORD_WIDTH 32
 #define MT19937_WORD_MAX 0xFFFFFFFFU
-#define MT19937_OBJECT_TYPE struct mt19937_t
-#define MT19937_OBJECT mt19937
+#define MT19937_OBJECT_TYPE struct mt19937_32_t
+#define MT19937_OBJECT mt19937_32
 #define MT19937_REAL_TYPE double
+#define MT19937_SEED mt19937_seed32
+#define MT19937_RAND mt19937_rand32
+#define MT19937_UINT mt19937_uint32
+#define MT19937_REAL mt19937_real32
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
 #define MT19937_MASK_UPPER 0x80000000U
@@ -129,16 +134,40 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 
 #include "mt19937_common.c"
 
+#undef MT19937_WORD
+#undef MT19937_WORD_WIDTH
+#undef MT19937_WORD_MAX
+#undef MT19937_OBJECT_TYPE
+#undef MT19937_OBJECT
+#undef MT19937_REAL_TYPE
+#undef MT19937_SEED
+#undef MT19937_RAND
+#undef MT19937_UINT
+#undef MT19937_REAL
+#undef MT19937_STATE_LENGTH
+#undef MT19937_STATE_MIDDLE
+#undef MT19937_MASK_UPPER
+#undef MT19937_MASK_LOWER
+#undef MT19937_MASK_TWIST
+#undef MT19937_MULTIPLIER
+#undef MT19937_TEMPER_B
+#undef MT19937_TEMPER_C
+#undef MT19937_TEMPER_D
+#undef MT19937_TEMPER_I
+#undef MT19937_TEMPER_S
+#undef MT19937_TEMPER_T
+#undef MT19937_TEMPER_U
+
 /******************************************************************************
  * Array shuffler. Uses 32-bit MT19937, but deserves a separate section.
  *****************************************************************************/
-void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_t *mt)
+void mt19937_shuffle32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt)
 {
     char *temp = malloc(size_of_item);
     char *items_ = (char *)items;
     for(uint32_t i = num_of_items - 1; i > 0; --i)
     {
-        uint32_t j = mt19937_rand_integer(i + 1, mt);
+        uint32_t j = mt19937_uint32(i + 1, mt);
         if(i != j)
         {
             char *items_i = items_ + i * size_of_item;
@@ -154,32 +183,16 @@ void mt19937_rand_shuffle(void *items, uint32_t num_of_items, size_t size_of_ite
 /******************************************************************************
  * 64-bit MT19937.
  *****************************************************************************/
-#undef MT19937_WORD
-#undef MT19937_WORD_WIDTH
-#undef MT19937_WORD_MAX
-#undef MT19937_OBJECT_TYPE
-#undef MT19937_OBJECT
-#undef MT19937_REAL_TYPE
-#undef MT19937_STATE_LENGTH
-#undef MT19937_STATE_MIDDLE
-#undef MT19937_MASK_UPPER
-#undef MT19937_MASK_LOWER
-#undef MT19937_MASK_TWIST
-#undef MT19937_MULTIPLIER
-#undef MT19937_TEMPER_B
-#undef MT19937_TEMPER_C
-#undef MT19937_TEMPER_D
-#undef MT19937_TEMPER_I
-#undef MT19937_TEMPER_S
-#undef MT19937_TEMPER_T
-#undef MT19937_TEMPER_U
-
 #define MT19937_WORD uint64_t
 #define MT19937_WORD_WIDTH 64
 #define MT19937_WORD_MAX 0xFFFFFFFFFFFFFFFFU
 #define MT19937_OBJECT_TYPE struct mt19937_64_t
 #define MT19937_OBJECT mt19937_64
 #define MT19937_REAL_TYPE double long
+#define MT19937_SEED mt19937_seed64
+#define MT19937_RAND mt19937_rand64
+#define MT19937_UINT mt19937_uint64
+#define MT19937_REAL mt19937_real64
 #define MT19937_STATE_LENGTH 312
 #define MT19937_STATE_MIDDLE 156
 #define MT19937_MASK_UPPER 0xFFFFFFFF80000000U
@@ -279,10 +292,28 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
     MT19937_STATE_LENGTH,
 };
 
-// Rename everything which will result in name conflicts.
-#define mt19937_seed mt19937_64_seed
-#define mt19937_rand mt19937_64_rand
-#define mt19937_rand_integer mt19937_64_rand_integer
-#define mt19937_rand_real mt19937_64_rand_real
-
 #include "mt19937_common.c"
+
+#undef MT19937_WORD
+#undef MT19937_WORD_WIDTH
+#undef MT19937_WORD_MAX
+#undef MT19937_OBJECT_TYPE
+#undef MT19937_OBJECT
+#undef MT19937_REAL_TYPE
+#undef MT19937_SEED
+#undef MT19937_RAND
+#undef MT19937_UINT
+#undef MT19937_REAL
+#undef MT19937_STATE_LENGTH
+#undef MT19937_STATE_MIDDLE
+#undef MT19937_MASK_UPPER
+#undef MT19937_MASK_LOWER
+#undef MT19937_MASK_TWIST
+#undef MT19937_MULTIPLIER
+#undef MT19937_TEMPER_B
+#undef MT19937_TEMPER_C
+#undef MT19937_TEMPER_D
+#undef MT19937_TEMPER_I
+#undef MT19937_TEMPER_S
+#undef MT19937_TEMPER_T
+#undef MT19937_TEMPER_U

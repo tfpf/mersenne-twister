@@ -243,7 +243,7 @@ void select_allowed(int table[][9], int row, int col, bool assign_random)
     }
     else if(count_allowed > 1 && assign_random)
     {
-        table[row][col] = allowed[mt19937_rand_integer(count_allowed)];
+        table[row][col] = allowed[mt19937_uint32(count_allowed)];
     }
 }
 
@@ -419,7 +419,7 @@ void single_pass(int table[][9], bool assign_random)
  *****************************************************************************/
 void solve_sudoku(int table[][9])
 {
-    mt19937_seed(0);
+    mt19937_seed32(0);
     int backup[9][9];
     memcpy(backup, table, sizeof backup);
 
@@ -481,7 +481,7 @@ void generate_sudoku(int table[][9], double difficulty)
             --qr.rem;
         }
     }
-    mt19937_rand_shuffle(block_deletions, 9, sizeof block_deletions[0]);
+    mt19937_shuffle32(block_deletions, 9, sizeof block_deletions[0]);
 
     // From each block, randomly delete the determined number of numbers.
     int indices[][2] = {{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}, {2, 0}, {2, 1}, {2, 2}};
@@ -492,7 +492,7 @@ void generate_sudoku(int table[][9], double difficulty)
         {
             int backup[9][9];
             memcpy(backup, table, sizeof backup);
-            mt19937_rand_shuffle(indices, 9, sizeof indices[0]);
+            mt19937_shuffle32(indices, 9, sizeof indices[0]);
             int multiple_solutions_fixes = (difficulty > 13) ? 0 : 4095;
             for(int k = 0; k < block_deletions[block_number]; ++k)
             {
@@ -512,7 +512,7 @@ void generate_sudoku(int table[][9], double difficulty)
                 if(memcmp(puzzle1, puzzle2, sizeof puzzle1))
                 {
                     memcpy(table, backup, sizeof backup);
-                    mt19937_rand_shuffle(indices, 9, sizeof indices[0]);
+                    mt19937_shuffle32(indices, 9, sizeof indices[0]);
                     --multiple_solutions_fixes;
                     k = -1;
                 }

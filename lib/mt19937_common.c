@@ -1,9 +1,6 @@
-void mt19937_seed(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
+void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 {
-    if(mt == NULL)
-    {
-        mt = &MT19937_OBJECT;
-    }
+    mt = mt == NULL ? &MT19937_OBJECT : mt;
     if(seed == 0)
     {
         seed = time(NULL) + getpid();
@@ -30,12 +27,9 @@ MT19937_WORD twisted = masked >> 1 ^ twist[masked & 1];  \
 mt->state[i] = mt->state[k] ^ twisted;
 #endif
 
-MT19937_WORD mt19937_rand(MT19937_OBJECT_TYPE *mt)
+MT19937_WORD MT19937_RAND(MT19937_OBJECT_TYPE *mt)
 {
-    if(mt == NULL)
-    {
-        mt = &MT19937_OBJECT;
-    }
+    mt = mt == NULL ? &MT19937_OBJECT : mt;
 
     // Twist.
     if(mt->index == MT19937_STATE_LENGTH)
@@ -63,20 +57,20 @@ MT19937_WORD mt19937_rand(MT19937_OBJECT_TYPE *mt)
 }
 
 
-MT19937_WORD mt19937_rand_integer(MT19937_WORD modulus, MT19937_OBJECT_TYPE *mt)
+MT19937_WORD MT19937_UINT(MT19937_WORD modulus, MT19937_OBJECT_TYPE *mt)
 {
     MT19937_WORD upper = MT19937_WORD_MAX - MT19937_WORD_MAX % modulus;
     MT19937_WORD r;
     do
     {
-        r = mt19937_rand(mt);
+        r = MT19937_RAND(mt);
     }
     while(r >= upper);
     return r % modulus;
 }
 
 
-MT19937_REAL_TYPE mt19937_rand_real(MT19937_OBJECT_TYPE *mt)
+MT19937_REAL_TYPE MT19937_REAL(MT19937_OBJECT_TYPE *mt)
 {
-    return (MT19937_REAL_TYPE)mt19937_rand(mt) / MT19937_WORD_MAX;
+    return (MT19937_REAL_TYPE)MT19937_RAND(mt) / MT19937_WORD_MAX;
 }
