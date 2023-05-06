@@ -2,3 +2,6 @@
 *.so
 solve_sudoku
 Problems
+dist
+*.egg-info
+vgcore.*
