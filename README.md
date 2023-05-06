@@ -17,7 +17,7 @@ These are the versions I have tested the installation with. Older versions may a
 * Git ≥ 2.30.2
 * GNU Make ≥ 4.3
 
-## Installation
+## Install for C and C++
 The fastest way to install this is to run the following command in a terminal window.
 ```sh
 curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
@@ -73,6 +73,17 @@ sudo make uninstall
 ```
 **Do not run this command if you already had the files `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so` before
 installing this package.**
+
+## Install for Python
+You must have Python development tools installed if you want to install the Python API of this package.
+```
+python3 setup.py install --user
+```
+
+## Uninstall
+```
+pip uninstall mt19937
+```
 
 # Sudoku Generator and Solver
 I just wanted to rewrite an old C program of mine using a better style, and then verify that it worked correctly.
