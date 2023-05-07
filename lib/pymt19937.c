@@ -49,6 +49,11 @@ static PyObject *uint32(PyObject *self, PyObject *args)
     {
         return NULL;
     }
+    if(modulus == 0)
+    {
+        PyErr_SetString(PyExc_RuntimeError, "argument 1 must be non-zero");
+        return NULL;
+    }
     return PyLong_FromUnsignedLong(mt19937_uint32(modulus, NULL));
 }
 
@@ -58,6 +63,11 @@ static PyObject *uint64(PyObject *self, PyObject *args)
     int long long unsigned modulus;
     if(!PyArg_ParseTuple(args, "K", &modulus))
     {
+        return NULL;
+    }
+    if(modulus == 0)
+    {
+        PyErr_SetString(PyExc_RuntimeError, "argument 1 must be non-zero");
         return NULL;
     }
     return PyLong_FromUnsignedLongLong(mt19937_uint64(modulus, NULL));
