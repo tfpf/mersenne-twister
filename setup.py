@@ -1,10 +1,14 @@
-from setuptools import Extension
-from setuptools import setup
+from setuptools import Extension, find_packages, setup
 
-setup(
+ext_modules = [Extension(
     name='mt19937',
-    author='Vishal Pankaj Chandratreya',
-    version='0.0.1',
-    url='https://github.com/tfpf/mersenne-twister',
-    ext_modules=[Extension('mt19937', sources=['lib/pymt19937.c'])],
+    sources=['./lib/pymt19937.c'],
+    include_dirs=['./include'],
+    py_limited_api=True,
+)]
+kwargs = dict(
+    packages=find_packages(where='./lib'),
+    package_dir={'': './lib'},
+    ext_modules=ext_modules,
 )
+setup(**kwargs)

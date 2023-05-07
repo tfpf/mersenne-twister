@@ -77,9 +77,8 @@ installing this package.**
 ## Install for Python
 You must have Python development tools installed if you want to install the Python API of this package.
 ```
-python3 setup.py install --user
+pip install .
 ```
-I plan to move from Setuptools to pip once I figure out how to.:sweat_smile:
 
 ### Uninstall
 ```

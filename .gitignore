@@ -1,7 +1,6 @@
 *.o
 *.so
+*.egg-info
 solve_sudoku
 Problems
-dist
-*.egg-info
-vgcore.*
+build
