@@ -17,7 +17,7 @@ These are the versions I have tested the installation with. Older versions may a
 * Git ≥ 2.30.2
 * GNU Make ≥ 4.3
 
-## Install for C and C++
+## Install for C (and C++)
 The fastest way to install this is to run the following command in a terminal window.
 ```sh
 curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
@@ -34,7 +34,7 @@ from the topmost directory of the repository. The above comments apply to this m
 change `Prefix` in [`Makefile`](Makefile) to install it elsewhere, but then you may additionally have to configure the
 search paths of your compiler and linker.
 
-## Demo
+### Demo
 To see it in action, put the following code in a file `example.c`:
 ```C
 #include <mt19937.h>
@@ -67,7 +67,7 @@ and run it using
 ```
 to see some random numbers.
 
-## Uninstall
+### Uninstall
 ```sh
 sudo make uninstall
 ```
@@ -80,7 +80,7 @@ You must have Python development tools installed if you want to install the Pyth
 python3 setup.py install --user
 ```
 
-## Uninstall
+### Uninstall
 ```
 pip uninstall mt19937
 ```
