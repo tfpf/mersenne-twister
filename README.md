@@ -79,6 +79,7 @@ You must have Python development tools installed if you want to install the Pyth
 ```
 python3 setup.py install --user
 ```
+I plan to move from Setuptools to pip once I figure out how to.:sweat_smile:
 
 ### Uninstall
 ```
