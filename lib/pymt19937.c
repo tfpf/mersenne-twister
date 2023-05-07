@@ -87,16 +87,58 @@ static PyObject *real64(PyObject *self, PyObject *args)
 
 
 // Module information.
+PyDoc_STRVAR(
+    seed32_doc,
+    "Python API for `mt19937_seed32`.\n\n"
+    ":param seed: 32-bit number, optional. If this is not specified, it is the same as if it were 0."
+);
+PyDoc_STRVAR(
+    seed64_doc,
+    "Python API for `mt19937_seed64`. Seed 64-bit MT19937.\n\n"
+    ":param seed: 64-bit number, optional. If this is not specified, it is the same as if it were 0."
+);
+PyDoc_STRVAR(
+    rand32_doc,
+    "Python API for `mt19937_rand32`.\n\n"
+    ":return: Uniform pseudorandom 32-bit number."
+);
+PyDoc_STRVAR(
+    rand64_doc,
+    "Python API for `mt19937_rand64`.\n\n"
+    ":return: Uniform pseudorandom 64-bit number."
+);
+PyDoc_STRVAR(
+    uint32_doc,
+    "Python API for `mt19937_uint32`.\n\n"
+    ":param modulus: 32-bit number. Raises `RuntimeError` if this is 0.\n\n"
+    ":return: Uniform pseudorandom 32-bit number from 0 (inclusive) to `modulus` (exclusive)."
+);
+PyDoc_STRVAR(
+    uint64_doc,
+    "Python API for `mt19937_uint64`.\n\n"
+    ":param modulus: 64-bit number. Raises `RuntimeError` if this is 0.\n\n"
+    ":return: Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive)."
+);
+PyDoc_STRVAR(
+    real32_doc,
+    "Python API for `mt19937_real32`.\n\n"
+    ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
+);
+PyDoc_STRVAR(
+    real64_doc,
+    "Python API for `mt19937_real64`.\n\n"
+    ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
+);
 static PyMethodDef pymt19937_methods[] =
 {
-    {"seed32", seed32, METH_VARARGS, "Python wrapper around `mt19937_seed32`."},
-    {"seed64", seed64, METH_VARARGS, "Python wrapper around `mt19937_seed64`."},
-    {"rand32", rand32, METH_NOARGS, "Python wrapper around `mt19937_rand32`."},
-    {"rand64", rand64, METH_NOARGS, "Python wrapper around `mt19937_rand64`."},
-    {"uint32", uint32, METH_VARARGS, "Python wrapper around `mt19937_uint32`."},
-    {"uint64", uint64, METH_VARARGS, "Python wrapper around `mt19937_uint64`."},
-    {"real32", real32, METH_NOARGS, "Python wrapper around `mt19937_real32`."},
-    {"real64", real64, METH_NOARGS, "Python wrapper around `mt19937_real64`."},
+    {"seed32", seed32, METH_VARARGS, seed32_doc},
+    {"seed64", seed64, METH_VARARGS, seed64_doc},
+    {"rand32", rand32, METH_NOARGS, rand32_doc},
+    {"rand64", rand64, METH_NOARGS, rand64_doc},
+    {"uint32", uint32, METH_VARARGS, uint32_doc},
+    {"uint64", uint64, METH_VARARGS, uint64_doc},
+    {"real32", real32, METH_NOARGS, real32_doc},
+    {"real64", real64, METH_NOARGS, real64_doc},
     {NULL, NULL, 0, NULL},
 };
 static PyModuleDef pymt19937_module =

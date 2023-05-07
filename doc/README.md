@@ -15,6 +15,8 @@
   provided for Python. This is because the CPython implementation has a global interpreter lock, and (looking at the
   Python bytecode disassembly) a C function call corresponds to a single Python bytecode instruction. Hence, there are
   no race conditions to worry about.
+  * The Python API functions are given names similar to those below. To view *their* documentation, you can enter
+    `import mt19937` and then `help(mt19937)` at the Python REPL.
 
 ---
 
@@ -25,16 +27,12 @@ Seed 32-bit MT19937.
 * `seed` 32-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID.
 * `mt` MT19937 object to seed. Optional. If not provided, the internal 32-bit MT19937 object is seeded.
 
-Python API: `mt19937.seed32`
-
 ```C
 void mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
 ```
 Seed 64-bit MT19937.
 * `seed` 64-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID.
 * `mt` MT19937 object to seed. Optional. If not provided, the internal 64-bit MT19937 object is seeded.
-
-Python API: `mt19937.seed64`
 
 ---
 
@@ -45,16 +43,12 @@ Generate a pseudorandom number.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
 * → Uniform pseudorandom 32-bit number.
 
-Python API: `mt19937.rand32`
-
 ```C
 uint64_t mt19937_rand64(struct mt19937_64_t *mt);
 ```
 Generate a pseudorandom number.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
 * → Uniform pseudorandom 64-bit number.
-
-Python API: `mt19937.rand64`
 
 ---
 
@@ -66,8 +60,6 @@ Generate a pseudorandom residue.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
 * → Uniform pseudorandom 32-bit number from 0 (inclusive) to `modulus` (exclusive).
 
-Python API: `mt19937.uint32`
-
 ```C
 uint64_t mt19937_uint64(uint64_t modulus, struct mt19937_64_t *mt);
 ```
@@ -75,8 +67,6 @@ Generate a pseudorandom residue.
 * `modulus` 64-bit number. Must not be 0.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
 * → Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive).
-
-Python API: `mt19937.uint64`
 
 ---
 
@@ -87,16 +77,12 @@ Generate a pseudorandom fraction.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
 * → Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive).
 
-Python API: `mt19937.real32`
-
 ```C
 double long mt19937_real64(struct mt19937_64_t *mt);
 ```
 Generate a pseudorandom fraction.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
 * → Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive).
-
-Python API: `mt19937.real64`
 
 ---
 
