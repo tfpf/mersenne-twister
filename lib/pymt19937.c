@@ -145,7 +145,7 @@ static PyModuleDef pymt19937_module =
 {
     PyModuleDef_HEAD_INIT,
     "mt19937",
-    "Python wrapper around MT19937.",
+    "Python API for a C implementation of MT19937, a uniform pseudorandom number generator",
     -1,
     pymt19937_methods,
 };

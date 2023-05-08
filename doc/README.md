@@ -15,8 +15,8 @@
   provided for Python. This is because the CPython implementation has a global interpreter lock, and (looking at the
   Python bytecode disassembly) a C function call corresponds to a single Python bytecode instruction. Hence, there are
   no race conditions to worry about.
-  * The Python API functions are given names similar to those below. To view *their* documentation, you can enter
-    `import mt19937` and then `help(mt19937)` at the Python REPL.
+  * The Python API functions are given names similar to those below. Nevertheless, you can view *their* documentation
+    by entering `import mt19937` and then `help(mt19937)` at the Python REPL.
 
 ---
 
