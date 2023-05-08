@@ -26,4 +26,3 @@ package-dir = {'' = './lib'}
 
 [tool.setuptools.packages.find]
 where = ['./lib']
-exclude = ['examples', 'tests']
