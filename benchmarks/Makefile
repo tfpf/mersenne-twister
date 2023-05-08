@@ -1,5 +1,5 @@
 SHELL    = /bin/sh
-CC       = g++
+CXX      = g++
 CPPFLAGS = -O3 -std=c++11 -Wall -Wextra
 LDLIBS   = -lmt19937
 RM       = rm -f
