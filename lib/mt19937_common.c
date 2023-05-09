@@ -49,9 +49,9 @@ MT19937_WORD MT19937_RAND(MT19937_OBJECT_TYPE *mt)
 
     // Generate.
     MT19937_WORD curr = mt->state[mt->index++];
-    curr ^= (curr >> MT19937_TEMPER_U) & MT19937_TEMPER_D;
-    curr ^= (curr << MT19937_TEMPER_S) & MT19937_TEMPER_B;
-    curr ^= (curr << MT19937_TEMPER_T) & MT19937_TEMPER_C;
+    curr ^= curr >> MT19937_TEMPER_U & MT19937_TEMPER_D;
+    curr ^= curr << MT19937_TEMPER_S & MT19937_TEMPER_B;
+    curr ^= curr << MT19937_TEMPER_T & MT19937_TEMPER_C;
     curr ^= curr >> MT19937_TEMPER_I;
     return curr;
 }
