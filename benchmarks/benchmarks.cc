@@ -13,8 +13,8 @@
         function_call;  \
     }  \
     auto end = std::chrono::steady_clock::now();  \
-    auto delay = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / (double)ITERATIONS;  \
-    std::printf("%20s %8.1lf ns\n", #function_call, delay);  \
+    auto delay = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count();  \
+    std::printf("%20s %8.1lf ns\n", #function_call, delay / static_cast<double>(ITERATIONS));  \
 }
 
 /******************************************************************************
