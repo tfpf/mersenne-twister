@@ -1,6 +1,6 @@
 #include <chrono>
+#include <cstdio>
 #include <iomanip>
-#include <iostream>
 #include <mt19937.h>
 
 // Neither GCC nor Clang eliminate the function call or loop while optimising.
@@ -13,8 +13,8 @@
         function_call;  \
     }  \
     auto end = std::chrono::steady_clock::now();  \
-    auto delay = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / ITERATIONS;  \
-    std::cout << std::setw(20) << #function_call << std::setw(8) << delay << " ns\n";  \
+    auto delay = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin).count() / (double)ITERATIONS;  \
+    std::printf("%20s %8.1lf ns\n", #function_call, delay);  \
 }
 
 /******************************************************************************
