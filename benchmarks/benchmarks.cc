@@ -4,6 +4,8 @@
 #include <mt19937.h>
 
 // Neither GCC nor Clang eliminate the function call or loop while optimising.
+// One possible reason is that the definitions of the functions are available
+// only to the linker, not to the compiler.
 #define ITERATIONS 65536
 #define BENCHMARK(function_call)  \
 {  \
