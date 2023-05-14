@@ -43,17 +43,17 @@ To see it in action, put the following code in a file `example.c`:
 int main(void)
 {
     // 32-bit MT19937.
-    mt19937_seed(0);
+    mt19937_seed32(0);
     for(int i = 0; i < 10; ++i)
     {
-        printf("%lu\n", mt19937_rand());
+        printf("%lu\n", mt19937_rand32());
     }
 
     // 64-bit MT19937.
-    mt19937_64_seed(0);
+    mt19937_seed64(0);
     for(int i = 0; i < 10; ++i)
     {
-        printf("%llu\n", mt19937_64_rand());
+        printf("%llu\n", mt19937_rand64());
     }
 }
 ```
