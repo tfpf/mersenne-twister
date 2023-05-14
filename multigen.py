@@ -1,5 +1,9 @@
 #! /usr/bin/python3
 
+"""
+A script to generate multiple sudoku puzzles quickly.
+"""
+
 import datetime
 import os
 import os.path
@@ -28,7 +32,7 @@ def main():
         today += datetime.timedelta(days=1)
         fname = today.strftime(f'{directory}/S{i:02d}_%a-%d-%b-%Y.txt')
         with open(fname, 'w') as stdout, open(os.devnull, 'w') as stderr:
-            subprocess.Popen(('./solve_sudoku', '11.35'), stdout=stdout, stderr=stderr)
+            subprocess.Popen(('./solve_sudoku', '10.8'), stdout=stdout, stderr=stderr)
 
 
 if __name__ == '__main__':
