@@ -1,6 +1,5 @@
 #include <chrono>
 #include <cstdio>
-#include <iomanip>
 #include <mt19937.h>
 
 // Neither GCC nor Clang eliminate the function call or loop while optimising.
