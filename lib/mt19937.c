@@ -19,6 +19,7 @@
 #undef mt19937_real32
 #undef mt19937_real64
 #undef mt19937_shuffle32
+#undef mt19937_shuffle64
 
 /******************************************************************************
  * 32-bit MT19937.
@@ -33,6 +34,7 @@
 #define MT19937_RAND mt19937_rand32
 #define MT19937_UINT mt19937_uint32
 #define MT19937_REAL mt19937_real32
+#define MT19937_SHUFFLE mt19937_shuffle32
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
 #define MT19937_MASK_UPPER 0x80000000U
@@ -144,6 +146,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_RAND
 #undef MT19937_UINT
 #undef MT19937_REAL
+#undef MT19937_SHUFFLE
 #undef MT19937_STATE_LENGTH
 #undef MT19937_STATE_MIDDLE
 #undef MT19937_MASK_UPPER
@@ -159,28 +162,6 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_TEMPER_U
 
 /******************************************************************************
- * Array shuffler. Uses 32-bit MT19937, but deserves a separate section.
- *****************************************************************************/
-void mt19937_shuffle32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt)
-{
-    char *temp = malloc(size_of_item);
-    char *items_ = (char *)items;
-    for(uint32_t i = num_of_items - 1; i > 0; --i)
-    {
-        uint32_t j = mt19937_uint32(i + 1, mt);
-        if(i != j)
-        {
-            char *items_i = items_ + i * size_of_item;
-            char *items_j = items_ + j * size_of_item;
-            memcpy(temp, items_i, size_of_item);
-            memcpy(items_i, items_j, size_of_item);
-            memcpy(items_j, temp, size_of_item);
-        }
-    }
-    free(temp);
-}
-
-/******************************************************************************
  * 64-bit MT19937.
  *****************************************************************************/
 #define MT19937_WORD uint64_t
@@ -193,6 +174,7 @@ void mt19937_shuffle32(void *items, uint32_t num_of_items, size_t size_of_item, 
 #define MT19937_RAND mt19937_rand64
 #define MT19937_UINT mt19937_uint64
 #define MT19937_REAL mt19937_real64
+#define MT19937_SHUFFLE mt19937_shuffle64
 #define MT19937_STATE_LENGTH 312
 #define MT19937_STATE_MIDDLE 156
 #define MT19937_MASK_UPPER 0xFFFFFFFF80000000U
@@ -304,6 +286,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_RAND
 #undef MT19937_UINT
 #undef MT19937_REAL
+#undef MT19937_SHUFFLE
 #undef MT19937_STATE_LENGTH
 #undef MT19937_STATE_MIDDLE
 #undef MT19937_MASK_UPPER
