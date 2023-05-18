@@ -23,7 +23,8 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 MT19937_WORD upper = MT19937_MASK_UPPER & mt->state[i];  \
 MT19937_WORD lower = MT19937_MASK_LOWER & mt->state[j];  \
 MT19937_WORD masked = upper | lower;  \
-MT19937_WORD twisted = masked >> 1 ^ twist[masked & 1];  \
+MT19937_WORD twister = twist[masked & 1];  \
+MT19937_WORD twisted = masked >> 1 ^ twister;  \
 mt->state[i] = mt->state[k] ^ twisted;
 #endif
 

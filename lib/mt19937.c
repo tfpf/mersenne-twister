@@ -25,6 +25,7 @@
  * 32-bit MT19937.
  *****************************************************************************/
 #define MT19937_WORD uint32_t
+#define MT19937_WORD_SIGNED int32_t
 #define MT19937_WORD_WIDTH 32
 #define MT19937_WORD_MAX 0xFFFFFFFFU
 #define MT19937_OBJECT_TYPE struct mt19937_32_t
@@ -137,6 +138,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #include "mt19937_common.c"
 
 #undef MT19937_WORD
+#undef MT19937_WORD_SIGNED
 #undef MT19937_WORD_WIDTH
 #undef MT19937_WORD_MAX
 #undef MT19937_OBJECT_TYPE
@@ -165,6 +167,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
  * 64-bit MT19937.
  *****************************************************************************/
 #define MT19937_WORD uint64_t
+#define MT19937_WORD_SIGNED int64_t
 #define MT19937_WORD_WIDTH 64
 #define MT19937_WORD_MAX 0xFFFFFFFFFFFFFFFFU
 #define MT19937_OBJECT_TYPE struct mt19937_64_t
@@ -277,6 +280,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #include "mt19937_common.c"
 
 #undef MT19937_WORD
+#undef MT19937_WORD_SIGNED
 #undef MT19937_WORD_WIDTH
 #undef MT19937_WORD_MAX
 #undef MT19937_OBJECT_TYPE

@@ -7,3 +7,9 @@ https://en.cppreference.com/w/cpp/numeric/random/mersenne_twister_engine for mor
 > | :-----: | :--------------------: | :------------------: |
 > | `10000` | `std::mt19937`         | 4123659995           |
 > | `10000` | `std::mt19937_64`      | 9981545732273789042  |
+
+Run
+```
+./tests.sh
+```
+to run all tests.
