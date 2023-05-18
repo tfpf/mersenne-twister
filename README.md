@@ -2,13 +2,23 @@ Makoto Matsumoto and Takuji Nishimura, "Mersenne Twister: A 623-dimensionally Eq
 Number Generator", in ACM Transactions on Modeling and Computer Simulation, vol. 8, no. 1, pp. 3-30, January 1998,
 doi:10.1145/272991.272995.
 
+Makoto Matsumoto, "Mersenne Twister with Improved Initialization" [source code],
+http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/emt19937ar.html, 2007.
+
+Christian Stigen Larsen, "A fast Mersenne Twister in C++" [source code], https://github.com/cslarsen/mersenne-twister,
+2017.
+
 # Mersenne Twister (MT19937): Pseudorandom Number Generators
 This package provides 32- and 64-bit global-state (non-reentrant) and reentrant uniform pseudorandom number generators
 and some utility functions for C and C++. These are intended as replacements for the `rand` family of functions of the
 C standard library. The behaviours of these implementations are consistent with those of `std::mt19937` and
 `std::mt19937_64` of the C++ standard library.
 
-See [`doc`](doc) for the documentation of this package. See [`examples`](examples) for usage examples.
+The performance of this implementation should be comparable to that of C. S. Larsen's implementation (which is
+extremely fast).
+
+See [`doc`](doc) for the documentation of this package. [`examples`](examples) contains usage examples. For performance
+analysis, go to [`benchmarks`](benchmarks).
 
 ## Installation Requirements
 These are the versions I have tested the installation with. Older versions may also work.

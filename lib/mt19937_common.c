@@ -15,16 +15,36 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 }
 
 
-// Two loops and one iteration using hard-coded indices (i.e. without modulo
-// operations) run faster than one loop using indices with modulo operations.
-// To reduce code repetition, I have factored the loop body out.
+/******************************************************************************
+ * Execute one iteration of the twist loop of MT19937.
+ *
+ * Factoring out the loop body like this allows partially unrolling the loop,
+ * thereby eliminating modulo operations in the calculation of indices. As a
+ * result, the code runs faster.
+ *
+ * Another optimisation worth noting is the calculation of `mask`: if `lower`
+ * is odd, `MT19937_MASK_TWIST` must be XORed with the result, but not
+ * otherwise. This can be accomplished with branch or load instructions.
+ * However, it is faster to copy the LSB of `lower` into all of its other bit
+ * positions. I did this by casting it to a signed type and then negating it.
+ * (The C standard requires exact-width integer types to use two's complement
+ * representation. It also states that assigning a negative value to an
+ * unsigned type causes wrap-around. Effectively, this means that if `lower` is
+ * odd, `mask` has all bits set, otherwise, it has all bits cleared. Hence,
+ * this code won't result in implementation-defined behaviour.) Indeed, GCC and
+ * Clang calculate `mask` using a `neg` instruction, which is consistent with
+ * the above.
+ *
+ * The first optimisation is due to the original authors of MT19937. The second
+ * (though similar to the optimisation in C. S. Larsen's code) is my own idea.
+ *****************************************************************************/
 #ifndef MT19937_TWIST_LOOP_BODY
 #define MT19937_TWIST_LOOP_BODY(i, j, k)  \
 MT19937_WORD upper = MT19937_MASK_UPPER & mt->state[i];  \
 MT19937_WORD lower = MT19937_MASK_LOWER & mt->state[j];  \
-MT19937_WORD masked = upper | lower;  \
-MT19937_WORD twister = twist[masked & 1];  \
-MT19937_WORD twisted = masked >> 1 ^ twister;  \
+MT19937_WORD combo = upper | lower;  \
+MT19937_WORD mask = -(MT19937_WORD_SIGNED)(lower & 1);  \
+MT19937_WORD twisted = combo >> 1 ^ (mask & MT19937_MASK_TWIST);  \
 mt->state[i] = mt->state[k] ^ twisted;
 #endif
 
@@ -36,7 +56,6 @@ MT19937_WORD MT19937_RAND(MT19937_OBJECT_TYPE *mt)
     if(mt->index == MT19937_STATE_LENGTH)
     {
         mt->index = 0;
-        static MT19937_WORD const twist[] = {0, MT19937_MASK_TWIST};
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
             MT19937_TWIST_LOOP_BODY(i, i + 1, i + MT19937_STATE_MIDDLE)
