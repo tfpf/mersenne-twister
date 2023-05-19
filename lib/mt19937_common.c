@@ -26,14 +26,13 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
  * is odd, `MT19937_MASK_TWIST` must be XORed with the result, but not
  * otherwise. This can be accomplished with branch or load instructions.
  * However, it is faster to copy the LSB of `lower` into all of its other bit
- * positions. I did this by casting it to a signed type and then negating it.
- * (The C standard requires exact-width integer types to use two's complement
- * representation. It also states that assigning a negative value to an
- * unsigned type causes wrap-around. Effectively, this means that if `lower` is
- * odd, `mask` has all bits set, otherwise, it has all bits cleared. Hence,
- * this code won't result in implementation-defined behaviour.) Indeed, GCC and
- * Clang calculate `mask` using a `neg` instruction, which is consistent with
- * the above.
+ * positions. I did this by negating it. (The C standard requires exact-width
+ * integer types to use the two's complement representation. It also states
+ * that assigning a negative value to an unsigned type causes wrap-around.
+ * Effectively, this means that if `lower` is odd, `mask` has all bits set,
+ * otherwise, it has all bits cleared. Hence, this code won't result in
+ * implementation-defined behaviour.) Indeed, GCC and Clang calculate `mask`
+ * using a `neg` instruction, which is consistent with the above.
  *
  * The first optimisation is due to the original authors of MT19937. The second
  * (though similar to the optimisation in C. S. Larsen's code) is my own idea.
@@ -43,7 +42,7 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 MT19937_WORD upper = MT19937_MASK_UPPER & mt->state[i];  \
 MT19937_WORD lower = MT19937_MASK_LOWER & mt->state[j];  \
 MT19937_WORD combo = upper | lower;  \
-MT19937_WORD mask = -(MT19937_WORD_SIGNED)(lower & 1);  \
+MT19937_WORD mask = -(lower & 1);  \
 MT19937_WORD twisted = combo >> 1 ^ (mask & MT19937_MASK_TWIST);  \
 mt->state[i] = mt->state[k] ^ twisted;
 #endif
