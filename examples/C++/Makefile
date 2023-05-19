@@ -1,5 +1,5 @@
 SHELL  = /bin/sh
-CC     = g++
+CXX    = g++
 LDLIBS = -lmt19937
 
 Sources     = $(wildcard *.cc)

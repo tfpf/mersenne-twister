@@ -10,7 +10,6 @@ Executable = tests
 .PHONY: clean
 
 $(Executable): $(Sources)
-	$(CC) $(CFLAGS) -o $(Executable) $(Sources) $(LDLIBS)
 
 clean:
 	$(RM) $(Executable)
