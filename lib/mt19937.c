@@ -138,7 +138,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
     MT19937_STATE_LENGTH,
 };
 
-#include "mt19937_common.c"
+#include "mt19937_defs.c"
 
 #undef MT19937_WORD
 #undef MT19937_WORD_SIGNED
@@ -282,7 +282,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
     MT19937_STATE_LENGTH,
 };
 
-#include "mt19937_common.c"
+#include "mt19937_defs.c"
 
 #undef MT19937_WORD
 #undef MT19937_WORD_SIGNED

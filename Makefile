@@ -22,7 +22,7 @@ install: uninstall $(SharedObject)
 	$(CP) $(Header) $(Prefix)/include/$(Package).h
 	$(CP) $(SharedObject) $(Prefix)/lib/lib$(Package).so
 
-%.so: %.c %_common.c
+%.so: %.c %_defs.c
 	$(CC) $(CFLAGS) -shared -o $@ $<
 
 uninstall:
