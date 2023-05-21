@@ -35,7 +35,7 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
  * using a `neg` instruction, which is consistent with the above.
  *
  * The first optimisation is due to the original authors of MT19937. The second
- * (though similar to the optimisation in C. S. Larsen's code) is my own idea.
+ * (though inspired by the optimisation in C. S. Larsen's code) is my own idea.
  *****************************************************************************/
 #ifndef MT19937_TWIST_LOOP_BODY
 #define MT19937_TWIST_LOOP_BODY(i, j, k)  \
@@ -112,4 +112,13 @@ void MT19937_SHUFFLE(void *items, MT19937_WORD num_of_items, size_t size_of_item
         }
     }
     free(tmp);
+}
+
+
+void MT19937_DROP(int long long unsigned count, MT19937_OBJECT_TYPE *mt)
+{
+    while(count-- > 0)
+    {
+        MT19937_RAND(mt);
+    }
 }

@@ -10,13 +10,11 @@ void tests(void)
     mt19937_seed32(5489, &mt32);
     mt19937_64_t mt64;
     mt19937_seed64(5489, &mt64);
-    for(int i = 1; i < 10000; ++i)
-    {
-        mt19937_rand32();
-        mt19937_rand64();
-        mt19937_rand32(&mt32);
-        mt19937_rand64(&mt64);
-    }
+
+    mt19937_drop32(9999);
+    mt19937_drop32(9999, &mt32);
+    mt19937_drop64(9999);
+    mt19937_drop64(9999, &mt64);
 
     assert(mt19937_rand32() == 0xF5CA0EDBU);
     assert(mt19937_rand64() == 0x8A8592F5817ED872U);

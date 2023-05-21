@@ -20,6 +20,8 @@
 #undef mt19937_real64
 #undef mt19937_shuffle32
 #undef mt19937_shuffle64
+#undef mt19937_drop32
+#undef mt19937_drop64
 
 /******************************************************************************
  * 32-bit MT19937.
@@ -36,6 +38,7 @@
 #define MT19937_UINT mt19937_uint32
 #define MT19937_REAL mt19937_real32
 #define MT19937_SHUFFLE mt19937_shuffle32
+#define MT19937_DROP mt19937_drop32
 #define MT19937_STATE_LENGTH 624
 #define MT19937_STATE_MIDDLE 397
 #define MT19937_MASK_UPPER 0x80000000U
@@ -149,6 +152,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_UINT
 #undef MT19937_REAL
 #undef MT19937_SHUFFLE
+#undef MT19937_DROP
 #undef MT19937_STATE_LENGTH
 #undef MT19937_STATE_MIDDLE
 #undef MT19937_MASK_UPPER
@@ -178,6 +182,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #define MT19937_UINT mt19937_uint64
 #define MT19937_REAL mt19937_real64
 #define MT19937_SHUFFLE mt19937_shuffle64
+#define MT19937_DROP mt19937_drop64
 #define MT19937_STATE_LENGTH 312
 #define MT19937_STATE_MIDDLE 156
 #define MT19937_MASK_UPPER 0xFFFFFFFF80000000U
@@ -291,6 +296,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_UINT
 #undef MT19937_REAL
 #undef MT19937_SHUFFLE
+#undef MT19937_DROP
 #undef MT19937_STATE_LENGTH
 #undef MT19937_STATE_MIDDLE
 #undef MT19937_MASK_UPPER

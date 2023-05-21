@@ -86,6 +86,30 @@ static PyObject *real64(PyObject *self, PyObject *args)
 }
 
 
+static PyObject *drop32(PyObject *self, PyObject *args)
+{
+    int long long unsigned count;
+    if(!PyArg_ParseTuple(args, "K", &count))
+    {
+        return NULL;
+    }
+    mt19937_drop32(count, NULL);
+    Py_RETURN_NONE;
+}
+
+
+static PyObject *drop64(PyObject *self, PyObject *args)
+{
+    int long long unsigned count;
+    if(!PyArg_ParseTuple(args, "K", &count))
+    {
+        return NULL;
+    }
+    mt19937_drop64(count, NULL);
+    Py_RETURN_NONE;
+}
+
+
 // Module information.
 PyDoc_STRVAR(
     seed32_doc,
@@ -129,6 +153,16 @@ PyDoc_STRVAR(
     "Python API for `mt19937_real64`.\n\n"
     ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
 );
+PyDoc_STRVAR(
+    drop32_doc,
+    "Python API for `mt19937_drop32`.\n\n"
+    ":param count: Number of steps to advance the state by."
+);
+PyDoc_STRVAR(
+    drop64_doc,
+    "Python API for `mt19937_drop64`.\n\n"
+    ":param count: Number of steps to advance the state by."
+);
 static PyMethodDef pymt19937_methods[] =
 {
     {"seed32", seed32, METH_VARARGS, seed32_doc},
@@ -139,13 +173,15 @@ static PyMethodDef pymt19937_methods[] =
     {"uint64", uint64, METH_VARARGS, uint64_doc},
     {"real32", real32, METH_NOARGS, real32_doc},
     {"real64", real64, METH_NOARGS, real64_doc},
+    {"drop32", drop32, METH_VARARGS, drop32_doc},
+    {"drop64", drop64, METH_VARARGS, drop64_doc},
     {NULL, NULL, 0, NULL},
 };
 static PyModuleDef pymt19937_module =
 {
     PyModuleDef_HEAD_INIT,
     "mt19937",
-    "Python API for a C implementation of MT19937, a uniform pseudorandom number generator",
+    "Python API for a C implementation of MT19937",
     -1,
     pymt19937_methods,
 };
