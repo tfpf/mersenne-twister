@@ -114,12 +114,12 @@ static PyObject *drop64(PyObject *self, PyObject *args)
 PyDoc_STRVAR(
     seed32_doc,
     "Python API for `mt19937_seed32`.\n\n"
-    ":param seed: 32-bit number, optional. If this is not specified, it is the same as if it were 0."
+    ":param seed: 32-bit number. Optional. If this is not specified, it is the same as if it were 0."
 );
 PyDoc_STRVAR(
     seed64_doc,
-    "Python API for `mt19937_seed64`. Seed 64-bit MT19937.\n\n"
-    ":param seed: 64-bit number, optional. If this is not specified, it is the same as if it were 0."
+    "Python API for `mt19937_seed64`.\n\n"
+    ":param seed: 64-bit number. Optional. If this is not specified, it is the same as if it were 0."
 );
 PyDoc_STRVAR(
     rand32_doc,
