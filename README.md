@@ -19,11 +19,13 @@ See [`doc`](doc) for the documentation of this package. [`examples`](examples) c
 analysis, go to [`benchmarks`](benchmarks).
 
 ## Installation Requirements
-These are the versions I have tested the installation with. Older versions may also work.
-* cURL ≥ 7.74.0
-* GCC ≥ 10.2.1 or Clang ≥ 13.0.1
+These are the versions I have tested the installation with. Older versions may also work. You may not need all of
+these, depending on how and what you are installing.
+* cURL ≥ 7.68.0
+* GCC ≥ 9.4.0 or Clang ≥ 12.0.0
 * Git ≥ 2.30.2
-* GNU Make ≥ 4.3
+* GNU Make ≥ 4.2.1
+* Python ≥ 3.8 and its C headers and library
 
 ## Install for C (and C++)
 The fastest way to install this is to run the following command in a terminal window.
@@ -83,7 +85,6 @@ sudo make uninstall
 installing this package.**
 
 ## Install for Python
-You must have Python development tools installed if you want to install the Python API of this package.
 ```
 pip install .
 ```

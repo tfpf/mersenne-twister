@@ -1,6 +1,6 @@
 SHELL  = /bin/sh
 CC     = gcc
-CFLAGS = -O3 -flto -std=c11 -Wall -Wextra -ftree-vectorize -I./include
+CFLAGS = -O3 -flto -std=c11 -Wall -Wextra -I./include
 LDLIBS = -lm -l$(Package)
 RM     = rm -f
 CP     = cp
