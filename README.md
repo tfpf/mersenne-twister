@@ -12,8 +12,9 @@ number generators and some utility functions for C and C++. These are intended a
 functions of the C standard library.
 
 The behaviour of this implementation matches the required behaviour of an MT19937 implementation as set down by the C++
-standard. However, it is faster than GCC's and Clang's implementations. In fact, its speed should be comparable to that
-of C. S. Larsen's implementation (which is … extremely fast:sweat_smile:).
+standard. However, it is faster than GCC's and Clang's implementations. In theory, its speed is on par with that of C.
+S. Larsen's implementation (which is … extremely fast:sweat_smile:). In practice, it is a hair slower—since it is meant
+to be used as a shared object, each function will have some lookup overhead.
 
 See [`doc`](doc) for the documentation of this package. [`examples`](examples) contains usage examples. For performance
 analysis, go to [`benchmarks`](benchmarks).
