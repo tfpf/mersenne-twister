@@ -50,10 +50,9 @@ mt->state[i] = mt->state[k] ^ twisted;
 MT19937_WORD MT19937_RAND(MT19937_OBJECT_TYPE *mt)
 {
     mt = mt == NULL ? &MT19937_OBJECT : mt;
-
-    // Twist.
     if(mt->index == MT19937_STATE_LENGTH)
     {
+        // Twist.
         mt->index = 0;
         for(int i = 0; i < MT19937_STATE_LENGTH - MT19937_STATE_MIDDLE; ++i)
         {
@@ -64,15 +63,19 @@ MT19937_WORD MT19937_RAND(MT19937_OBJECT_TYPE *mt)
             MT19937_TWIST_LOOP_BODY(i, i + 1, i + MT19937_STATE_MIDDLE - MT19937_STATE_LENGTH)
         }
         MT19937_TWIST_LOOP_BODY(MT19937_STATE_LENGTH - 1, 0, MT19937_STATE_MIDDLE - 1)
-    }
 
-    // Generate.
-    MT19937_WORD curr = mt->state[mt->index++];
-    curr ^= curr >> MT19937_TEMPER_U & MT19937_TEMPER_D;
-    curr ^= curr << MT19937_TEMPER_S & MT19937_TEMPER_B;
-    curr ^= curr << MT19937_TEMPER_T & MT19937_TEMPER_C;
-    curr ^= curr >> MT19937_TEMPER_I;
-    return curr;
+        // Generate.
+        for(int i = 0; i < MT19937_STATE_LENGTH; ++i)
+        {
+            MT19937_WORD curr = mt->state[i];
+            curr ^= curr >> MT19937_TEMPER_U & MT19937_TEMPER_D;
+            curr ^= curr << MT19937_TEMPER_S & MT19937_TEMPER_B;
+            curr ^= curr << MT19937_TEMPER_T & MT19937_TEMPER_C;
+            curr ^= curr >> MT19937_TEMPER_I;
+            mt->value[i] = curr;
+        }
+    }
+    return mt->value[mt->index++];
 }
 
 

@@ -1,6 +1,6 @@
 SHELL  = /bin/sh
 CC     = gcc
-CFLAGS = -O3 -flto -std=c11 -Wall -Wextra -I./include
+CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -funroll-loops
 LDLIBS = -lm -l$(Package)
 RM     = rm -f
 CP     = cp

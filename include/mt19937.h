@@ -7,11 +7,13 @@
 struct mt19937_32_t
 {
     uint32_t state[624];
+    uint32_t value[624];
     int index;
 };
 struct mt19937_64_t
 {
     uint64_t state[312];
+    uint64_t value[312];
     int index;
 };
 
