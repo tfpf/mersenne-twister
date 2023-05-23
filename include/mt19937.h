@@ -27,6 +27,8 @@ uint32_t mt19937_rand32(struct mt19937_32_t *mt);
 uint64_t mt19937_rand64(struct mt19937_64_t *mt);
 uint32_t mt19937_uint32(uint32_t modulus, struct mt19937_32_t *mt);
 uint64_t mt19937_uint64(uint64_t modulus, struct mt19937_64_t *mt);
+int32_t mt19937_span32(int32_t left, int32_t right, struct mt19937_32_t *mt);
+int64_t mt19937_span64(int64_t left, int64_t right, struct mt19937_64_t *mt);
 double mt19937_real32(struct mt19937_32_t *mt);
 double long mt19937_real64(struct mt19937_64_t *mt);
 void mt19937_shuffle32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt);
@@ -48,6 +50,8 @@ void mt19937_drop64(int long long unsigned count, struct mt19937_64_t *mt);
 #define mt19937_rand64(...) mt19937_rand64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_uint32(modulus, ...) mt19937_uint32(modulus, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_uint64(modulus, ...) mt19937_uint64(modulus, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
+#define mt19937_span32(left, right, ...) mt19937_span32(left, right, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
+#define mt19937_span64(left, right, ...) mt19937_span64(left, right, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_real32(...) mt19937_real32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_real64(...) mt19937_real64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_shuffle32(items, num_of_items, size_of_item, ...) mt19937_shuffle32(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))

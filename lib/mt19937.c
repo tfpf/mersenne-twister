@@ -16,6 +16,8 @@
 #undef mt19937_rand64
 #undef mt19937_uint32
 #undef mt19937_uint64
+#undef mt19937_span32
+#undef mt19937_span64
 #undef mt19937_real32
 #undef mt19937_real64
 #undef mt19937_shuffle32
@@ -36,6 +38,7 @@
 #define MT19937_SEED mt19937_seed32
 #define MT19937_RAND mt19937_rand32
 #define MT19937_UINT mt19937_uint32
+#define MT19937_SPAN mt19937_span32
 #define MT19937_REAL mt19937_real32
 #define MT19937_SHUFFLE mt19937_shuffle32
 #define MT19937_DROP mt19937_drop32
@@ -151,6 +154,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_SEED
 #undef MT19937_RAND
 #undef MT19937_UINT
+#undef MT19937_SPAN
 #undef MT19937_REAL
 #undef MT19937_SHUFFLE
 #undef MT19937_DROP
@@ -181,6 +185,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #define MT19937_SEED mt19937_seed64
 #define MT19937_RAND mt19937_rand64
 #define MT19937_UINT mt19937_uint64
+#define MT19937_SPAN mt19937_span64
 #define MT19937_REAL mt19937_real64
 #define MT19937_SHUFFLE mt19937_shuffle64
 #define MT19937_DROP mt19937_drop64
@@ -296,6 +301,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_SEED
 #undef MT19937_RAND
 #undef MT19937_UINT
+#undef MT19937_SPAN
 #undef MT19937_REAL
 #undef MT19937_SHUFFLE
 #undef MT19937_DROP

@@ -93,6 +93,18 @@ MT19937_WORD MT19937_UINT(MT19937_WORD modulus, MT19937_OBJECT_TYPE *mt)
 }
 
 
+MT19937_WORD_SIGNED MT19937_SPAN(MT19937_WORD_SIGNED left, MT19937_WORD_SIGNED right, MT19937_OBJECT_TYPE *mt)
+{
+    // Exact-width integer types use two's complement representation. This code
+    // will always work.
+    MT19937_WORD uleft = (MT19937_WORD)left;
+    MT19937_WORD uright = (MT19937_WORD)right;
+    MT19937_WORD modulus = uright - uleft;
+    MT19937_WORD r = MT19937_UINT(modulus, mt);
+    return (MT19937_WORD_SIGNED)(r + uleft);
+}
+
+
 MT19937_REAL_TYPE MT19937_REAL(MT19937_OBJECT_TYPE *mt)
 {
     return (MT19937_REAL_TYPE)MT19937_RAND(mt) / MT19937_WORD_MAX;

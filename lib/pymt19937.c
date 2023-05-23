@@ -1,8 +1,6 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
-#include <stddef.h>
-
 #include "mt19937.c"
 
 
@@ -71,6 +69,38 @@ static PyObject *uint64(PyObject *self, PyObject *args)
         return NULL;
     }
     return PyLong_FromUnsignedLongLong(mt19937_uint64(modulus, NULL));
+}
+
+
+static PyObject *span32(PyObject *self, PyObject *args)
+{
+    int long left, right;
+    if(!PyArg_ParseTuple(args, "ll", &left, &right))
+    {
+        return NULL;
+    }
+    if(right <= left)
+    {
+        PyErr_SetString(PyExc_RuntimeError, "argument 1 must be less than argument 2");
+        return NULL;
+    }
+    return PyLong_FromLong(mt19937_span32(left, right, NULL));
+}
+
+
+static PyObject *span64(PyObject *self, PyObject *args)
+{
+    int long long left, right;
+    if(!PyArg_ParseTuple(args, "LL", &left, &right))
+    {
+        return NULL;
+    }
+    if(right <= left)
+    {
+        PyErr_SetString(PyExc_RuntimeError, "argument 1 must be less than argument 2");
+        return NULL;
+    }
+    return PyLong_FromLongLong(mt19937_span64(left, right, NULL));
 }
 
 
@@ -144,6 +174,20 @@ PyDoc_STRVAR(
     ":return: Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive)."
 );
 PyDoc_STRVAR(
+    span32_doc,
+    "Python API for `mt19937_span32`.\n\n"
+    ":param left: 32-bit number.\n"
+    ":param right: 32-bit number. Raises `RuntimeError` if this is less than or equal to `left`.\n\n"
+    ":return: Uniform pseudorandom 32-bit number from `left` (inclusive) to `right` (exclusive)."
+);
+PyDoc_STRVAR(
+    span64_doc,
+    "Python API for `mt19937_span64`.\n\n"
+    ":param left: 64-bit number.\n"
+    ":param right: 64-bit number. Raises `RuntimeError` if this is less than or equal to `left`.\n\n"
+    ":return: Uniform pseudorandom 64-bit number from `left` (inclusive) to `right` (exclusive)."
+);
+PyDoc_STRVAR(
     real32_doc,
     "Python API for `mt19937_real32`.\n\n"
     ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
@@ -171,6 +215,8 @@ static PyMethodDef pymt19937_methods[] =
     {"rand64", rand64, METH_NOARGS, rand64_doc},
     {"uint32", uint32, METH_VARARGS, uint32_doc},
     {"uint64", uint64, METH_VARARGS, uint64_doc},
+    {"span32", span32, METH_VARARGS, span32_doc},
+    {"span64", span64, METH_VARARGS, span64_doc},
     {"real32", real32, METH_NOARGS, real32_doc},
     {"real64", real64, METH_NOARGS, real64_doc},
     {"drop32", drop32, METH_VARARGS, drop32_doc},

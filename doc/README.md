@@ -17,6 +17,9 @@
   conditions to worry about, and the provided functions are thread-safe.
   * The Python API functions are given names similar to those below. Nevertheless, you can view *their* documentation
     by entering `import mt19937` and then `help(mt19937)` at the Python REPL.
+  * Since Python uses arbitrary-precision integers, it is possible for a Python integer to not be exactly representable
+    as a C integer. Weird things may happen if the Python functions are called with out-of-range numbers; I make no
+    attempt to mitigate this.
 
 ---
 
@@ -67,6 +70,26 @@ Generate a pseudorandom residue.
 * `modulus` 64-bit number. Must not be 0.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
 * → Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive).
+
+---
+
+```C
+int32_t mt19937_span32(int32_t left, int32_t right, struct mt19937_32_t *mt);
+```
+Generate a pseudorandom residue offset.
+* `left` 32-bit number.
+* `right` 32-bit number. Must be greater than `left`.
+* `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
+* → Uniform pseudorandom 32-bit number from `left` (inclusive) to `right` (exclusive).
+
+```C
+int64_t mt19937_span64(int64_t left, int64_t right, struct mt19937_64_t *mt);
+```
+Generate a pseudorandom residue offset.
+* `left` 64-bit number.
+* `right` 64-bit number. Must be greater than `left`.
+* `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
+* → Uniform pseudorandom 64-bit number from `left` (inclusive) to `right` (exclusive).
 
 ---
 
