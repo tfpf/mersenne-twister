@@ -8,6 +8,7 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
     mt->state[0] = seed;
     for(int i = 1; i < MT19937_STATE_LENGTH; ++i)
     {
+        // Unsigned overflow is defined behaviour.
         MT19937_WORD shifted = mt->state[i - 1] >> (MT19937_WORD_WIDTH - 2);
         mt->state[i] = MT19937_MULTIPLIER * (mt->state[i - 1] ^ shifted) + i;
     }
@@ -100,7 +101,10 @@ MT19937_REAL_TYPE MT19937_REAL(MT19937_OBJECT_TYPE *mt)
 
 void MT19937_SHUFFLE(void *items, MT19937_WORD num_of_items, size_t size_of_item, MT19937_OBJECT_TYPE *mt)
 {
-    char *tmp = malloc(size_of_item);
+    // C++ does not implicitly convert `void *`, so a cast is necessary,
+    // because I want to allow users to include this file directly in a C or
+    // C++ program.
+    char *tmp = (char *)malloc(size_of_item);
     char *items_ = (char *)items;
     for(MT19937_WORD i = num_of_items - 1; i > 0; --i)
     {

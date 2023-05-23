@@ -3,8 +3,8 @@
 #include <mt19937.h>
 
 // Neither GCC nor Clang eliminate the function call or loop while optimising.
-// One possible reason is that the definitions of the functions are available
-// only to the linker, not to the compiler.
+// The definitions of the functions are in a shared object, and not visible to
+// the compiler.
 #define BENCHMARK(function_call, iterations)  \
 {  \
     auto begin = std::chrono::steady_clock::now();  \
