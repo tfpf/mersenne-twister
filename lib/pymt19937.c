@@ -179,68 +179,70 @@ static PyObject *drop64(PyObject *self, PyObject *args)
 // Module information.
 PyDoc_STRVAR(
     seed32_doc,
-    "Python API for `mt19937_seed32`.\n\n"
+    "Seed 32-bit MT19937.\n\n"
     ":param seed: 32-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID."
 );
 PyDoc_STRVAR(
     seed64_doc,
-    "Python API for `mt19937_seed64`.\n\n"
+    "Seed 64-bit MT19937.\n\n"
     ":param seed: 64-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID."
 );
 PyDoc_STRVAR(
     rand32_doc,
-    "Python API for `mt19937_rand32`.\n\n"
+    "Generate a pseudorandom number.\n\n"
     ":return: Uniform pseudorandom 32-bit number."
 );
 PyDoc_STRVAR(
     rand64_doc,
-    "Python API for `mt19937_rand64`.\n\n"
+    "Generate a pseudorandom number.\n\n"
     ":return: Uniform pseudorandom 64-bit number."
 );
 PyDoc_STRVAR(
     uint32_doc,
-    "Python API for `mt19937_uint32`.\n\n"
+    "Generate a pseudorandom residue.\n\n"
     ":param modulus: 32-bit number. Must not be 0.\n\n"
     ":return: Uniform pseudorandom 32-bit number from 0 (inclusive) to `modulus` (exclusive)."
 );
 PyDoc_STRVAR(
     uint64_doc,
-    "Python API for `mt19937_uint64`.\n\n"
+    "Generate a pseudorandom residue.\n\n"
     ":param modulus: 64-bit number. Must not be 0.\n\n"
     ":return: Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive)."
 );
 PyDoc_STRVAR(
     span32_doc,
-    "Python API for `mt19937_span32`.\n\n"
+    "Generate a pseudorandom residue offset.\n\n"
     ":param left: 32-bit number.\n"
     ":param right: 32-bit number. Must be greater than `left`.\n\n"
     ":return: Uniform pseudorandom 32-bit number from `left` (inclusive) to `right` (exclusive)."
 );
 PyDoc_STRVAR(
     span64_doc,
-    "Python API for `mt19937_span64`.\n\n"
+    "Generate a pseudorandom residue offset.\n\n"
     ":param left: 64-bit number.\n"
     ":param right: 64-bit number. Must be greater than `left`.\n\n"
     ":return: Uniform pseudorandom 64-bit number from `left` (inclusive) to `right` (exclusive)."
 );
 PyDoc_STRVAR(
     real32_doc,
-    "Python API for `mt19937_real32`.\n\n"
+    "Generate a pseudorandom fraction.\n\n"
     ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
 );
 PyDoc_STRVAR(
     real64_doc,
-    "Python API for `mt19937_real64`.\n\n"
+    "Generate a pseudorandom fraction.\n\n"
     ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
 );
 PyDoc_STRVAR(
     drop32_doc,
-    "Python API for `mt19937_drop32`.\n\n"
+    "Advance the state of the pseudorandom number generator. Equivalent to running `rand32()` `count` times and "
+    "discarding the results.\n\n"
     ":param count: Number of steps to advance the state by."
 );
 PyDoc_STRVAR(
     drop64_doc,
-    "Python API for `mt19937_drop64`.\n\n"
+    "Advance the state of the pseudorandom number generator. Equivalent to running `rand64()` `count` times and "
+    "discarding the results.\n\n"
     ":param count: Number of steps to advance the state by."
 );
 static PyMethodDef pymt19937_methods[] =
