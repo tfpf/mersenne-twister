@@ -1,10 +1,6 @@
 void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 {
     mt = mt == NULL ? &MT19937_OBJECT : mt;
-    if(seed == 0)
-    {
-        seed = time(NULL) + getpid();
-    }
     mt->state[0] = seed;
     for(int i = 1; i < MT19937_STATE_LENGTH; ++i)
     {
@@ -13,6 +9,12 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
         mt->state[i] = MT19937_MULTIPLIER * (mt->state[i - 1] ^ shifted) + i;
     }
     mt->index = MT19937_STATE_LENGTH;
+}
+
+
+void MT19937_INIT(MT19937_OBJECT_TYPE *mt)
+{
+    MT19937_SEED(time(NULL), mt);
 }
 
 

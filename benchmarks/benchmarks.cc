@@ -22,10 +22,10 @@
  *****************************************************************************/
 int main(void)
 {
-    BENCHMARK(mt19937_seed32(0), 0x10000)
-    BENCHMARK(mt19937_seed64(0), 0x10000)
-    BENCHMARK(mt19937_rand32(), 0x270000)
-    BENCHMARK(mt19937_rand64(), 0x270000)
-    BENCHMARK(mt19937_real32(), 0x270000)
-    BENCHMARK(mt19937_real64(), 0x270000)
+    BENCHMARK(mt19937_init32(), 0x10000)
+    BENCHMARK(mt19937_init64(), 0x10000)
+    BENCHMARK(mt19937_rand32(), 0x27000)
+    BENCHMARK(mt19937_rand64(), 0x27000)
+    BENCHMARK(mt19937_real32(), 0x27000)
+    BENCHMARK(mt19937_real64(), 0x27000)
 }

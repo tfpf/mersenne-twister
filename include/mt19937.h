@@ -23,6 +23,8 @@ extern "C"
 #endif
 void mt19937_seed32(uint32_t seed, struct mt19937_32_t *mt);
 void mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
+void mt19937_init32(struct mt19937_32_t *mt);
+void mt19937_init64(struct mt19937_64_t *mt);
 uint32_t mt19937_rand32(struct mt19937_32_t *mt);
 uint64_t mt19937_rand64(struct mt19937_64_t *mt);
 uint32_t mt19937_uint32(uint32_t modulus, struct mt19937_32_t *mt);
@@ -46,6 +48,8 @@ void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 
 #define mt19937_seed32(seed, ...) mt19937_seed32(seed, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_seed64(seed, ...) mt19937_seed64(seed, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
+#define mt19937_init32(...) mt19937_init32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
+#define mt19937_init64(...) mt19937_init64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_rand32(...) mt19937_rand32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_rand64(...) mt19937_rand64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_uint32(modulus, ...) mt19937_uint32(modulus, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
