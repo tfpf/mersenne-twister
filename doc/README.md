@@ -26,14 +26,14 @@
 void mt19937_seed32(uint32_t seed, struct mt19937_32_t *mt);
 ```
 Seed 32-bit MT19937.
-* `seed` 32-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID.
+* `seed` 32-bit number.
 * `mt` MT19937 object to seed. Optional. If not provided, the internal 32-bit MT19937 object is seeded.
 
 ```C
 void mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
 ```
 Seed 64-bit MT19937.
-* `seed` 64-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID.
+* `seed` 64-bit number.
 * `mt` MT19937 object to seed. Optional. If not provided, the internal 64-bit MT19937 object is seeded.
 
 ---
