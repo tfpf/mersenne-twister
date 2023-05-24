@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 #include <unistd.h>
 
 #include "sudoku_utils.h"
@@ -419,7 +420,7 @@ void single_pass(int table[][9], bool assign_random)
  *****************************************************************************/
 void solve_sudoku(int table[][9])
 {
-    mt19937_seed32(0);
+    mt19937_seed32(time(NULL) + getpid());
     int backup[9][9];
     memcpy(backup, table, sizeof backup);
 
