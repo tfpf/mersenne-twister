@@ -15,11 +15,10 @@
   the internal MT19937 objects. The CPython implementation has a global interpreter lock, and (looking at the Python
   bytecode disassembly) a C function call corresponds to a single Python bytecode instruction. Hence, there are no race
   conditions to worry about, and the provided functions are thread-safe.
-  * The Python API functions are given names similar to those below. Nevertheless, you can view *their* documentation
-    by entering `import mt19937` and then `help(mt19937)` at the Python REPL.
-  * Since Python uses arbitrary-precision integers, it is possible for a Python integer to not be exactly representable
-    as a C integer. Weird things may happen if the Python functions are called with out-of-range numbers; I make no
-    attempt to mitigate this.
+  * The Python API functions are given names similar to those below. Nevertheless, you can see a summary by entering
+    `import mt19937` and then `help(mt19937)` at the Python REPL.
+  * It is possible for a Python integer to not be exactly representable as a C integer. To mitigate this, appropriate
+    range checks are automatically done on all Python integers.
 
 ---
 
@@ -131,7 +130,7 @@ previous function should be used.
 ---
 
 ```C
-void mt19937_drop32(int long long unsigned count, struct mt19937_32_t *mt);
+void mt19937_drop32(int long long count, struct mt19937_32_t *mt);
 ```
 Advance the state of the pseudorandom number generator. Equivalent to running `mt19937_rand32(mt)` `count` times and
 discarding the results.
@@ -139,7 +138,7 @@ discarding the results.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
 
 ```C
-void mt19937_drop64(int long long unsigned count, struct mt19937_64_t *mt);
+void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 ```
 Advance the state of the pseudorandom number generator. Equivalent to running `mt19937_rand64(mt)` `count` times and
 discarding the results.

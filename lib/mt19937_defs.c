@@ -134,7 +134,7 @@ void MT19937_SHUFFLE(void *items, MT19937_WORD num_of_items, size_t size_of_item
 }
 
 
-void MT19937_DROP(int long long unsigned count, MT19937_OBJECT_TYPE *mt)
+void MT19937_DROP(int long long count, MT19937_OBJECT_TYPE *mt)
 {
     while(count-- > 0)
     {
