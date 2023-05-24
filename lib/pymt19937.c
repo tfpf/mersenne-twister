@@ -40,6 +40,20 @@ static PyObject *seed64(PyObject *self, PyObject *args)
 }
 
 
+static PyObject *init32(PyObject *self, PyObject *args)
+{
+    mt19937_init32(NULL);
+    Py_RETURN_NONE;
+}
+
+
+static PyObject *init64(PyObject *self, PyObject *args)
+{
+    mt19937_init64(NULL);
+    Py_RETURN_NONE;
+}
+
+
 static PyObject *rand32(PyObject *self, PyObject *args)
 {
     return PyLong_FromUnsignedLong((int long unsigned)mt19937_rand32(NULL));
@@ -180,12 +194,20 @@ static PyObject *drop64(PyObject *self, PyObject *args)
 PyDoc_STRVAR(
     seed32_doc,
     "Seed 32-bit MT19937.\n\n"
-    ":param seed: 32-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID."
+    ":param seed: 32-bit number."
 );
 PyDoc_STRVAR(
     seed64_doc,
     "Seed 64-bit MT19937.\n\n"
-    ":param seed: 64-bit number. If this is 0, it will be seeded with the sum of the Unix time and the process ID."
+    ":param seed: 64-bit number."
+);
+PyDoc_STRVAR(
+    init32_doc,
+    "Seed 32-bit MT19937 with an unspecified value generated at run-time."
+);
+PyDoc_STRVAR(
+    init64_doc,
+    "Seed 64-bit MT19937 with an unspecified value generated at run-time."
 );
 PyDoc_STRVAR(
     rand32_doc,
@@ -249,6 +271,8 @@ static PyMethodDef pymt19937_methods[] =
 {
     {"seed32", seed32, METH_VARARGS, seed32_doc},
     {"seed64", seed64, METH_VARARGS, seed64_doc},
+    {"init32", init32, METH_NOARGS, init32_doc},
+    {"init64", init64, METH_NOARGS, init64_doc},
     {"rand32", rand32, METH_NOARGS, rand32_doc},
     {"rand64", rand64, METH_NOARGS, rand64_doc},
     {"uint32", uint32, METH_VARARGS, uint32_doc},

@@ -39,6 +39,20 @@ Seed 64-bit MT19937.
 ---
 
 ```C
+void mt19937_init32(struct mt19937_32_t *mt);
+```
+Seed 32-bit MT19937 with an unspecified value generated at run-time.
+* `mt` MT19937 object to seed. Optional. If not provided, the internal 32-bit MT19937 object is seeded.
+
+```C
+void mt19937_init64(struct mt19937_64_t *mt);
+```
+Seed 64-bit MT19937 with an unspecified value generated at run-time.
+* `mt` MT19937 object to seed. Optional. If not provided, the internal 64-bit MT19937 object is seeded.
+
+---
+
+```C
 uint32_t mt19937_rand32(struct mt19937_32_t *mt);
 ```
 Generate a pseudorandom number.

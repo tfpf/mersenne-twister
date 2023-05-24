@@ -3,7 +3,6 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-#include <unistd.h>
 
 #include "mt19937.h"
 
@@ -12,6 +11,8 @@
 // argument of those functions.
 #undef mt19937_seed32
 #undef mt19937_seed64
+#undef mt19937_init32
+#undef mt19937_init64
 #undef mt19937_rand32
 #undef mt19937_rand64
 #undef mt19937_uint32
@@ -36,6 +37,7 @@
 #define MT19937_OBJECT mt19937_32
 #define MT19937_REAL_TYPE double
 #define MT19937_SEED mt19937_seed32
+#define MT19937_INIT mt19937_init32
 #define MT19937_RAND mt19937_rand32
 #define MT19937_UINT mt19937_uint32
 #define MT19937_SPAN mt19937_span32
@@ -152,6 +154,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_OBJECT
 #undef MT19937_REAL_TYPE
 #undef MT19937_SEED
+#undef MT19937_INIT
 #undef MT19937_RAND
 #undef MT19937_UINT
 #undef MT19937_SPAN
@@ -183,6 +186,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #define MT19937_OBJECT mt19937_64
 #define MT19937_REAL_TYPE double long
 #define MT19937_SEED mt19937_seed64
+#define MT19937_INIT mt19937_init64
 #define MT19937_RAND mt19937_rand64
 #define MT19937_UINT mt19937_uint64
 #define MT19937_SPAN mt19937_span64
@@ -299,6 +303,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
 #undef MT19937_OBJECT
 #undef MT19937_REAL_TYPE
 #undef MT19937_SEED
+#undef MT19937_INIT
 #undef MT19937_RAND
 #undef MT19937_UINT
 #undef MT19937_SPAN
