@@ -33,8 +33,8 @@ double mt19937_real32(struct mt19937_32_t *mt);
 double long mt19937_real64(struct mt19937_64_t *mt);
 void mt19937_shuffle32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt);
 void mt19937_shuffle64(void *items, uint64_t num_of_items, size_t size_of_item, struct mt19937_64_t *mt);
-void mt19937_drop32(int long long unsigned count, struct mt19937_32_t *mt);
-void mt19937_drop64(int long long unsigned count, struct mt19937_64_t *mt);
+void mt19937_drop32(int long long count, struct mt19937_32_t *mt);
+void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 #ifdef __cplusplus
 }
 #endif
