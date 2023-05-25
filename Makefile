@@ -1,8 +1,5 @@
-SHELL  = /bin/sh
-CC     = gcc
 CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -funroll-loops
 LDLIBS = -lm -l$(Package)
-RM     = rm -f
 CP     = cp
 
 Prefix = /usr
