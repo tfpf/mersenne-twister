@@ -12,7 +12,7 @@ static PyObject *seed32(PyObject *self, PyObject *args)
         return NULL;
     }
     seed = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() || seed > 4294967295UL)
+    if(PyErr_Occurred() != NULL || seed > 4294967295UL)
     {
         PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [0, 4294967295]");
         return NULL;
@@ -30,7 +30,7 @@ static PyObject *seed64(PyObject *self, PyObject *args)
         return NULL;
     }
     seed = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() || seed > 18446744073709551615ULL)
+    if(PyErr_Occurred() != NULL || seed > 18446744073709551615ULL)
     {
         PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [0, 18446744073709551615]");
         return NULL;
@@ -74,7 +74,7 @@ static PyObject *uint32(PyObject *self, PyObject *args)
         return NULL;
     }
     modulus = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() || modulus == 0 || modulus > 4294967295UL)
+    if(PyErr_Occurred() != NULL || modulus == 0 || modulus > 4294967295UL)
     {
         PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [1, 4294967295]");
         return NULL;
@@ -91,7 +91,7 @@ static PyObject *uint64(PyObject *self, PyObject *args)
         return NULL;
     }
     modulus = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() || modulus == 0 || modulus > 18446744073709551615ULL)
+    if(PyErr_Occurred() != NULL || modulus == 0 || modulus > 18446744073709551615ULL)
     {
         PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [1, 18446744073709551615]");
         return NULL;
