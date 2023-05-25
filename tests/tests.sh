@@ -3,16 +3,13 @@
 set -e
 
 target=$(realpath $(dirname $0))
-
-cd $target/C
-make -s
-./tests
-
-cd $target/C++
-make -s
-./tests
-
-cd $target/Python
-./tests.py
-
-printf "All tests passed!\n"
+for item in $target/*
+do
+    [ ! -d $item ] && continue
+    cd $item
+    [ -f Makefile ] && make -s
+    (
+        ./tests || printf "All $(basename $item) tests did not pass!\n" >&2
+    ) &
+done
+wait
