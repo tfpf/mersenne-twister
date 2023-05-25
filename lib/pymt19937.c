@@ -257,15 +257,15 @@ PyDoc_STRVAR(
 );
 PyDoc_STRVAR(
     drop32_doc,
-    "Advance the state of the pseudorandom number generator. Equivalent to running `rand32()` `count` times and "
+    "Mutate 32-bit MT19937 by advancing its internal state. Equivalent to running `rand32()` `count` times and "
     "discarding the results.\n\n"
-    ":param count: Number of steps to advance the state by."
+    ":param count: Number of steps to advance the state by. If not positive, this function has no effect."
 );
 PyDoc_STRVAR(
     drop64_doc,
-    "Advance the state of the pseudorandom number generator. Equivalent to running `rand64()` `count` times and "
+    "Mutate 64-bit MT19937 by advancing its internal state. Equivalent to running `rand64()` `count` times and "
     "discarding the results.\n\n"
-    ":param count: Number of steps to advance the state by."
+    ":param count: Number of steps to advance the state by. If not positive, this function has no effect."
 );
 static PyMethodDef pymt19937_methods[] =
 {

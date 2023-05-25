@@ -146,15 +146,15 @@ previous function should be used.
 ```C
 void mt19937_drop32(int long long count, struct mt19937_32_t *mt);
 ```
-Advance the state of the pseudorandom number generator. Equivalent to running `mt19937_rand32(mt)` `count` times and
+Mutate 32-bit MT19937 by advancing its internal state. Equivalent to running `mt19937_rand32(mt)` `count` times and
 discarding the results.
-* `count` Number of steps to advance the state by.
-* `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
+* `count` Number of steps to advance the state by. If not positive, this function has no effect.
+* `mt` MT19937 object to mutate. Optional. If not provided, the internal 32-bit MT19937 object is mutated.
 
 ```C
 void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 ```
-Advance the state of the pseudorandom number generator. Equivalent to running `mt19937_rand64(mt)` `count` times and
+Mutate 64-bit MT19937 by advancing its internal state. Equivalent to running `mt19937_rand64(mt)` `count` times and
 discarding the results.
-* `count` Number of steps to advance the state by.
-* `mt` MT19937 object to use. Optional. If not provided, the internal 64-bit MT19937 object is used.
+* `count` Number of steps to advance the state by. If not positive, this function has no effect.
+* `mt` MT19937 object to mutate. Optional. If not provided, the internal 64-bit MT19937 object is mutated.
