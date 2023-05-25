@@ -1,8 +1,8 @@
 * Makoto Matsumoto and Takuji Nishimura, "Mersenne Twister: A 623-dimensionally Equidistributed Uniform Pseudo-random
-  Number Generator", in ACM Transactions on Modeling and Computer Simulation, vol. 8, no. 1, pp. 3-30, January 1998,
+  Number Generator", in ACM Transactions on Modeling and Computer Simulation, vol. 8, no. 1, pp. 3-30, 1998,
   doi:10.1145/272991.272995.
-* Makoto Matsumoto, "Mersenne Twister with improved initialization" [source code],
-  http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/emt19937ar.html, 2007.
+* Makoto Matsumoto and Takuji Nishimura, "Mersenne Twister with improved initialization" [source code],
+  http://www.math.sci.hiroshima-u.ac.jp/m-mat/MT/MT2002/emt19937ar.html, 2002.
 * Christian Stigen Larsen, "A fast Mersenne Twister in C++" [source code],
   https://github.com/cslarsen/mersenne-twister, 2017.
 
