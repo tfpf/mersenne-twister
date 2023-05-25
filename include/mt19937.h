@@ -1,5 +1,5 @@
 #ifndef TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_
-#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_
+#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_ "0.0.1"
 
 #include <inttypes.h>
 #include <stddef.h>
@@ -41,11 +41,16 @@ void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 }
 #endif
 
-// Macro which expands to its first argument. Used to emulate macros with
-// default arguments. See below: wherever it is used, the end result is that it
-// is replaced by the argument if provided, else `NULL`.
+// If this macro is not defined, define a getter macro and use it to emulate
+// macros with default arguments. (Wherever the getter macro is used below, the
+// end result is that it is replaced with the first of the provided arguments
+// if any, else `NULL`.) On the other hand, if it is defined, skip these macro
+// definitions. (This will make error messages clearer, ensuring that the
+// programmer remembers to pass the last argument to the above functions.)
+// Needless to say, this macro is meant for development purposes, and not for
+// end users of this library.
+#ifndef TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
 #define GET_OR_NULL(arg, ...) arg
-
 #define mt19937_seed32(seed, ...) mt19937_seed32(seed, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_seed64(seed, ...) mt19937_seed64(seed, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_init32(...) mt19937_init32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
@@ -62,5 +67,6 @@ void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 #define mt19937_shuffle64(items, num_of_items, size_of_item, ...) mt19937_shuffle64(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_drop32(count, ...) mt19937_drop32(count, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_drop64(count, ...) mt19937_drop64(count, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
+#endif  // TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
 
 #endif  // TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_

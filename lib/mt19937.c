@@ -4,27 +4,8 @@
 #include <string.h>
 #include <time.h>
 
+#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
 #include "mt19937.h"
-
-// Disable variadic macros, exposing the wrapped functions. This will make
-// error messages more specific, ensuring that I remember to pass the last
-// argument of those functions.
-#undef mt19937_seed32
-#undef mt19937_seed64
-#undef mt19937_init32
-#undef mt19937_init64
-#undef mt19937_rand32
-#undef mt19937_rand64
-#undef mt19937_uint32
-#undef mt19937_uint64
-#undef mt19937_span32
-#undef mt19937_span64
-#undef mt19937_real32
-#undef mt19937_real64
-#undef mt19937_shuffle32
-#undef mt19937_shuffle64
-#undef mt19937_drop32
-#undef mt19937_drop64
 
 /******************************************************************************
  * 32-bit MT19937.
