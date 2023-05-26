@@ -24,8 +24,8 @@ int main(void)
 {
     BENCHMARK(mt19937_init32(), 0x10000)
     BENCHMARK(mt19937_init64(), 0x10000)
-    BENCHMARK(mt19937_rand32(), 0x27000)
-    BENCHMARK(mt19937_rand64(), 0x27000)
-    BENCHMARK(mt19937_real32(), 0x27000)
-    BENCHMARK(mt19937_real64(), 0x27000)
+    BENCHMARK(mt19937_rand32(), 0xFFF00)
+    BENCHMARK(mt19937_rand64(), 0xFFF00)
+    BENCHMARK(mt19937_real32(), 0xFFF00)
+    BENCHMARK(mt19937_real64(), 0xFFF00)
 }
