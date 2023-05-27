@@ -1,6 +1,3 @@
-*.o
-*.so
-*.egg-info
-solve_sudoku
-Problems
 build
+Problems
+solve_sudoku
