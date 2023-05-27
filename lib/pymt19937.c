@@ -1,8 +1,28 @@
 #define PY_SSIZE_T_CLEAN
 #include <Python.h>
 
+#include <inttypes.h>
+
 #define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
 #include "mt19937.h"
+
+
+// `-9223372036854775808LL` raises a warning: it is processed as a unary minus
+// applied to a positive integer, and that positive integer,
+// 9223372036854775808, is outside the range of `int long long` on my system.
+// Actually, even -9223372036854775808 may be outside the range of
+// `int long long` as per the C standard; however, the standard guarantees that
+// it is inside the range of `int64_t`, because exact-width integer types are
+// required to use two's complement representation. Hence, some gymnastics are
+// necessary to assign values to these variables. I have done the same for the
+// 32-bit case because 2147483648 and -2147483648 might be outside the range of
+// `int long` on some systems.
+static int32_t const i32_min = (int32_t)-2147483647L - 1;
+static int32_t const i32_max = (int32_t)2147483647L;
+static int64_t const i64_min = (int64_t)-9223372036854775807LL - 1;
+static int64_t const i64_max = (int64_t)9223372036854775807LL;
+static uint32_t const u32_max = 4294967295UL;
+static uint64_t const u64_max = 18446744073709551615ULL;
 
 
 static PyObject *seed32(PyObject *self, PyObject *args)
@@ -13,10 +33,9 @@ static PyObject *seed32(PyObject *self, PyObject *args)
         return NULL;
     }
     seed = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() != NULL || seed > 4294967295UL)
+    if(PyErr_Occurred() != NULL || seed > u32_max)
     {
-        PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [0, 4294967295]");
-        return NULL;
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [0, %"PRIu32"]", u32_max);
     }
     mt19937_seed32((uint32_t)seed, NULL);
     Py_RETURN_NONE;
@@ -31,10 +50,9 @@ static PyObject *seed64(PyObject *self, PyObject *args)
         return NULL;
     }
     seed = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() != NULL || seed > 18446744073709551615ULL)
+    if(PyErr_Occurred() != NULL || seed > u64_max)
     {
-        PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [0, 18446744073709551615]");
-        return NULL;
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [0, %"PRIu64"]", u64_max);
     }
     mt19937_seed64((uint64_t)seed, NULL);
     Py_RETURN_NONE;
@@ -75,10 +93,9 @@ static PyObject *uint32(PyObject *self, PyObject *args)
         return NULL;
     }
     modulus = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() != NULL || modulus == 0 || modulus > 4294967295UL)
+    if(PyErr_Occurred() != NULL || modulus == 0 || modulus > u32_max)
     {
-        PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [1, 4294967295]");
-        return NULL;
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [1, %"PRIu32"]", u32_max);
     }
     return PyLong_FromUnsignedLong((int long unsigned)mt19937_uint32((uint32_t)modulus, NULL));
 }
@@ -92,10 +109,9 @@ static PyObject *uint64(PyObject *self, PyObject *args)
         return NULL;
     }
     modulus = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
-    if(PyErr_Occurred() != NULL || modulus == 0 || modulus > 18446744073709551615ULL)
+    if(PyErr_Occurred() != NULL || modulus == 0 || modulus > u64_max)
     {
-        PyErr_SetString(PyExc_ValueError, "argument 1 must be an integer in the range [1, 18446744073709551615]");
-        return NULL;
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [1, %"PRIu64"]", u64_max);
     }
     return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_uint64((uint64_t)modulus, NULL));
 }
@@ -113,16 +129,13 @@ static PyObject *span32(PyObject *self, PyObject *args)
             return NULL;
         }
     }
-    if(err != NULL
-    || left < -2147483647L - 1 || left > 2147483647L
-    || right < -2147483647L - 1 || right > 2147483647L
-    || left >= right)
+    if(err != NULL || left < i32_min || left > i32_max || right < i32_min || right > i32_max || left >= right)
     {
-        PyErr_SetString(
+        return PyErr_Format(
             PyExc_ValueError,
-            "arguments 1 and 2 must be integers in the range [-2147483648, 2147483647]; "
-            "argument 1 must be less than argument 2");
-        return NULL;
+            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId32", %"PRId32"]",
+            i32_min, i32_max
+        );
     }
     return PyLong_FromLong((int long)mt19937_span32((int32_t)left, (int32_t)right, NULL));
 }
@@ -140,16 +153,13 @@ static PyObject *span64(PyObject *self, PyObject *args)
             return NULL;
         }
     }
-    if(err != NULL
-    || left < -9223372036854775807LL - 1 || left > 9223372036854775807LL
-    || right < -9223372036854775807LL - 1 || right > 9223372036854775807LL
-    || left >= right)
+    if(err != NULL || left < i64_min || left > i64_max || right < i64_min || right > i64_max || left >= right)
     {
-        PyErr_SetString(
+        return PyErr_Format(
             PyExc_ValueError,
-            "arguments 1 and 2 must be integers in the range [-9223372036854775808, 9223372036854775807]; "
-            "argument 1 must be less than argument 2");
-        return NULL;
+            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId64", %"PRId64"]",
+            i64_min, i64_max
+        );
     }
     return PyLong_FromLongLong((int long long)mt19937_span64((int64_t)left, (int64_t)right, NULL));
 }
