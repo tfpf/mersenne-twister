@@ -2,15 +2,16 @@
 
 import math
 import mt19937
+import time
 import timeit
 
 
 def benchmark(stmt, number, passes=32):
     delay = math.inf
     for _ in range(passes):
-        delay_ = timeit.timeit(stmt=stmt, number=number)
+        delay_ = timeit.timeit(stmt=stmt, number=number, timer=time.perf_counter_ns)
         delay = min(delay, delay_)
-    result = delay * 10 ** 9 / number
+    result = delay / number
     print(f'{stmt.__name__:>20} {result:8.2f} ns')
 
 

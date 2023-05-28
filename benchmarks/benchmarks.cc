@@ -13,14 +13,14 @@ void benchmark(f function, char const* name, int long iterations, int passes=32)
     auto delay = std::chrono::nanoseconds::max();
     while(passes-- > 0)
     {
-        auto begin = std::chrono::steady_clock::now();
+        auto begin = std::chrono::high_resolution_clock::now();
         for(int long i = 0; i < iterations; ++i)
         {
             // Must pass the last argument, because macro expansion won't
             // affect a template.
             function(NULL);
         }
-        auto end = std::chrono::steady_clock::now();
+        auto end = std::chrono::high_resolution_clock::now();
         auto delay_ = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
         delay = std::min(delay, delay_);
     }
