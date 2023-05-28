@@ -29,13 +29,13 @@ void MT19937_INIT(MT19937_OBJECT_TYPE *mt)
  * is odd, `MT19937_MASK_TWIST` must be XORed with the result, but not
  * otherwise. This can be accomplished with branch or load instructions.
  * However, it is faster to copy the LSB of `lower` into all of its other bit
- * positions. I did this by negating it. (The C standard requires exact-width
- * integer types to use the two's complement representation. It also states
- * that assigning a negative value to an unsigned type causes wrap-around.
- * Effectively, this means that if `lower` is odd, `mask` has all bits set,
- * otherwise, it has all bits cleared. Hence, this code won't result in
- * implementation-defined behaviour.) Indeed, GCC and Clang calculate `mask`
- * using a `neg` instruction, which is consistent with the above.
+ * positions. I did this by negating it. (The C standard requires that unsigned
+ * integer types use pure binary representation. It also states that assigning
+ * a negative value to an unsigned type causes wrap-around. Effectively, if
+ * `lower` is odd, `mask` has all bits set, otherwise it has all bits cleared.
+ * Hence, this code does not invoke implementation-defined behaviour.) Indeed,
+ * GCC and Clang calculate `mask` using a `neg` instruction, which is
+ * consistent with the above.
  *
  * The first optimisation is due to the original authors of MT19937. The second
  * (though inspired by the optimisation in C. S. Larsen's code) is my own idea.
@@ -97,8 +97,8 @@ MT19937_WORD MT19937_UINT(MT19937_WORD modulus, MT19937_OBJECT_TYPE *mt)
 
 MT19937_WORD_SIGNED MT19937_SPAN(MT19937_WORD_SIGNED left, MT19937_WORD_SIGNED right, MT19937_OBJECT_TYPE *mt)
 {
-    // Exact-width integer types use two's complement representation. This code
-    // will always work.
+    // Signed exact-width integer types are required to use two's complement
+    // representation. This code will always work.
     MT19937_WORD uleft = (MT19937_WORD)left;
     MT19937_WORD uright = (MT19937_WORD)right;
     MT19937_WORD modulus = uright - uleft;

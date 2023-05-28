@@ -12,11 +12,10 @@
 // 9223372036854775808, is outside the range of `int long long` on my system.
 // Actually, even -9223372036854775808 may be outside the range of
 // `int long long` as per the C standard; however, the standard guarantees that
-// it is inside the range of `int64_t`, because exact-width integer types are
-// required to use two's complement representation. Hence, some gymnastics are
-// necessary to assign values to these variables. I have done the same for the
-// 32-bit case because 2147483648 and -2147483648 might be outside the range of
-// `int long` on some systems.
+// it is inside the range of `int64_t`. Hence, some gymnastics are necessary to
+// assign values to these variables. I have done the same for the 32-bit case
+// because 2147483648 and -2147483648 might be outside the range of `int long`
+// on some systems.
 static int32_t const i32_min = (int32_t)-2147483647L - 1;
 static int32_t const i32_max = (int32_t)2147483647L;
 static int64_t const i64_min = (int64_t)-9223372036854775807LL - 1;
@@ -133,7 +132,8 @@ static PyObject *span32(PyObject *self, PyObject *args)
     {
         return PyErr_Format(
             PyExc_ValueError,
-            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId32", %"PRId32"]",
+            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId32", %"PRId32"] "
+            "and fit in the C `long` type",
             i32_min, i32_max
         );
     }
@@ -157,7 +157,8 @@ static PyObject *span64(PyObject *self, PyObject *args)
     {
         return PyErr_Format(
             PyExc_ValueError,
-            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId64", %"PRId64"]",
+            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId64", %"PRId64"] "
+            "and fit in the C `long long` type",
             i64_min, i64_max
         );
     }
