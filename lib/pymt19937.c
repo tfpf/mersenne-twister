@@ -24,7 +24,8 @@ static uint32_t const u32_max = 4294967295UL;
 static uint64_t const u64_max = 18446744073709551615ULL;
 
 
-static PyObject *seed32(PyObject *self, PyObject *args)
+static PyObject *
+seed32(PyObject *self, PyObject *args)
 {
     int long unsigned seed;
     if(!PyArg_ParseTuple(args, "k", &seed))
@@ -41,7 +42,8 @@ static PyObject *seed32(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *seed64(PyObject *self, PyObject *args)
+static PyObject *
+seed64(PyObject *self, PyObject *args)
 {
     int long long unsigned seed;
     if(!PyArg_ParseTuple(args, "K", &seed))
@@ -58,33 +60,38 @@ static PyObject *seed64(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *init32(PyObject *self, PyObject *args)
+static PyObject *
+init32(PyObject *self, PyObject *args)
 {
     mt19937_init32(NULL);
     Py_RETURN_NONE;
 }
 
 
-static PyObject *init64(PyObject *self, PyObject *args)
+static PyObject *
+init64(PyObject *self, PyObject *args)
 {
     mt19937_init64(NULL);
     Py_RETURN_NONE;
 }
 
 
-static PyObject *rand32(PyObject *self, PyObject *args)
+static PyObject *
+rand32(PyObject *self, PyObject *args)
 {
     return PyLong_FromUnsignedLong((int long unsigned)mt19937_rand32(NULL));
 }
 
 
-static PyObject *rand64(PyObject *self, PyObject *args)
+static PyObject *
+rand64(PyObject *self, PyObject *args)
 {
     return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_rand64(NULL));
 }
 
 
-static PyObject *uint32(PyObject *self, PyObject *args)
+static PyObject *
+uint32(PyObject *self, PyObject *args)
 {
     int long unsigned modulus;
     if(!PyArg_ParseTuple(args, "k", &modulus))
@@ -100,7 +107,8 @@ static PyObject *uint32(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *uint64(PyObject *self, PyObject *args)
+static PyObject *
+uint64(PyObject *self, PyObject *args)
 {
     int long long unsigned modulus;
     if(!PyArg_ParseTuple(args, "K", &modulus))
@@ -116,7 +124,8 @@ static PyObject *uint64(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *span32(PyObject *self, PyObject *args)
+static PyObject *
+span32(PyObject *self, PyObject *args)
 {
     int long left, right;
     PyObject *err = NULL;
@@ -141,7 +150,8 @@ static PyObject *span32(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *span64(PyObject *self, PyObject *args)
+static PyObject *
+span64(PyObject *self, PyObject *args)
 {
     int long long left, right;
     PyObject *err = NULL;
@@ -166,19 +176,22 @@ static PyObject *span64(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *real32(PyObject *self, PyObject *args)
+static PyObject *
+real32(PyObject *self, PyObject *args)
 {
     return PyFloat_FromDouble(mt19937_real32(NULL));
 }
 
 
-static PyObject *real64(PyObject *self, PyObject *args)
+static PyObject *
+real64(PyObject *self, PyObject *args)
 {
     return PyFloat_FromDouble((double)mt19937_real64(NULL));
 }
 
 
-static PyObject *drop32(PyObject *self, PyObject *args)
+static PyObject *
+drop32(PyObject *self, PyObject *args)
 {
     int long long count;
     if(!PyArg_ParseTuple(args, "L", &count))
@@ -190,7 +203,8 @@ static PyObject *drop32(PyObject *self, PyObject *args)
 }
 
 
-static PyObject *drop64(PyObject *self, PyObject *args)
+static PyObject *
+drop64(PyObject *self, PyObject *args)
 {
     int long long count;
     if(!PyArg_ParseTuple(args, "L", &count))
@@ -308,7 +322,8 @@ static PyModuleDef pymt19937_module =
 };
 
 
-PyMODINIT_FUNC PyInit_mt19937(void)
+PyMODINIT_FUNC
+PyInit_mt19937(void)
 {
     return PyModule_Create(&pymt19937_module);
 }
