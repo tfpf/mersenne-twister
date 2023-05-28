@@ -219,46 +219,55 @@ drop64(PyObject *self, PyObject *args)
 // Module information.
 PyDoc_STRVAR(
     seed32_doc,
+    "seed32(seed)\n"
     "Seed 32-bit MT19937.\n\n"
     ":param seed: 32-bit number."
 );
 PyDoc_STRVAR(
     seed64_doc,
+    "seed64(seed)\n"
     "Seed 64-bit MT19937.\n\n"
     ":param seed: 64-bit number."
 );
 PyDoc_STRVAR(
     init32_doc,
+    "init32()\n"
     "Seed 32-bit MT19937 with an unspecified value generated at run-time."
 );
 PyDoc_STRVAR(
     init64_doc,
+    "init64()\n"
     "Seed 64-bit MT19937 with an unspecified value generated at run-time."
 );
 PyDoc_STRVAR(
     rand32_doc,
+    "rand32() -> int\n"
     "Generate a pseudorandom number.\n\n"
     ":return: Uniform pseudorandom 32-bit number."
 );
 PyDoc_STRVAR(
     rand64_doc,
+    "rand64() -> int\n"
     "Generate a pseudorandom number.\n\n"
     ":return: Uniform pseudorandom 64-bit number."
 );
 PyDoc_STRVAR(
     uint32_doc,
+    "uint32(modulus) -> int\n"
     "Generate a pseudorandom residue.\n\n"
     ":param modulus: 32-bit number. Must not be 0.\n\n"
     ":return: Uniform pseudorandom 32-bit number from 0 (inclusive) to `modulus` (exclusive)."
 );
 PyDoc_STRVAR(
     uint64_doc,
+    "uint64(modulus) -> int\n"
     "Generate a pseudorandom residue.\n\n"
     ":param modulus: 64-bit number. Must not be 0.\n\n"
     ":return: Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive)."
 );
 PyDoc_STRVAR(
     span32_doc,
+    "span32(left, right) -> int\n"
     "Generate a pseudorandom residue offset.\n\n"
     ":param left: 32-bit number.\n"
     ":param right: 32-bit number. Must be greater than `left`.\n\n"
@@ -266,6 +275,7 @@ PyDoc_STRVAR(
 );
 PyDoc_STRVAR(
     span64_doc,
+    "span64(left, right) -> int\n"
     "Generate a pseudorandom residue offset.\n\n"
     ":param left: 64-bit number.\n"
     ":param right: 64-bit number. Must be greater than `left`.\n\n"
@@ -273,22 +283,26 @@ PyDoc_STRVAR(
 );
 PyDoc_STRVAR(
     real32_doc,
+    "real32() -> float\n"
     "Generate a pseudorandom fraction.\n\n"
     ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
 );
 PyDoc_STRVAR(
     real64_doc,
+    "real64() -> float\n"
     "Generate a pseudorandom fraction.\n\n"
     ":return: Uniform pseudorandom number from 0 (inclusive) to 1 (inclusive)."
 );
 PyDoc_STRVAR(
     drop32_doc,
+    "drop32(count)\n"
     "Mutate 32-bit MT19937 by advancing its internal state. Equivalent to running `rand32()` `count` times and "
     "discarding the results.\n\n"
     ":param count: Number of steps to advance the state by. If not positive, this function has no effect."
 );
 PyDoc_STRVAR(
     drop64_doc,
+    "drop64(count)\n"
     "Mutate 64-bit MT19937 by advancing its internal state. Equivalent to running `rand64()` `count` times and "
     "discarding the results.\n\n"
     ":param count: Number of steps to advance the state by. If not positive, this function has no effect."
