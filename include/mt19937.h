@@ -4,18 +4,9 @@
 #include <inttypes.h>
 #include <stddef.h>
 
-struct mt19937_32_t
-{
-    uint32_t state[624];
-    uint32_t value[624];
-    int index;
-};
-struct mt19937_64_t
-{
-    uint64_t state[312];
-    uint64_t value[312];
-    int index;
-};
+// Forward declarations.
+struct mt19937_32_t;
+struct mt19937_64_t;
 
 #ifdef __cplusplus
 extern "C"
@@ -40,6 +31,20 @@ void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 #ifdef __cplusplus
 }
 #endif
+
+// Definitions.
+struct mt19937_32_t
+{
+    uint32_t state[624];
+    uint32_t value[624];
+    int index;
+};
+struct mt19937_64_t
+{
+    uint64_t state[312];
+    uint64_t value[312];
+    int index;
+};
 
 // If this macro is not defined, define a getter macro and use it to emulate
 // macros with default arguments. (Wherever the getter macro is used below, the
