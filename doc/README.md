@@ -123,7 +123,7 @@ Generate a pseudorandom fraction.
 ---
 
 ```C
-void mt19937_shuffle32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt);
+void mt19937_shuf32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt);
 ```
 Pseudorandomly shuffle an array in place.
 * `items` Array to shuffle.
@@ -132,7 +132,7 @@ Pseudorandomly shuffle an array in place.
 * `mt` MT19937 object to use. Optional. If not provided, the internal 32-bit MT19937 object is used.
 
 ```C
-void mt19937_shuffle64(void *items, uint64_t num_of_items, size_t size_of_item, struct mt19937_64_t *mt);
+void mt19937_shuf64(void *items, uint64_t num_of_items, size_t size_of_item, struct mt19937_64_t *mt);
 ```
 Pseudorandomly shuffle an array in place. This function is provided only for completeness. In almost all cases, the
 previous function should be used.

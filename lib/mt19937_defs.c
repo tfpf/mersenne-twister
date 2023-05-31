@@ -113,7 +113,7 @@ MT19937_REAL_TYPE MT19937_REAL(MT19937_OBJECT_TYPE *mt)
 }
 
 
-void MT19937_SHUFFLE(void *items, MT19937_WORD num_of_items, size_t size_of_item, MT19937_OBJECT_TYPE *mt)
+void MT19937_SHUF(void *items, MT19937_WORD num_of_items, size_t size_of_item, MT19937_OBJECT_TYPE *mt)
 {
     // C++ does not implicitly convert `void *`, so a cast is necessary,
     // because I want to allow users to include this file directly in a C or

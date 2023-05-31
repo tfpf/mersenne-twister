@@ -24,8 +24,8 @@ int32_t mt19937_span32(int32_t left, int32_t right, struct mt19937_32_t *mt);
 int64_t mt19937_span64(int64_t left, int64_t right, struct mt19937_64_t *mt);
 double mt19937_real32(struct mt19937_32_t *mt);
 double long mt19937_real64(struct mt19937_64_t *mt);
-void mt19937_shuffle32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt);
-void mt19937_shuffle64(void *items, uint64_t num_of_items, size_t size_of_item, struct mt19937_64_t *mt);
+void mt19937_shuf32(void *items, uint32_t num_of_items, size_t size_of_item, struct mt19937_32_t *mt);
+void mt19937_shuf64(void *items, uint64_t num_of_items, size_t size_of_item, struct mt19937_64_t *mt);
 void mt19937_drop32(int long long count, struct mt19937_32_t *mt);
 void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 #ifdef __cplusplus
@@ -68,8 +68,8 @@ struct mt19937_64_t
 #define mt19937_span64(left, right, ...) mt19937_span64(left, right, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_real32(...) mt19937_real32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_real64(...) mt19937_real64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_shuffle32(items, num_of_items, size_of_item, ...) mt19937_shuffle32(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_shuffle64(items, num_of_items, size_of_item, ...) mt19937_shuffle64(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
+#define mt19937_shuf32(items, num_of_items, size_of_item, ...) mt19937_shuf32(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
+#define mt19937_shuf64(items, num_of_items, size_of_item, ...) mt19937_shuf64(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_drop32(count, ...) mt19937_drop32(count, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #define mt19937_drop64(count, ...) mt19937_drop64(count, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
 #endif  // TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
