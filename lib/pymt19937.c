@@ -18,7 +18,7 @@ seed32(PyObject *self, PyObject *args)
     seed = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || seed > UINT32_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [0, %"PRIu32"]", UINT32_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %"PRIu32"]", UINT32_MAX);
     }
     mt19937_seed32((uint32_t)seed, NULL);
     Py_RETURN_NONE;
@@ -36,7 +36,7 @@ seed64(PyObject *self, PyObject *args)
     seed = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || seed > UINT64_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [0, %"PRIu64"]", UINT64_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %"PRIu64"]", UINT64_MAX);
     }
     mt19937_seed64((uint64_t)seed, NULL);
     Py_RETURN_NONE;
@@ -84,7 +84,7 @@ uint32(PyObject *self, PyObject *args)
     modulus = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || modulus == 0 || modulus > UINT32_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [1, %"PRIu32"]", UINT32_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [1, %"PRIu32"]", UINT32_MAX);
     }
     return PyLong_FromUnsignedLong((int long unsigned)mt19937_uint32((uint32_t)modulus, NULL));
 }
@@ -101,7 +101,7 @@ uint64(PyObject *self, PyObject *args)
     modulus = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || modulus == 0 || modulus > UINT64_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in the range [1, %"PRIu64"]", UINT64_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [1, %"PRIu64"]", UINT64_MAX);
     }
     return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_uint64((uint64_t)modulus, NULL));
 }
@@ -124,7 +124,7 @@ span32(PyObject *self, PyObject *args)
     {
         return PyErr_Format(
             PyExc_ValueError,
-            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId32", %"PRId32"] "
+            "argument 1 must be less than argument 2; both must be integers in [%"PRId32", %"PRId32"] "
             "and fit in the C `long` type",
             INT32_MIN, INT32_MAX
         );
@@ -150,7 +150,7 @@ span64(PyObject *self, PyObject *args)
     {
         return PyErr_Format(
             PyExc_ValueError,
-            "argument 1 must be less than argument 2; both must be integers in the range [%"PRId64", %"PRId64"] "
+            "argument 1 must be less than argument 2; both must be integers in [%"PRId64", %"PRId64"] "
             "and fit in the C `long long` type",
             INT64_MIN, INT64_MAX
         );
@@ -239,30 +239,30 @@ PyDoc_STRVAR(
     "uint32(modulus) -> int\n"
     "Generate a pseudorandom residue.\n\n"
     ":param modulus: 32-bit number. Must not be 0.\n\n"
-    ":return: Uniform pseudorandom 32-bit number from 0 (inclusive) to `modulus` (exclusive)."
+    ":return: Uniform pseudorandom 32-bit number from 0 (inclusive) to ``modulus`` (exclusive)."
 );
 PyDoc_STRVAR(
     uint64_doc,
     "uint64(modulus) -> int\n"
     "Generate a pseudorandom residue.\n\n"
     ":param modulus: 64-bit number. Must not be 0.\n\n"
-    ":return: Uniform pseudorandom 64-bit number from 0 (inclusive) to `modulus` (exclusive)."
+    ":return: Uniform pseudorandom 64-bit number from 0 (inclusive) to ``modulus`` (exclusive)."
 );
 PyDoc_STRVAR(
     span32_doc,
     "span32(left, right) -> int\n"
     "Generate a pseudorandom residue offset.\n\n"
     ":param left: 32-bit number.\n"
-    ":param right: 32-bit number. Must be greater than `left`.\n\n"
-    ":return: Uniform pseudorandom 32-bit number from `left` (inclusive) to `right` (exclusive)."
+    ":param right: 32-bit number. Must be greater than ``left``.\n\n"
+    ":return: Uniform pseudorandom 32-bit number from ``left`` (inclusive) to ``right`` (exclusive)."
 );
 PyDoc_STRVAR(
     span64_doc,
     "span64(left, right) -> int\n"
     "Generate a pseudorandom residue offset.\n\n"
     ":param left: 64-bit number.\n"
-    ":param right: 64-bit number. Must be greater than `left`.\n\n"
-    ":return: Uniform pseudorandom 64-bit number from `left` (inclusive) to `right` (exclusive)."
+    ":param right: 64-bit number. Must be greater than ``left``.\n\n"
+    ":return: Uniform pseudorandom 64-bit number from ``left`` (inclusive) to ``right`` (exclusive)."
 );
 PyDoc_STRVAR(
     real32_doc,
@@ -279,14 +279,14 @@ PyDoc_STRVAR(
 PyDoc_STRVAR(
     drop32_doc,
     "drop32(count)\n"
-    "Mutate 32-bit MT19937 by advancing its internal state. Equivalent to running `rand32()` `count` times and "
+    "Mutate 32-bit MT19937 by advancing its internal state. Equivalent to running ``rand32()`` ``count`` times and "
     "discarding the results.\n\n"
     ":param count: Number of steps to advance the state by. If not positive, this function has no effect."
 );
 PyDoc_STRVAR(
     drop64_doc,
     "drop64(count)\n"
-    "Mutate 64-bit MT19937 by advancing its internal state. Equivalent to running `rand64()` `count` times and "
+    "Mutate 64-bit MT19937 by advancing its internal state. Equivalent to running ``rand64()`` ``count`` times and "
     "discarding the results.\n\n"
     ":param count: Number of steps to advance the state by. If not positive, this function has no effect."
 );
