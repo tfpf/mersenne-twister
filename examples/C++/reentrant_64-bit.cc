@@ -3,15 +3,14 @@
 
 int main(void)
 {
-    mt19937_64_t mt;
-    mt19937_seed64(1, &mt);
+    mt19937_64_t mt(1);
     for(int i = 0; i < 4; ++i)
     {
-        std::cout << mt19937_rand64(&mt) << ' ';
+        std::cout << mt.rand64() << ' ';
     }
     for(int i = 0; i < 4; ++i)
     {
-        std::cout << mt19937_real64(&mt) << ' ';
+        std::cout << mt.real64() << ' ';
     }
     std::cout << '\n';
 }

@@ -7,7 +7,6 @@
 // Forward declarations.
 struct mt19937_32_t;
 struct mt19937_64_t;
-
 #ifdef __cplusplus
 extern "C"
 {
@@ -32,46 +31,64 @@ void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 }
 #endif
 
-// Definitions.
+// Wrap all functions in a namespace using variadic templates.
+#ifdef __cplusplus
+namespace mt19937
+{
+    template<typename... T> void     seed32(T... args) {        mt19937_seed32(args..., NULL); }
+    template<typename... T> void     init32(T... args) {        mt19937_init32(args..., NULL); }
+    template<typename... T> uint32_t rand32(T... args) { return mt19937_rand32(args..., NULL); }
+    template<typename... T> uint32_t uint32(T... args) { return mt19937_uint32(args..., NULL); }
+    template<typename... T> int32_t  span32(T... args) { return mt19937_span32(args..., NULL); }
+    template<typename... T> double   real32(T... args) { return mt19937_real32(args..., NULL); }
+    template<typename... T> void     shuf32(T... args) {        mt19937_shuf32(args..., NULL); }
+    template<typename... T> void     drop32(T... args) {        mt19937_drop32(args..., NULL); }
+
+    template<typename... T> void     seed64(T... args) {        mt19937_seed64(args..., NULL); }
+    template<typename... T> void     init64(T... args) {        mt19937_init64(args..., NULL); }
+    template<typename... T> uint64_t rand64(T... args) { return mt19937_rand64(args..., NULL); }
+    template<typename... T> uint64_t uint64(T... args) { return mt19937_uint64(args..., NULL); }
+    template<typename... T> int64_t  span64(T... args) { return mt19937_span64(args..., NULL); }
+    template<typename... T> double   real64(T... args) { return mt19937_real64(args..., NULL); }
+    template<typename... T> void     shuf64(T... args) {        mt19937_shuf64(args..., NULL); }
+    template<typename... T> void     drop64(T... args) {        mt19937_drop64(args..., NULL); }
+};
+#endif
+
+// Object definitions.
 struct mt19937_32_t
 {
     uint32_t state[624];
     uint32_t value[624];
     int index;
+#ifdef __cplusplus
+    template<typename... T> void     seed32(T... args) {        mt19937_seed32(args..., this); }
+    template<typename... T> void     init32(T... args) {        mt19937_init32(args..., this); }
+    template<typename... T> uint32_t rand32(T... args) { return mt19937_rand32(args..., this); }
+    template<typename... T> uint32_t uint32(T... args) { return mt19937_uint32(args..., this); }
+    template<typename... T> int32_t  span32(T... args) { return mt19937_span32(args..., this); }
+    template<typename... T> double   real32(T... args) { return mt19937_real32(args..., this); }
+    template<typename... T> void     shuf32(T... args) {        mt19937_shuf32(args..., this); }
+    template<typename... T> void     drop32(T... args) {        mt19937_drop32(args..., this); }
+    mt19937_32_t(uint32_t seed=5489) { seed32(seed); }
+#endif
 };
 struct mt19937_64_t
 {
     uint64_t state[312];
     uint64_t value[312];
     int index;
+#ifdef __cplusplus
+    template<typename... T> void     seed64(T... args) {        mt19937_seed64(args..., this); }
+    template<typename... T> void     init64(T... args) {        mt19937_init64(args..., this); }
+    template<typename... T> uint64_t rand64(T... args) { return mt19937_rand64(args..., this); }
+    template<typename... T> uint64_t uint64(T... args) { return mt19937_uint64(args..., this); }
+    template<typename... T> int64_t  span64(T... args) { return mt19937_span64(args..., this); }
+    template<typename... T> double   real64(T... args) { return mt19937_real64(args..., this); }
+    template<typename... T> void     shuf64(T... args) {        mt19937_shuf64(args..., this); }
+    template<typename... T> void     drop64(T... args) {        mt19937_drop64(args..., this); }
+    mt19937_64_t(uint64_t seed=5489) { seed64(seed); }
+#endif
 };
-
-// If this macro is not defined, define a getter macro and use it to emulate
-// macros with default arguments. (Wherever the getter macro is used below, the
-// end result is that it is replaced with the first of the provided arguments
-// if any, else `NULL`.) On the other hand, if it is defined, skip these macro
-// definitions. (This will make error messages clearer, ensuring that the
-// programmer remembers to pass the last argument to the above functions.)
-// Needless to say, this macro is meant for development purposes, and not for
-// end users of this library.
-#ifndef TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
-#define GET_OR_NULL(arg, ...) arg
-#define mt19937_seed32(seed, ...) mt19937_seed32(seed, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_seed64(seed, ...) mt19937_seed64(seed, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_init32(...) mt19937_init32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_init64(...) mt19937_init64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_rand32(...) mt19937_rand32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_rand64(...) mt19937_rand64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_uint32(modulus, ...) mt19937_uint32(modulus, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_uint64(modulus, ...) mt19937_uint64(modulus, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_span32(left, right, ...) mt19937_span32(left, right, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_span64(left, right, ...) mt19937_span64(left, right, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_real32(...) mt19937_real32(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_real64(...) mt19937_real64(GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_shuf32(items, num_of_items, size_of_item, ...) mt19937_shuf32(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_shuf64(items, num_of_items, size_of_item, ...) mt19937_shuf64(items, num_of_items, size_of_item, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_drop32(count, ...) mt19937_drop32(count, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#define mt19937_drop64(count, ...) mt19937_drop64(count, GET_OR_NULL(__VA_ARGS__ __VA_OPT__(,) NULL))
-#endif  // TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
 
 #endif  // TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_

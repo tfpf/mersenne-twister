@@ -3,7 +3,6 @@
 
 #include <inttypes.h>
 
-#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_SKIP_MACRO_DEFINITIONS
 #include "mt19937.h"
 
 

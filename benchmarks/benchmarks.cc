@@ -16,8 +16,6 @@ void benchmark(f function, char const* name, int long iterations, int passes=32)
         auto begin = std::chrono::high_resolution_clock::now();
         for(int long i = 0; i < iterations; ++i)
         {
-            // Must pass the last argument, because macro expansion won't
-            // affect a template.
             function(NULL);
         }
         auto end = std::chrono::high_resolution_clock::now();
