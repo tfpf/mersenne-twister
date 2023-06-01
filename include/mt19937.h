@@ -1,5 +1,5 @@
 #ifndef TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_
-#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_ "0.0.1"
+#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_ "1.0.0"
 
 #include <inttypes.h>
 #include <stddef.h>
