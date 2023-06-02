@@ -11,8 +11,8 @@ def tests():
     assert mt19937.rand32() == 0xF5CA0EDB
     assert mt19937.rand64() == 0x8A8592F5817ED872
 
+    mt19937.init32()
     for _ in range(30000):
-        mt19937.init32()
         modulus = mt19937.rand32()
         assert mt19937.uint32(modulus) < modulus
         left = mt19937.rand32() - 0x80000000
@@ -20,7 +20,8 @@ def tests():
         if left < right:
             assert left <= mt19937.span32(left, right) < right
 
-        mt19937.init64()
+    mt19937.init64()
+    for _ in range(30000):
         modulus = mt19937.rand64()
         assert mt19937.uint64(modulus) < modulus
         left = mt19937.rand64() - 0x8000000000000000
