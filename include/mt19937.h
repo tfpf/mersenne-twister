@@ -1,8 +1,19 @@
 #ifndef TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_
 #define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_ "1.0.0"
 
+// In a C++ program, only C++ headers (which may not place the types in the
+// global namespace) should be included to avoid pollution.
+#ifdef __cplusplus
+#include <cinttypes>
+#include <cstddef>
+#define uint32_t std::uint32_t
+#define uint64_t std::uint64_t
+#define int32_t std::int32_t
+#define int64_t std::int64_t
+#else
 #include <inttypes.h>
 #include <stddef.h>
+#endif
 
 // Forward declarations.
 struct mt19937_32_t;
@@ -71,7 +82,7 @@ struct mt19937_32_t
     template<typename... T> void     shuf32(T... args) {        mt19937_shuf32(args..., this); }
     template<typename... T> void     drop32(T... args) {        mt19937_drop32(args..., this); }
     mt19937_32_t(uint32_t seed=5489) { this->seed32(seed); }
-    mt19937_32_t(char const* _) { this->init32(); }
+    mt19937_32_t(std::nullptr_t _) { this->init32(); }
 #endif
 };
 struct mt19937_64_t
@@ -89,8 +100,15 @@ struct mt19937_64_t
     template<typename... T> void     shuf64(T... args) {        mt19937_shuf64(args..., this); }
     template<typename... T> void     drop64(T... args) {        mt19937_drop64(args..., this); }
     mt19937_64_t(uint64_t seed=5489) { this->seed64(seed); }
-    mt19937_64_t(char const* _) { this->init64(); }
+    mt19937_64_t(std::nullptr_t _) { this->init64(); }
 #endif
 };
+
+#ifdef __cplusplus
+#undef uint32_t
+#undef uint64_t
+#undef int32_t
+#undef int64_t
+#endif
 
 #endif  // TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_

@@ -64,7 +64,8 @@ Seed 32-bit MT19937 with an unspecified value generated at run-time.
 | `mt19937_init32(NULL)` | `mt19937::init32()` | `mt19937.init32()` |
 | `mt19937_init32(&bar)` | `bar.init32()`      |                    |
 
-In C++, you can also seed an MT19937 object in this manner by passing `""` to its constructor: `mt19937_32_t bar("")`.
+In C++, you can also seed an MT19937 object in this manner by passing `nullptr` to its constructor:
+`mt19937_32_t bar(nullptr)`.
 
 ```C
 void mt19937_init64(struct mt19937_64_t *mt);
@@ -77,7 +78,8 @@ Seed 64-bit MT19937 with an unspecified value generated at run-time.
 | `mt19937_init64(NULL)` | `mt19937::init64()` | `mt19937.init64()` |
 | `mt19937_init64(&bar)` | `bar.init64()`      |                    |
 
-In C++, you can also seed an MT19937 object in this manner by passing `""` to its constructor: `mt19937_64_t bar("")`.
+In C++, you can also seed an MT19937 object in this manner by passing `nullptr` to its constructor:
+`mt19937_64_t bar(nullptr)`.
 
 ---
 
