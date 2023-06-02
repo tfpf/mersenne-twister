@@ -70,7 +70,8 @@ struct mt19937_32_t
     template<typename... T> double   real32(T... args) { return mt19937_real32(args..., this); }
     template<typename... T> void     shuf32(T... args) {        mt19937_shuf32(args..., this); }
     template<typename... T> void     drop32(T... args) {        mt19937_drop32(args..., this); }
-    mt19937_32_t(uint32_t seed=5489) { seed32(seed); }
+    mt19937_32_t(uint32_t seed=5489) { this->seed32(seed); }
+    mt19937_32_t(char const* _) { this->init32(); }
 #endif
 };
 struct mt19937_64_t
@@ -87,7 +88,8 @@ struct mt19937_64_t
     template<typename... T> double   real64(T... args) { return mt19937_real64(args..., this); }
     template<typename... T> void     shuf64(T... args) {        mt19937_shuf64(args..., this); }
     template<typename... T> void     drop64(T... args) {        mt19937_drop64(args..., this); }
-    mt19937_64_t(uint64_t seed=5489) { seed64(seed); }
+    mt19937_64_t(uint64_t seed=5489) { this->seed64(seed); }
+    mt19937_64_t(char const* _) { this->init64(); }
 #endif
 };
 

@@ -33,8 +33,8 @@ Seed 32-bit MT19937.
 | `mt19937_seed32(seed, NULL)` | `mt19937::seed32(seed)` | `mt19937.seed32(seed)` |
 | `mt19937_seed32(seed, &bar)` | `bar.seed32(seed)`      |                        |
 
-In C++, you can also seed an MT19937 object by passing a value to its constructor: `mt19937_32_t bar(seed)`. As
-mentioned earlier, the default value of `seed` is 5489.
+In C++, you can also seed an MT19937 object in this manner by passing the value to its constructor:
+`mt19937_32_t bar(seed)`. As mentioned earlier, the default value of `seed` is 5489.
 
 ```C
 void mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
@@ -48,8 +48,8 @@ Seed 64-bit MT19937.
 | `mt19937_seed64(seed, NULL)` | `mt19937::seed64(seed)` | `mt19937.seed64(seed)` |
 | `mt19937_seed64(seed, &bar)` | `bar.seed64(seed)`      |                        |
 
-In C++, you can also seed an MT19937 object by passing a value to its constructor: `mt19937_64_t bar(seed)`. As
-mentioned earlier, the default value of `seed` is 5489.
+In C++, you can also seed an MT19937 object in this manner by passing the value to its constructor:
+`mt19937_64_t bar(seed)`. As mentioned earlier, the default value of `seed` is 5489.
 
 ---
 
@@ -64,6 +64,8 @@ Seed 32-bit MT19937 with an unspecified value generated at run-time.
 | `mt19937_init32(NULL)` | `mt19937::init32()` | `mt19937.init32()` |
 | `mt19937_init32(&bar)` | `bar.init32()`      |                    |
 
+In C++, you can also seed an MT19937 object in this manner by passing `""` to its constructor: `mt19937_32_t bar("")`.
+
 ```C
 void mt19937_init64(struct mt19937_64_t *mt);
 ```
@@ -74,6 +76,8 @@ Seed 64-bit MT19937 with an unspecified value generated at run-time.
 | :--------------------: | :-----------------: | :----------------: |
 | `mt19937_init64(NULL)` | `mt19937::init64()` | `mt19937.init64()` |
 | `mt19937_init64(&bar)` | `bar.init64()`      |                    |
+
+In C++, you can also seed an MT19937 object in this manner by passing `""` to its constructor: `mt19937_64_t bar("")`.
 
 ---
 
