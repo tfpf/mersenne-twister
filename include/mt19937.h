@@ -10,6 +10,7 @@
 #define uint64_t std::uint64_t
 #define int32_t std::int32_t
 #define int64_t std::int64_t
+#define size_t std::size_t
 #else
 #include <inttypes.h>
 #include <stddef.h>
@@ -109,6 +110,7 @@ struct mt19937_64_t
 #undef uint64_t
 #undef int32_t
 #undef int64_t
+#undef size_t
 #endif
 
 #endif  // TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_
