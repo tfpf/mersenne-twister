@@ -7,9 +7,9 @@
   https://github.com/cslarsen/mersenne-twister, 2017.
 
 # Mersenne Twister (MT19937): Pseudorandom Number Generators
-This package provides high-performance 32- and 64-bit global-state (non-reentrant) and thread-safe (reentrant) uniform
-pseudorandom number generators and some utility functions for C and C++. These are intended as replacements for the
-`rand` family of functions of the C standard library. A Python API for these functions is also provided.
+This package provides high-performance 32- and 64-bit global-state (thread-unsafe) and thread-safe uniform pseudorandom
+number generators and some utility functions for C. These are intended as replacements for the `rand` family of
+functions of the C standard library. An object-oriented C++ API and a module-based Python API are also provided.
 
 The behaviour of this implementation matches the required behaviour of an MT19937 implementation as set down by the C++
 standard. However, it is faster than GCC's and Clang's implementations. In theory, its speed is on par with that of C.
