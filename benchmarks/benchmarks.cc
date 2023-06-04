@@ -33,10 +33,10 @@ void benchmark(f function, char const* name, int long iterations, int passes=32)
  *****************************************************************************/
 int main(void)
 {
-    benchmark(mt19937_init32, 0x1000)
-    benchmark(mt19937_init64, 0x1000)
-    benchmark(mt19937_rand32, 0xFFF0)
-    benchmark(mt19937_rand64, 0xFFF0)
-    benchmark(mt19937_real32, 0xFFF0)
-    benchmark(mt19937_real64, 0xFFF0)
+    benchmark(mt19937_init32, 0x1000L)
+    benchmark(mt19937_init64, 0x1000L)
+    benchmark(mt19937_rand32, 0xFFF0L)
+    benchmark(mt19937_rand64, 0xFFF0L)
+    benchmark(mt19937_real32, 0xFFF0L)
+    benchmark(mt19937_real64, 0xFFF0L)
 }
