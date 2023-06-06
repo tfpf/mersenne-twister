@@ -14,7 +14,7 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 
 void MT19937_INIT(MT19937_OBJECT_TYPE *mt)
 {
-    MT19937_SEED(time(NULL), mt);
+    MT19937_SEED(time(NULL) + (uintptr_t)&mt, mt);
 }
 
 
