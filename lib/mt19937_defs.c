@@ -14,7 +14,14 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 
 void MT19937_INIT(MT19937_OBJECT_TYPE *mt)
 {
-    MT19937_SEED(time(NULL) + (uintptr_t)&mt, mt);
+    time_t now = time(NULL);
+#ifndef __STDC_NO_THREADS__
+    thrd_t id = thrd_current();
+#else
+    int unsigned id = 0;
+#endif
+    uint64_t seed = data_to_integer(&now, sizeof now) + data_to_integer(&id, sizeof id) + (uintptr_t)&mt;
+    MT19937_SEED(seed, mt);
 }
 
 

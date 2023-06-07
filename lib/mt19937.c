@@ -4,7 +4,30 @@
 #include <string.h>
 #include <time.h>
 
+#ifndef __STDC_NO_THREADS__
+#include <threads.h>
+#endif
+
 #include "mt19937.h"
+
+/******************************************************************************
+ * Pack the bytes at some address into an integer in an implementation-defined
+ * manner. Note that if the address is of an object of integral type, this
+ * function effectively returns that integer. In which case, GCC and Clang
+ * eliminate calls to this function.
+ *
+ * @param data Address of the object whose bytes are to be packed.
+ * @param size Size of the object in bytes.
+ *
+ * @return Bytes of `data` interpreted as a number.
+ *****************************************************************************/
+static uint64_t data_to_integer(void *data, size_t size)
+{
+    size = size < sizeof(uint64_t) ? size : sizeof(uint64_t);
+    uint64_t integer;
+    memcpy(&integer, data, size);
+    return integer;
+}
 
 /******************************************************************************
  * 32-bit MT19937.
@@ -120,7 +143,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
         0x1C64E517U, 0x2A08B374U, 0x15A3E326U, 0x7C41F661U, 0x8F7F9644U, 0x88ABC203U, 0x909D15CBU, 0x83212BB4U,
         0x7674A736U, 0xF0036A1CU, 0x7FFC77A5U, 0x101DFA1FU, 0x518747A7U, 0x8D411CEBU, 0xA9881B5BU, 0x04C46D8CU,
     },
-    {},
+    {0},
     MT19937_STATE_LENGTH,
 };
 
@@ -269,7 +292,7 @@ static MT19937_OBJECT_TYPE MT19937_OBJECT =
         0x34FBBAF929FC4DD2U, 0xA875A67E2F2EDD1BU, 0xDA9BEEE5A6794597U, 0xBF791C35DBF9A837U,
         0x35E9E928282DDD85U, 0xBB5D9CD43B5DEC96U, 0x593BF0ACAA04033AU, 0xC65AE95C45A5D796U,
     },
-    {},
+    {0},
     MT19937_STATE_LENGTH,
 };
 
