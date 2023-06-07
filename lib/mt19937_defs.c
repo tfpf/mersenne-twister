@@ -15,12 +15,11 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 void MT19937_INIT(MT19937_OBJECT_TYPE *mt)
 {
     time_t now = time(NULL);
+    int long long unsigned seed = data_to_integer(&now, sizeof now) + (uintptr_t)&mt;
 #ifndef __STDC_NO_THREADS__
     thrd_t id = thrd_current();
-#else
-    int unsigned id = 0;
+    seed += data_to_integer(&id, sizeof id);
 #endif
-    uint64_t seed = data_to_integer(&now, sizeof now) + data_to_integer(&id, sizeof id) + (uintptr_t)&mt;
     MT19937_SEED(seed, mt);
 }
 

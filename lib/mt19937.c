@@ -12,19 +12,21 @@
 
 /******************************************************************************
  * Pack the bytes at some address into an integer in an implementation-defined
- * manner. Note that if the address is of an object of integral type, this
- * function effectively returns that integer. In which case, GCC and Clang
- * eliminate calls to this function.
+ * manner, truncating any bytes which do not fit in the return type. Note that
+ * if the address is of an object of integral type, this function effectively
+ * returns that integer. In which case, GCC and Clang eliminate calls to this
+ * function.
  *
  * @param data Address of the object whose bytes are to be packed.
  * @param size Size of the object in bytes.
  *
  * @return Bytes of `data` interpreted as a number.
  *****************************************************************************/
-static uint64_t data_to_integer(void *data, size_t size)
+static int long long unsigned data_to_integer(void *data, size_t size)
 {
-    size = size < sizeof(uint64_t) ? size : sizeof(uint64_t);
-    uint64_t integer;
+    size_t size_ = sizeof(int long long unsigned);
+    size = size < size_ ? size : size_;
+    int long long unsigned integer;
     memcpy(&integer, data, size);
     return integer;
 }
