@@ -27,6 +27,12 @@ these, depending on how and what you are installing.
 * Git ≥ 2.30.2
 * GNU Make ≥ 4.2.1
 * Python ≥ 3.8 and its C headers and library
+* pip ≥ 23.0
+
+Any compiler other than GCC and Clang should also be okay, because the code is reasonably standard-compliant. For
+instance, it doesn't even assume that the `time` function from `stdlib.h` returns an integer. It converts the return
+value into an integer, because the return type of `time` is implementation-defined. (Nevertheless, consider creating an
+issue if you encounter compiler errors.)
 
 ## Install for C (and C++)
 The fastest way to install this is to run the following command in a terminal window.
