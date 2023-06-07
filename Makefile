@@ -1,4 +1,4 @@
-CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -fstrict-aliasing -funroll-loops
+CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -fstrict-aliasing
 LDLIBS = -lm -l$(Package)
 CP     = cp
 
