@@ -92,9 +92,16 @@ sudo make uninstall
 installing this package.**
 
 ## Install for Python
+The fatest way to install the Python API is to run the following command in a terminal window.
+```
+pip install git+https://github.com/tfpf/mersenne-twister.git
+```
+
+Alternatively, download/clone this repository and run
 ```
 pip install .
 ```
+from the topmost directory of the repository.
 
 ### Uninstall
 ```
