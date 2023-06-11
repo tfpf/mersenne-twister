@@ -19,8 +19,7 @@ seed32(PyObject *self, PyObject *args)
     {
         return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %"PRIu32"]", UINT32_MAX);
     }
-    mt19937_seed32((uint32_t)seed, NULL);
-    Py_RETURN_NONE;
+    return PyLong_FromUnsignedLong((int long unsigned)mt19937_seed32((uint32_t)seed, NULL));
 }
 
 
@@ -37,24 +36,21 @@ seed64(PyObject *self, PyObject *args)
     {
         return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %"PRIu64"]", UINT64_MAX);
     }
-    mt19937_seed64((uint64_t)seed, NULL);
-    Py_RETURN_NONE;
+    return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_seed64((uint64_t)seed, NULL));
 }
 
 
 static PyObject *
 init32(PyObject *self, PyObject *args)
 {
-    mt19937_init32(NULL);
-    Py_RETURN_NONE;
+    return PyLong_FromUnsignedLong((int long unsigned)mt19937_init32(NULL));
 }
 
 
 static PyObject *
 init64(PyObject *self, PyObject *args)
 {
-    mt19937_init64(NULL);
-    Py_RETURN_NONE;
+    return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_init64(NULL));
 }
 
 
@@ -203,23 +199,27 @@ PyDoc_STRVAR(
     seed32_doc,
     "seed32(seed)\n"
     "Seed 32-bit MT19937.\n\n"
-    ":param seed: 32-bit number."
+    ":param seed: 32-bit number.\n\n"
+    ":return: The value used for seeding (``seed``)."
 );
 PyDoc_STRVAR(
     seed64_doc,
     "seed64(seed)\n"
     "Seed 64-bit MT19937.\n\n"
-    ":param seed: 64-bit number."
+    ":param seed: 64-bit number.\n\n"
+    ":return: The value used for seeding (``seed``)."
 );
 PyDoc_STRVAR(
     init32_doc,
     "init32()\n"
-    "Seed 32-bit MT19937 with an unspecified value generated at run-time."
+    "Seed 32-bit MT19937 with a value generated in an unspecified manner at run-time.\n\n"
+    ":return: The value used for seeding."
 );
 PyDoc_STRVAR(
     init64_doc,
     "init64()\n"
-    "Seed 64-bit MT19937 with an unspecified value generated at run-time."
+    "Seed 64-bit MT19937 with a value generated in an unspecified manner at run-time.\n\n"
+    ":return: The value used for seeding."
 );
 PyDoc_STRVAR(
     rand32_doc,

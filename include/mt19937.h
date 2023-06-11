@@ -23,10 +23,10 @@ struct mt19937_64_t;
 extern "C"
 {
 #endif
-void mt19937_seed32(uint32_t seed, struct mt19937_32_t *mt);
-void mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
-void mt19937_init32(struct mt19937_32_t *mt);
-void mt19937_init64(struct mt19937_64_t *mt);
+uint32_t mt19937_seed32(uint32_t seed, struct mt19937_32_t *mt);
+uint64_t mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
+uint32_t mt19937_init32(struct mt19937_32_t *mt);
+uint64_t mt19937_init64(struct mt19937_64_t *mt);
 uint32_t mt19937_rand32(struct mt19937_32_t *mt);
 uint64_t mt19937_rand64(struct mt19937_64_t *mt);
 uint32_t mt19937_uint32(uint32_t modulus, struct mt19937_32_t *mt);
@@ -47,8 +47,8 @@ void mt19937_drop64(int long long count, struct mt19937_64_t *mt);
 #ifdef __cplusplus
 namespace mt19937
 {
-    template<typename... T> void     seed32(T... args) {        mt19937_seed32(args..., NULL); }
-    template<typename... T> void     init32(T... args) {        mt19937_init32(args..., NULL); }
+    template<typename... T> uint32_t seed32(T... args) { return mt19937_seed32(args..., NULL); }
+    template<typename... T> uint32_t init32(T... args) { return mt19937_init32(args..., NULL); }
     template<typename... T> uint32_t rand32(T... args) { return mt19937_rand32(args..., NULL); }
     template<typename... T> uint32_t uint32(T... args) { return mt19937_uint32(args..., NULL); }
     template<typename... T> int32_t  span32(T... args) { return mt19937_span32(args..., NULL); }
@@ -56,8 +56,8 @@ namespace mt19937
     template<typename... T> void     shuf32(T... args) {        mt19937_shuf32(args..., NULL); }
     template<typename... T> void     drop32(T... args) {        mt19937_drop32(args..., NULL); }
 
-    template<typename... T> void     seed64(T... args) {        mt19937_seed64(args..., NULL); }
-    template<typename... T> void     init64(T... args) {        mt19937_init64(args..., NULL); }
+    template<typename... T> uint64_t seed64(T... args) { return mt19937_seed64(args..., NULL); }
+    template<typename... T> uint64_t init64(T... args) { return mt19937_init64(args..., NULL); }
     template<typename... T> uint64_t rand64(T... args) { return mt19937_rand64(args..., NULL); }
     template<typename... T> uint64_t uint64(T... args) { return mt19937_uint64(args..., NULL); }
     template<typename... T> int64_t  span64(T... args) { return mt19937_span64(args..., NULL); }
@@ -74,8 +74,8 @@ struct mt19937_32_t
     uint32_t value[624];
     int index;
 #ifdef __cplusplus
-    template<typename... T> void     seed32(T... args) {        mt19937_seed32(args..., this); }
-    template<typename... T> void     init32(T... args) {        mt19937_init32(args..., this); }
+    template<typename... T> uint32_t seed32(T... args) { return mt19937_seed32(args..., this); }
+    template<typename... T> uint32_t init32(T... args) { return mt19937_init32(args..., this); }
     template<typename... T> uint32_t rand32(T... args) { return mt19937_rand32(args..., this); }
     template<typename... T> uint32_t uint32(T... args) { return mt19937_uint32(args..., this); }
     template<typename... T> int32_t  span32(T... args) { return mt19937_span32(args..., this); }
@@ -92,8 +92,8 @@ struct mt19937_64_t
     uint64_t value[312];
     int index;
 #ifdef __cplusplus
-    template<typename... T> void     seed64(T... args) {        mt19937_seed64(args..., this); }
-    template<typename... T> void     init64(T... args) {        mt19937_init64(args..., this); }
+    template<typename... T> uint64_t seed64(T... args) { return mt19937_seed64(args..., this); }
+    template<typename... T> uint64_t init64(T... args) { return mt19937_init64(args..., this); }
     template<typename... T> uint64_t rand64(T... args) { return mt19937_rand64(args..., this); }
     template<typename... T> uint64_t uint64(T... args) { return mt19937_uint64(args..., this); }
     template<typename... T> int64_t  span64(T... args) { return mt19937_span64(args..., this); }

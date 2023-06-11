@@ -22,11 +22,12 @@
 ---
 
 ```C
-void mt19937_seed32(uint32_t seed, struct mt19937_32_t *mt);
+uint32_t mt19937_seed32(uint32_t seed, struct mt19937_32_t *mt);
 ```
 Seed 32-bit MT19937.
 * `seed` 32-bit number.
 * `mt` MT19937 object to seed. If `NULL`, the internal 32-bit MT19937 object is seeded.
+* → The value used for seeding (`seed`).
 
 | C                            | C++ Equivalent          | Python Equivalent      |
 | :--------------------------: | :---------------------: | :--------------------: |
@@ -37,11 +38,12 @@ In C++, you can also seed an MT19937 object in this manner by passing the value 
 `mt19937_32_t bar(seed)`. As mentioned earlier, the default value of `seed` is 5489.
 
 ```C
-void mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
+uint64_t mt19937_seed64(uint64_t seed, struct mt19937_64_t *mt);
 ```
 Seed 64-bit MT19937.
 * `seed` 64-bit number.
 * `mt` MT19937 object to seed. If `NULL`, the internal 64-bit MT19937 object is seeded.
+* → The value used for seeding (`seed`).
 
 | C                            | C++ Equivalent          | Python Equivalent      |
 | :--------------------------: | :---------------------: | :--------------------: |
@@ -54,10 +56,11 @@ In C++, you can also seed an MT19937 object in this manner by passing the value 
 ---
 
 ```C
-void mt19937_init32(struct mt19937_32_t *mt);
+uint32_t mt19937_init32(struct mt19937_32_t *mt);
 ```
-Seed 32-bit MT19937 with an unspecified value generated at run-time.
+Seed 32-bit MT19937 with a value generated in an unspecified manner at run-time.
 * `mt` MT19937 object to seed. If `NULL`, the internal 32-bit MT19937 object is seeded.
+* → The value used for seeding.
 
 | C                      | C++ Equivalent      | Python Equivalent  |
 | :--------------------: | :-----------------: | :----------------: |
@@ -68,10 +71,11 @@ In C++, you can also seed an MT19937 object in this manner by passing `nullptr` 
 `mt19937_32_t bar(nullptr)`.
 
 ```C
-void mt19937_init64(struct mt19937_64_t *mt);
+uint64_t mt19937_init64(struct mt19937_64_t *mt);
 ```
-Seed 64-bit MT19937 with an unspecified value generated at run-time.
+Seed 64-bit MT19937 with a value generated in an unspecified manner at run-time.
 * `mt` MT19937 object to seed. If `NULL`, the internal 64-bit MT19937 object is seeded.
+* → The value used for seeding.
 
 | C                      | C++ Equivalent      | Python Equivalent  |
 | :--------------------: | :-----------------: | :----------------: |

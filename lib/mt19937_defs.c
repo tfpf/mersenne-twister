@@ -1,4 +1,4 @@
-void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
+MT19937_WORD MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 {
     mt = mt == NULL ? &MT19937_OBJECT : mt;
     mt->state[0] = seed;
@@ -9,10 +9,11 @@ void MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
         mt->state[i] = MT19937_MULTIPLIER * (mt->state[i - 1] ^ shifted) + i;
     }
     mt->index = MT19937_STATE_LENGTH;
+    return seed;
 }
 
 
-void MT19937_INIT(MT19937_OBJECT_TYPE *mt)
+MT19937_WORD MT19937_INIT(MT19937_OBJECT_TYPE *mt)
 {
     time_t now = time(NULL);
     int long long unsigned seed = data_to_integer(&now, sizeof now) + (uintptr_t)&mt;
@@ -20,7 +21,7 @@ void MT19937_INIT(MT19937_OBJECT_TYPE *mt)
     thrd_t id = thrd_current();
     seed += data_to_integer(&id, sizeof id);
 #endif
-    MT19937_SEED(seed, mt);
+    return MT19937_SEED(seed, mt);
 }
 
 
