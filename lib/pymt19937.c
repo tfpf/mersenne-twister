@@ -197,27 +197,27 @@ drop64(PyObject *self, PyObject *args)
 // Module information.
 PyDoc_STRVAR(
     seed32_doc,
-    "seed32(seed)\n"
+    "seed32(seed) -> int\n"
     "Seed 32-bit MT19937.\n\n"
     ":param seed: 32-bit number.\n\n"
     ":return: The value used for seeding (``seed``)."
 );
 PyDoc_STRVAR(
     seed64_doc,
-    "seed64(seed)\n"
+    "seed64(seed) -> int\n"
     "Seed 64-bit MT19937.\n\n"
     ":param seed: 64-bit number.\n\n"
     ":return: The value used for seeding (``seed``)."
 );
 PyDoc_STRVAR(
     init32_doc,
-    "init32()\n"
+    "init32() -> int\n"
     "Seed 32-bit MT19937 with a value generated in an unspecified manner at run-time.\n\n"
     ":return: The value used for seeding."
 );
 PyDoc_STRVAR(
     init64_doc,
-    "init64()\n"
+    "init64() -> int\n"
     "Seed 64-bit MT19937 with a value generated in an unspecified manner at run-time.\n\n"
     ":return: The value used for seeding."
 );

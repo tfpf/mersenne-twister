@@ -85,6 +85,11 @@ Seed 64-bit MT19937 with a value generated in an unspecified manner at run-time.
 In C++, you can also seed an MT19937 object in this manner by passing `nullptr` to its constructor:
 `mt19937_64_t bar(nullptr)`.
 
+#### Implementation Detail
+If the C compiler you are using supports threads (both GCC and Clang do), calling `mt19937_init32` in different threads
+of the same process will likely generate different seeds provided that those threads were simultaneously alive at some
+point in time. Likewise for `mt19937_init64`.
+
 ---
 
 ```C
