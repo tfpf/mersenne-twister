@@ -16,10 +16,10 @@ MT19937_WORD MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 MT19937_WORD MT19937_INIT(MT19937_OBJECT_TYPE *mt)
 {
     time_t now = time(NULL);
-    int long long unsigned seed = djb2(&now, sizeof now) + (uintptr_t)&mt;
+    int long long unsigned seed = djb2t(&now, sizeof now) + (uintptr_t)&mt;
 #ifndef __STDC_NO_THREADS__
     thrd_t id = thrd_current();
-    seed += djb2(&id, sizeof id);
+    seed += djb2t(&id, sizeof id);
 #endif
     return MT19937_SEED(seed, mt);
 }

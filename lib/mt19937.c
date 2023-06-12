@@ -11,14 +11,15 @@
 #include "mt19937.h"
 
 /******************************************************************************
- * Calculate the hash of an object. Use Daniel J. Bernstein's hash function.
+ * Calculate the hash of an object. Use Daniel J. Bernstein's hash function;
+ * temper the result.
  *
  * @param data Address of the object to be hashed.
  * @param size Size of the object in bytes.
  *
  * @return Number representing the hash.
  *****************************************************************************/
-static int long long unsigned djb2(void *data, size_t size)
+static int long long unsigned djb2t(void *data, size_t size)
 {
     char unsigned *data_ = data;
     int long long unsigned h = 5381;
@@ -26,6 +27,7 @@ static int long long unsigned djb2(void *data, size_t size)
     {
         h = (h << 5) + h + *data_++;
     }
+    h ^= h << 43 & 0x79F71C0AC49D58A3U;
     return h;
 }
 
