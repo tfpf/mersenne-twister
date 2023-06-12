@@ -7,36 +7,33 @@
 // Neither GCC nor Clang eliminate the function call or loops while optimising.
 // The definitions of the functions are in a shared object, and not visible to
 // the compiler.
-template<typename f>
-void benchmark(f function, char const* name, int long iterations, int passes=32)
-{
-    auto delay = std::chrono::nanoseconds::max();
-    while(passes-- > 0)
-    {
-        auto begin = std::chrono::high_resolution_clock::now();
-        for(int long i = 0; i < iterations; ++i)
-        {
-            function(NULL);
-        }
-        auto end = std::chrono::high_resolution_clock::now();
-        auto delay_ = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);
-        delay = std::min(delay, delay_);
-    }
-    auto result = delay.count() / static_cast<double>(iterations);
-    std::printf("%20s %8.2lf ns\n", name, result);
+#define benchmark(function, iterations)  \
+{  \
+    auto delay = std::chrono::nanoseconds::max();  \
+    for(int i = 0; i < 32; ++i)  \
+    {  \
+        auto begin = std::chrono::high_resolution_clock::now();  \
+        for(int long i = 0; i < iterations; ++i)  \
+        {  \
+            function();  \
+        }  \
+        auto end = std::chrono::high_resolution_clock::now();  \
+        auto delay_ = std::chrono::duration_cast<std::chrono::nanoseconds>(end - begin);  \
+        delay = std::min(delay, delay_);  \
+    }  \
+    auto result = delay.count() / static_cast<double>(iterations);  \
+    std::printf("%20s %8.2lf ns\n", #function, result);  \
 }
-
-#define benchmark(function, iterations) benchmark(function, #function, iterations);
 
 /******************************************************************************
  * Main function.
  *****************************************************************************/
 int main(void)
 {
-    benchmark(mt19937_init32, 0x1000L)
-    benchmark(mt19937_init64, 0x1000L)
-    benchmark(mt19937_rand32, 0xFFF0L)
-    benchmark(mt19937_rand64, 0xFFF0L)
-    benchmark(mt19937_real32, 0xFFF0L)
-    benchmark(mt19937_real64, 0xFFF0L)
+    benchmark(mt19937::init32, 0x1000L)
+    benchmark(mt19937::init64, 0x1000L)
+    benchmark(mt19937::rand32, 0xFFF0L)
+    benchmark(mt19937::rand64, 0xFFF0L)
+    benchmark(mt19937::real32, 0xFFF0L)
+    benchmark(mt19937::real64, 0xFFF0L)
 }
