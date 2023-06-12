@@ -16,10 +16,10 @@ MT19937_WORD MT19937_SEED(MT19937_WORD seed, MT19937_OBJECT_TYPE *mt)
 MT19937_WORD MT19937_INIT(MT19937_OBJECT_TYPE *mt)
 {
     time_t now = time(NULL);
-    int long long unsigned seed = data_to_integer(&now, sizeof now) + (uintptr_t)&mt;
+    int long long unsigned seed = djb2(&now, sizeof now) + (uintptr_t)&mt;
 #ifndef __STDC_NO_THREADS__
     thrd_t id = thrd_current();
-    seed += data_to_integer(&id, sizeof id);
+    seed += djb2(&id, sizeof id);
 #endif
     return MT19937_SEED(seed, mt);
 }
@@ -122,18 +122,15 @@ MT19937_REAL_TYPE MT19937_REAL(MT19937_OBJECT_TYPE *mt)
 
 void MT19937_SHUF(void *items, MT19937_WORD num_of_items, size_t size_of_item, MT19937_OBJECT_TYPE *mt)
 {
-    // C++ does not implicitly convert `void *`, so a cast is necessary,
-    // because I want to allow users to include this file directly in a C or
-    // C++ program.
-    char *tmp = (char *)malloc(size_of_item);
-    char *items_ = (char *)items;
+    char unsigned *tmp = malloc(size_of_item);
+    char unsigned *items_ = items;
     for(MT19937_WORD i = num_of_items - 1; i > 0; --i)
     {
         MT19937_WORD j = MT19937_UINT(i + 1, mt);
         if(i != j)
         {
-            char *items_i = items_ + i * size_of_item;
-            char *items_j = items_ + j * size_of_item;
+            char unsigned *items_i = items_ + i * size_of_item;
+            char unsigned *items_j = items_ + j * size_of_item;
             memcpy(tmp, items_i, size_of_item);
             memcpy(items_i, items_j, size_of_item);
             memcpy(items_j, tmp, size_of_item);

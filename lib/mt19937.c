@@ -11,24 +11,22 @@
 #include "mt19937.h"
 
 /******************************************************************************
- * Pack the bytes at some address into an integer in an implementation-defined
- * manner, truncating any bytes which do not fit in the return type. Note that
- * if the address is of an object of integral type, this function effectively
- * returns that integer. In which case, GCC and Clang eliminate calls to this
- * function.
+ * Calculate the hash of an object. Use Daniel J. Bernstein's hash function.
  *
- * @param data Address of the object whose bytes are to be packed.
+ * @param data Address of the object to be hashed.
  * @param size Size of the object in bytes.
  *
- * @return Bytes of `data` interpreted as a number.
+ * @return Number representing the hash.
  *****************************************************************************/
-static int long long unsigned data_to_integer(void *data, size_t size)
+static int long long unsigned djb2(void *data, size_t size)
 {
-    size_t size_ = sizeof(int long long unsigned);
-    size = size < size_ ? size : size_;
-    int long long unsigned integer;
-    memcpy(&integer, data, size);
-    return integer;
+    char unsigned *data_ = data;
+    int long long unsigned h = 5381;
+    while(size-- > 0)
+    {
+        h = (h << 5) + h + *data_++;
+    }
+    return h;
 }
 
 /******************************************************************************
