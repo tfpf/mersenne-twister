@@ -26,7 +26,7 @@ these, depending on how and what you are installing.
 * GCC ≥ 9.4.0 or Clang ≥ 12.0.0
 * Git ≥ 2.30.2
 * GNU Make ≥ 4.2.1
-* Python ≥ 3.8 and its C headers and library
+* CPython ≥ 3.8 and its C headers and library
 * pip ≥ 23.0
 
 Any compiler other than GCC and Clang should also be okay, because the code is reasonably standard-compliant. For
