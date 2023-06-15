@@ -29,27 +29,27 @@ these, depending on how and what you are installing.
 * CPython ≥ 3.8 and its C headers and library
 * pip ≥ 23.0
 
+On Windows, MSYS2 is required—commands must be run in the MSYS2 terminal (as opposed to the Linux terminal in case of
+Linux).
+
 Any compiler other than GCC and Clang should also be okay, because the code is reasonably standard-compliant. For
 instance, it doesn't even assume that the `time` function from `stdlib.h` returns an integer. It converts the return
 value into an integer, because the return type of `time` is implementation-defined. (Nevertheless, consider creating an
 issue if you encounter compiler errors.)
 
 ## Install for C (and C++)
-The fastest way to install this is to run the following command in a terminal window.
+Run the following as root/administrator.
 ```sh
 curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
 ```
-This may prompt you for the superuser's password, and will create `/usr/include/mt19937.h` and
-`/usr/lib/libmt19937.so`, which should be enough on most Linux systems. **Be sure that you don't already have those two
-files (perhaps from some other package) to avoid breaking your system.**
 
 Alternatively, download/clone this repository and run
 ```sh
-sudo make install
+make install
 ```
-from the topmost directory of the repository. The above comments apply to this mode of installation as well. You can
-change `Prefix` in [`Makefile`](Makefile) to install it elsewhere, but then you may additionally have to configure the
-search paths of your compiler and linker.
+as root/administrator from the topmost directory of the repository. You can change `Prefix` and
+`LibraryDestinationWindows` in [`Makefile`](Makefile) to install it elsewhere, but then you may additionally have to
+configure the search paths of your compiler and linker.
 
 ### Demo
 To see it in action, put the following code in a file `example.c`:
@@ -85,14 +85,13 @@ and run it using
 to see some random numbers.
 
 ### Uninstall
+Run
 ```sh
-sudo make uninstall
+make uninstall
 ```
-**Do not run this command if you already had the files `/usr/include/mt19937.h` and `/usr/lib/libmt19937.so` before
-installing this package.**
+as root/administrator.
 
 ## Install for Python
-The fatest way to install the Python API is to run the following command in a terminal window.
 ```
 pip install git+https://github.com/tfpf/mersenne-twister.git
 ```
@@ -101,7 +100,7 @@ Alternatively, download/clone this repository and run
 ```
 pip install .
 ```
-from the topmost directory of the repository.
+from the topmost directory of the repository. Currently, this does not work on Windows.
 
 ### Uninstall
 ```
