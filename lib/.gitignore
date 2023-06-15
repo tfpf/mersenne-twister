@@ -1,3 +1,4 @@
 mt19937.egg-info
 *.o
 *.so
+*.dll
