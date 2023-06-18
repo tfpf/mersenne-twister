@@ -41,38 +41,38 @@ issue if you encounter compiler errors.)
 <details>
 <summary>Linux</summary>
 
-Open a terminal and run this command.
-```sh
-curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
-```
+> Open a terminal and run this command.
+> ```sh
+> curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
+> ```
 </details>
 
 <details>
 <summary>Windows</summary>
 
-Open an MSYS2 terminal as administrator and run this command.
-```sh
-curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
-```
+> Open an MSYS2 terminal as administrator and run this command.
+> ```sh
+> curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
+> ```
 </details>
 
 Alternatively, download/clone this repository, and …
 <details>
 <summary>Linux</summary>
 
-open a terminal, navigate to the repository and run this command.
-```sh
-sudo make install
-```
+> open a terminal, navigate to the repository and run this command.
+> ```sh
+> sudo make install
+> ```
 </details>
 
 <details>
 <summary>Windows</summary>
 
-open an MSYS2 terminal as administrator, navigate to the repository and run this command.
-```sh
-make install
-```
+> open an MSYS2 terminal as administrator, navigate to the repository and run this command.
+> ```sh
+> make install
+> ```
 </details>
 
 You can change `Prefix` and `LibraryDestinationWindows` in [`Makefile`](Makefile) to change the installation location,
@@ -115,19 +115,19 @@ to see some random numbers.
 <details>
 <summary>Linux</summary>
 
-Open a terminal, navigate to the repository and run this command.
-```sh
-sudo make uninstall
-```
+> Open a terminal, navigate to the repository and run this command.
+> ```sh
+> sudo make uninstall
+> ```
 </details>
 
 <details>
 <summary>Windows</summary>
 
-Open an MSYS2 terminal as administrator, navigate to the repository and run this command.
-```sh
-make uninstall
-```
+> Open an MSYS2 terminal as administrator, navigate to the repository and run this command.
+> ```sh
+> make uninstall
+> ```
 </details>
 
 ## Install for Python
