@@ -38,18 +38,45 @@ value into an integer, because the return type of `time` is implementation-defin
 issue if you encounter compiler errors.)
 
 ## Install for C (and C++)
-Run the following as root/administrator.
+<details>
+<summary>Linux</summary>
+
+Open a terminal and run this command.
 ```sh
 curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
 ```
+</details>
 
-Alternatively, download/clone this repository and run
+<details>
+<summary>Windows</summary>
+
+Open an MSYS2 terminal as administrator and run this command.
+```sh
+curl https://raw.githubusercontent.com/tfpf/mersenne-twister/main/install.sh | sh
+```
+</details>
+
+Alternatively, download/clone this repository, and …
+<details>
+<summary>Linux</summary>
+
+open a terminal, navigate to the repository and run this command.
+```sh
+sudo make install
+```
+</details>
+
+<details>
+<summary>Windows</summary>
+
+open an MSYS2 terminal as administrator, navigate to the repository and run this command.
 ```sh
 make install
 ```
-as root/administrator from the topmost directory of the repository. You can change `Prefix` and
-`LibraryDestinationWindows` in [`Makefile`](Makefile) to install it elsewhere, but then you may additionally have to
-configure the search paths of your compiler and linker.
+</details>
+
+You can change `Prefix` and `LibraryDestinationWindows` in [`Makefile`](Makefile) to change the installation location,
+but then you may additionally have to configure the search paths of your compiler and linker.
 
 ### Demo
 To see it in action, put the following code in a file `example.c`:
@@ -85,22 +112,34 @@ and run it using
 to see some random numbers.
 
 ### Uninstall
-Run
+<details>
+<summary>Linux</summary>
+
+Open a terminal, navigate to the repository and run this command.
+```sh
+sudo make uninstall
+```
+</details>
+
+<details>
+<summary>Windows</summary>
+
+Open an MSYS2 terminal as administrator, navigate to the repository and run this command.
 ```sh
 make uninstall
 ```
-as root/administrator.
+</details>
 
 ## Install for Python
 ```
 pip install git+https://github.com/tfpf/mersenne-twister.git
 ```
 
-Alternatively, download/clone this repository and run
+Alternatively, download/clone this repository, navigate to it and run pip.
 ```
 pip install .
 ```
-from the topmost directory of the repository. Currently, this does not work on Windows.
+This does not currently work on Windows because of issues with MSYS2.
 
 ### Uninstall
 ```
