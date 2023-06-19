@@ -11,7 +11,7 @@ HeaderDestination = $(Prefix)/include/$(Package).h
 ifeq ($(OS), Windows_NT)
 Library = lib/$(Package).dll
 LibraryDestination = $(Prefix)/lib/$(Package).dll
-LibraryDestinationWindows = /c/Windows/System32/$(Package).dll
+LibraryDestinationWindows = $(Prefix)/bin/$(Package).dll
 Executable = solve_sudoku.exe
 else
 Library = lib/$(Package).so
