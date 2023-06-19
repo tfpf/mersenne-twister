@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 199309L
 
+#include <mt19937.h>
 #include <stdbool.h>
 #include <stddef.h>
 #include <stdio.h>
@@ -23,6 +24,8 @@ int long delay_micro; \
  *****************************************************************************/
 int main(int const argc, char const *argv[])
 {
+    mt19937_init32(NULL);
+
     // Generate a puzzle if the first argument is a number.
     int table[9][9] = {{0}};
     char const *fname = NULL;
