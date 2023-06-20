@@ -2,27 +2,29 @@ CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -fstrict-aliasing
 LDLIBS = -lm -l$(Package)
 CP = cp
 
+SolverSources = solve_sudoku.c sudoku_utils.c
+SolverObjects = $(SolverSources:%.c=lib/%.o)
+
 Prefix = /usr
 Package = mt19937
-Sources = solve_sudoku.c sudoku_utils.c
-Objects = $(Sources:%.c=lib/%.o)
 Header = include/$(Package).h
 HeaderDestination = $(Prefix)/include/$(Package).h
+
 ifeq ($(OS), Windows_NT)
 Library = lib/$(Package).dll
 LibraryDestination = $(Prefix)/lib/$(Package).dll
 LibraryDestinationWindows = $(Prefix)/bin/$(Package).dll
-Executable = solve_sudoku.exe
+SolverExecutable = solve_sudoku.exe
 else
 Library = lib/$(Package).so
 LibraryDestination = $(Prefix)/lib/lib$(Package).so
-Executable = solve_sudoku
+SolverExecutable = solve_sudoku
 endif
 
 .PHONY: clean install uninstall
 
-$(Executable): $(Objects)
-	$(LINK.c) -o $(Executable) $(Objects) $(LDLIBS)
+$(SolverExecutable): $(SolverObjects)
+	$(LINK.c) -o $@ $^ $(LDLIBS)
 
 install: uninstall $(Library)
 	$(CP) $(Header) $(HeaderDestination)
@@ -41,4 +43,4 @@ uninstall:
 	$(RM) $(LibraryDestinationWindows)
 
 clean:
-	$(RM) $(Objects) $(Library) $(Executable)
+	$(RM) $(SolverObjects) $(Library) $(SolverExecutable)
