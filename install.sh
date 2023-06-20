@@ -1,6 +1,6 @@
 #! /usr/bin/env sh
 
-if [ "$1" != . ]
+if [ "$0" = sh ]
 then
     target=/tmp/mersenne-twister-$(date +%s)
     git clone https://github.com/tfpf/mersenne-twister.git $target

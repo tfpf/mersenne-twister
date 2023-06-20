@@ -48,7 +48,7 @@ Alternatively:
 ```sh
 git clone https://github.com/tfpf/mersenne-twister.git
 cd mersenne-twister
-./install.sh .
+./install.sh
 ```
 You can change `Prefix` and `LibraryDestinationWindows` in [`Makefile`](Makefile) to change the installation location,
 but then you may additionally have to configure the search paths of your compiler and linker.
