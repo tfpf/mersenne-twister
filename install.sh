@@ -7,6 +7,6 @@ then
     cd $target
 fi
 case $(uname 2>/dev/null) in
-    MINGW* | MSYS*) make install;;
-    Linux) sudo make install;;
+    MINGW* | MSYS*) make --jobs=4 "$@" install;;
+    Linux) sudo make --jobs=4 "$@" install;;
 esac
