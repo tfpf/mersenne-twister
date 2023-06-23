@@ -10,26 +10,26 @@ make
 
 ## Generate
 ```sh
-./solve_sudoku 12
+./sudoku 12
 ```
 will write a sudoku puzzle of difficulty level 12 to standard output. Copy it to a file, say, `sudoku.txt`.
 Alternatively, directly write the output to `sudoku.txt`.
 ```sh
-./solve_sudoku 12 | tee sudoku.txt
+./sudoku 12 | tee sudoku.txt
 ```
 A puzzle of difficulty level 0 (the minimum) is a solved puzzle, while one of difficulty level 20 (the maximum) is an
 empty puzzle.
 
 ## Solve
 ```sh
-./solve_sudoku sudoku.txt
+./sudoku sudoku.txt
 ```
 will display the solution.
 
 The solver will read from standard input if you don't provide any command line arguments. Interestingly, this means you
 can pipe the output of the generator to the solver
 ```sh
-./solve_sudoku 12 | ./solve_sudoku
+./sudoku 12 | ./sudoku
 ```
 though that is probably of no use, since it doesn't show the puzzle first.
 
