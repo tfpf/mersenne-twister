@@ -16,8 +16,8 @@ standard. However, it is faster than GCC's and Clang's implementations. In theor
 S. Larsen's implementation (which is … extremely fast:sweat_smile:). In practice, it is a couple of nanoseconds
 slower—since it is meant to be used as a shared object, each function has some lookup overhead.
 
-See [`doc`](doc) for the documentation of this package. [`examples`](examples) contains usage examples. For performance
-analysis, go to [`benchmarks`](benchmarks).
+See [`doc`](doc) for the documentation of this package. [`examples`](examples) contains usage examples and a randomised
+sudoku generator and solver which uses MT19937. For performance analysis, go to [`benchmarks`](benchmarks).
 
 ## Installation Requirements
 These are the versions I have tested the installation with. Older versions may also work. You may not need all of
@@ -99,43 +99,3 @@ pip install .
 ```
 
 This does not currently work on Windows because of issues with MSYS2.
-
-# Sudoku Generator and Solver
-I just wanted to rewrite an old C program of mine using a better style, and then verify that it worked correctly.
-
-To use the sudoku generator and solver, install this package first. (See the previous section.)
-
-## Compile
-```sh
-make
-```
-
-## Generate
-```sh
-./solve_sudoku 12
-```
-will write a sudoku puzzle of difficulty level 12 to standard output. Copy it to a file, say, `sudoku.txt`.
-Alternatively, directly write the output to `sudoku.txt`.
-```sh
-./solve_sudoku 12 | tee sudoku.txt
-```
-A puzzle of difficulty level 0 (the minimum) is a solved puzzle, while one of difficulty level 20 (the maximum) is an
-empty puzzle.
-
-## Solve
-```sh
-./solve_sudoku sudoku.txt
-```
-will display the solution.
-
-The solver will read from standard input if you don't provide any command line arguments. Interestingly, this means you
-can pipe the output of the generator to the solver
-```sh
-./solve_sudoku 12 | ./solve_sudoku
-```
-though that is probably of no use, since it doesn't show the puzzle first.
-
-The solver is rather primitive. If it cannot fill any cell in the puzzle after multiple attempts, it makes a random
-guess (using MT19937). If, as a result of this, the puzzle becomes unsolvable, it bins everything and starts a fresh
-attempt. This has a rather hilarious consequence: the solver can solve even an empty puzzle! Indeed, that's how the
-generator works: it solves an empty puzzle and then removes some of the numbers!
