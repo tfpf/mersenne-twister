@@ -100,7 +100,7 @@ void write_sudoku(int const table[][9])
                 {
                     printf("[7m");
                 }
-                else if(j > 0)
+                else if(!stdout_is_terminal && j > 0)
                 {
                     printf(" ");
                 }
