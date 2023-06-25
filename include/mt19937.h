@@ -16,6 +16,10 @@
 #include <stddef.h>
 #endif
 
+#if !(defined UINT32_MAX && defined UINT64_MAX && defined INT32_MAX && defined INT64_MAX)
+#error "This compiler does not support 32- and 64-bit unsigned and signed integers."
+#endif
+
 // Forward declarations.
 struct mt19937_32_t;
 struct mt19937_64_t;
