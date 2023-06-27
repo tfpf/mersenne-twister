@@ -53,8 +53,8 @@ cd mersenne-twister
 You can change `Prefix` in [`Makefile`](Makefile) to change the installation location, but then you may additionally
 have to configure the search paths of your compiler and linker.
 
-### Demo
-To see it in action, put the following code in a file `example.c`:
+### Quick Start
+Put the following code in a file `example.c`:
 ```C
 #include <mt19937.h>
 #include <stdio.h>
