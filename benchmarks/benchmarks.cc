@@ -1,6 +1,5 @@
 #include <algorithm>
 #include <chrono>
-#include <cstddef>
 #include <cstdio>
 #include <mt19937.h>
 
