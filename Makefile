@@ -28,6 +28,4 @@ $(Library): lib/$(Package).c lib/$(Package)_defs.c
 	$(CC) $(CFLAGS) -shared -o $@ $<
 
 uninstall:
-	$(RM) $(HeaderDestination)
-	$(RM) $(LibraryDestination)
-	$(RM) $(LibraryDestinationWindows)
+	$(RM) $(HeaderDestination) $(LibraryDestination) $(LibraryDestinationWindows)
