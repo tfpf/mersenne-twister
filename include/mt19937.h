@@ -1,5 +1,5 @@
 #ifndef TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_
-#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_ "1.0.0"
+#define TFPF_MERSENNE_TWISTER_INCLUDE_MT19937_H_ "1.1.0"
 
 // In a C++ program, only C++ headers (which may not place the types in the
 // global namespace) should be included to avoid pollution.
