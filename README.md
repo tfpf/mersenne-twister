@@ -65,14 +65,16 @@ int main(void)
     mt19937_init32(NULL);
     for(int i = 0; i < 10; ++i)
     {
-        printf("%lu\n", mt19937_rand32(NULL));
+        long unsigned r = mt19937_rand32(NULL);
+        printf("%lu\n", r);
     }
 
     // 64-bit MT19937.
     mt19937_init64(NULL);
     for(int i = 0; i < 10; ++i)
     {
-        printf("%llu\n", mt19937_rand64(NULL));
+        long long unsigned r = mt19937_rand64(NULL);
+        printf("%llu\n", r);
     }
 }
 ```
