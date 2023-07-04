@@ -1,5 +1,5 @@
 CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -fstrict-aliasing
-CP = cp
+LDFLAGS = -shared
 
 Prefix = /usr
 Package = mt19937
@@ -17,15 +17,15 @@ endif
 .PHONY: install uninstall
 
 install: uninstall $(Library)
-	$(CP) $(Header) $(HeaderDestination)
-	$(CP) $(Library) $(LibraryDestination)
+	cp $(Header) $(HeaderDestination)
+	cp $(Library) $(LibraryDestination)
 	if [ -n "$(LibraryDestinationWindows)" ];  \
 	then  \
-		$(CP) $(Library) $(LibraryDestinationWindows);  \
+		cp $(Library) $(LibraryDestinationWindows);  \
 	fi
 
 $(Library): lib/$(Package).c lib/$(Package)_defs.c
-	$(CC) $(CFLAGS) -shared -o $@ $<
+	$(LINK.c) -o $@ $<
 
 uninstall:
 	$(RM) $(HeaderDestination) $(LibraryDestination) $(LibraryDestinationWindows)
