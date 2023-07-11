@@ -29,15 +29,17 @@ these, depending on how and what you are installing.
 * CPython ≥ 3.8 and its C headers and library
 * pip ≥ 23.0
 
-On Windows, these are available via [MSYS2](https://www.msys2.org).
+On Windows, these are available natively via [MSYS2](https://www.msys2.org) and in a Linux environment via
+[WSL](https://learn.microsoft.com/en-us/windows/wsl/about).
 
 Any compiler other than GCC and Clang should also be okay, because the code is reasonably standard-compliant. For
 instance, it doesn't even assume that the `time` function from `stdlib.h` returns an integer. It converts the return
 value into an integer, because the return type of `time` is implementation-defined. (Nevertheless, consider creating an
 issue if you encounter compiler errors.)
 
-The installation commands mentioned below must be entered in the terminal if you are on Linux or the MSYS2 terminal if
-you are on Windows.
+The installation commands mentioned below must be entered in
+* the terminal if you are on Linux, or
+* the MSYS2 terminal or WSL terminal if you are on Windows.
 
 ## Install for C (and C++)
 ```sh
