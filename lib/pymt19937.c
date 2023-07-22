@@ -2,6 +2,7 @@
 #include <Python.h>
 
 #include <inttypes.h>
+#include <limits.h>
 
 #include "mt19937.h"
 
@@ -17,9 +18,9 @@ seed32(PyObject *self, PyObject *args)
     seed = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || seed > UINT32_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %"PRIu32"]", UINT32_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %lu]", UINT32_MAX);
     }
-    return PyLong_FromUnsignedLong((int long unsigned)mt19937_seed32((uint32_t)seed, NULL));
+    return PyLong_FromUnsignedLong(mt19937_seed32(seed, NULL));
 }
 
 
@@ -34,37 +35,37 @@ seed64(PyObject *self, PyObject *args)
     seed = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || seed > UINT64_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %"PRIu64"]", UINT64_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [0, %llu]", UINT64_MAX);
     }
-    return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_seed64((uint64_t)seed, NULL));
+    return PyLong_FromUnsignedLongLong(mt19937_seed64(seed, NULL));
 }
 
 
 static PyObject *
 init32(PyObject *self, PyObject *args)
 {
-    return PyLong_FromUnsignedLong((int long unsigned)mt19937_init32(NULL));
+    return PyLong_FromUnsignedLong(mt19937_init32(NULL));
 }
 
 
 static PyObject *
 init64(PyObject *self, PyObject *args)
 {
-    return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_init64(NULL));
+    return PyLong_FromUnsignedLongLong(mt19937_init64(NULL));
 }
 
 
 static PyObject *
 rand32(PyObject *self, PyObject *args)
 {
-    return PyLong_FromUnsignedLong((int long unsigned)mt19937_rand32(NULL));
+    return PyLong_FromUnsignedLong(mt19937_rand32(NULL));
 }
 
 
 static PyObject *
 rand64(PyObject *self, PyObject *args)
 {
-    return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_rand64(NULL));
+    return PyLong_FromUnsignedLongLong(mt19937_rand64(NULL));
 }
 
 
@@ -79,9 +80,9 @@ uint32(PyObject *self, PyObject *args)
     modulus = PyLong_AsUnsignedLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || modulus == 0 || modulus > UINT32_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [1, %"PRIu32"]", UINT32_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [1, %lu]", UINT32_MAX);
     }
-    return PyLong_FromUnsignedLong((int long unsigned)mt19937_uint32((uint32_t)modulus, NULL));
+    return PyLong_FromUnsignedLong(mt19937_uint32(modulus, NULL));
 }
 
 
@@ -96,9 +97,9 @@ uint64(PyObject *self, PyObject *args)
     modulus = PyLong_AsUnsignedLongLong(PyTuple_GET_ITEM(args, 0));
     if(PyErr_Occurred() != NULL || modulus == 0 || modulus > UINT64_MAX)
     {
-        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [1, %"PRIu64"]", UINT64_MAX);
+        return PyErr_Format(PyExc_ValueError, "argument 1 must be an integer in [1, %llu]", UINT64_MAX);
     }
-    return PyLong_FromUnsignedLongLong((int long long unsigned)mt19937_uint64((uint64_t)modulus, NULL));
+    return PyLong_FromUnsignedLongLong(mt19937_uint64(modulus, NULL));
 }
 
 
@@ -119,12 +120,11 @@ span32(PyObject *self, PyObject *args)
     {
         return PyErr_Format(
             PyExc_ValueError,
-            "argument 1 must be less than argument 2; both must be integers in [%"PRId32", %"PRId32"] "
-            "and fit in the C `long` type",
-            INT32_MIN, INT32_MAX
+            "argument 1 must be less than argument 2; both must be integers in [%ld, %ld] ",
+            INT32_MIN < LONG_MIN ? LONG_MIN : INT32_MIN, INT32_MAX
         );
     }
-    return PyLong_FromLong((int long)mt19937_span32((int32_t)left, (int32_t)right, NULL));
+    return PyLong_FromLong(mt19937_span32(left, right, NULL));
 }
 
 
@@ -145,12 +145,11 @@ span64(PyObject *self, PyObject *args)
     {
         return PyErr_Format(
             PyExc_ValueError,
-            "argument 1 must be less than argument 2; both must be integers in [%"PRId64", %"PRId64"] "
-            "and fit in the C `long long` type",
-            INT64_MIN, INT64_MAX
+            "argument 1 must be less than argument 2; both must be integers in [%lld, %lld] ",
+            INT64_MIN < LLONG_MIN ? LLONG_MIN : INT64_MIN, INT64_MAX
         );
     }
-    return PyLong_FromLongLong((int long long)mt19937_span64((int64_t)left, (int64_t)right, NULL));
+    return PyLong_FromLongLong(mt19937_span64(left, right, NULL));
 }
 
 
@@ -164,7 +163,7 @@ real32(PyObject *self, PyObject *args)
 static PyObject *
 real64(PyObject *self, PyObject *args)
 {
-    return PyFloat_FromDouble((double)mt19937_real64(NULL));
+    return PyFloat_FromDouble(mt19937_real64(NULL));
 }
 
 
@@ -289,6 +288,11 @@ PyDoc_STRVAR(
     "discarding the results.\n\n"
     ":param count: Number of steps to advance the state by. If not positive, this function has no effect."
 );
+PyDoc_STRVAR(
+    pymt19937_doc,
+    "Python API for a C implementation of MT19937 "
+    "(see https://github.com/tfpf/mersenne-twister/blob/main/doc for the full documentation)"
+);
 static PyMethodDef pymt19937_methods[] =
 {
     {"seed32", seed32, METH_VARARGS, seed32_doc},
@@ -307,19 +311,22 @@ static PyMethodDef pymt19937_methods[] =
     {"drop64", drop64, METH_VARARGS, drop64_doc},
     {NULL, NULL, 0, NULL},
 };
-static PyModuleDef pymt19937_module =
+static PyModuleDef pymt19937 =
 {
     PyModuleDef_HEAD_INIT,
     "mt19937",
-    "Python API for a C implementation of MT19937 "
-    "(see https://github.com/tfpf/mersenne-twister/blob/main/doc for the full documentation)",
+    pymt19937_doc,
     -1,
     pymt19937_methods,
+    NULL,
+    NULL,
+    NULL,
+    NULL,
 };
 
 
 PyMODINIT_FUNC
 PyInit_mt19937(void)
 {
-    return PyModule_Create(&pymt19937_module);
+    return PyModule_Create(&pymt19937);
 }
