@@ -1,4 +1,4 @@
-CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -fstrict-aliasing
+CFLAGS = -std=c11 -O3 -Wall -Wextra -I./include -flto -fPIC -fstrict-aliasing
 LDFLAGS = -shared
 
 Prefix = /usr
