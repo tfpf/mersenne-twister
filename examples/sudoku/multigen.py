@@ -22,7 +22,7 @@ Write a sudoku puzzle to a file, supressing standard error. Block until done.
 :param fname: File to write to.
     """
     with open(fname, 'w') as stdout, open(os.devnull, 'w') as stderr:
-       subprocess.call(('./sudoku', '10.8'), stdout=stdout, stderr=stderr)
+       subprocess.call(('./sudoku', '11'), stdout=stdout, stderr=stderr)
 
 
 def main():

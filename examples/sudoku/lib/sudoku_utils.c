@@ -1,5 +1,6 @@
 #define _POSIX_C_SOURCE 199309L
 
+#include <limits.h>
 #include <math.h>
 #include <mt19937.h>
 #include <stdbool.h>
@@ -481,7 +482,7 @@ void generate_sudoku(int table[][9], double difficulty)
             --qr.rem;
         }
     }
-    mt19937_shuf32(block_deletions, 9, sizeof block_deletions[0], NULL);
+    mt19937_shuf32(block_deletions, 9, sizeof *block_deletions, NULL);
 
     // From each block, randomly delete the determined number of numbers.
     int indices[][2] = {{0, 0}, {0, 1}, {0, 2}, {1, 0}, {1, 1}, {1, 2}, {2, 0}, {2, 1}, {2, 2}};
@@ -492,8 +493,8 @@ void generate_sudoku(int table[][9], double difficulty)
         {
             int backup[9][9];
             memcpy(backup, table, sizeof backup);
-            mt19937_shuf32(indices, 9, sizeof indices[0], NULL);
-            int multiple_solutions_fixes = (difficulty > 13) ? 0 : 4095;
+            mt19937_shuf32(indices, 9, sizeof *indices, NULL);
+            int multiple_solutions_fixes = (difficulty > 13) ? 0 : INT_MAX;
             for(int k = 0; k < block_deletions[block_number]; ++k)
             {
                 table[i + indices[k][0]][j + indices[k][1]] = 0;
@@ -512,7 +513,7 @@ void generate_sudoku(int table[][9], double difficulty)
                 if(memcmp(puzzle1, puzzle2, sizeof puzzle1))
                 {
                     memcpy(table, backup, sizeof backup);
-                    mt19937_shuf32(indices, 9, sizeof indices[0], NULL);
+                    mt19937_shuf32(indices, 9, sizeof *indices, NULL);
                     --multiple_solutions_fixes;
                     k = -1;
                 }
