@@ -1,7 +1,9 @@
 name: Deploy
 on:
+  push:
   schedule:
-  - cron: "* * * * *"
+    - cron: "* * * * *"
+  workflow_dispatch:
 
 permissions:
   contents: read
