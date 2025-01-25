@@ -1,0 +1,37 @@
+name: Deploy
+on:
+  push:
+  schedule:
+    - cron: "* * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: ./install.sh
+      - run: make
+        working-directory: examples/sudoku/
+      - run: |
+          printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1><pre>" "$(date +'%A %d %B %Y')" >>doc/index.html
+          examples/sudoku/sudoku 11 >>doc/index.html
+          printf "</pre></body></html>" >>doc/index.html
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: 'doc/'
+      - uses: actions/deploy-pages@v4
+        id: deployment
