@@ -21,7 +21,10 @@ jobs:
       - run: ./install.sh
       - run: make
         working-directory: examples/sudoku/
-      - run: examples/sudoku/sudoku 11 >doc/index.html
+      - run: |
+          printf '<html><head><title>Sudoku</title></head><body><h1>%s</h1><code>' $(date --iso-8601) >>/doc/index.html
+          examples/sudoku/sudoku 11 >>doc/index.html
+          printf '</code></body></html>' >>doc/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
