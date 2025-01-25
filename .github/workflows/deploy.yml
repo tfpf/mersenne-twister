@@ -23,7 +23,7 @@ jobs:
         working-directory: examples/sudoku/
       - run: |
           printf "<html><head><title>Sudoku</title></head><body><h1>%s</h1><code>" $(date +"%A %d %B %Y") >>doc/index.html
-          examples/sudoku/sudoku 11 | tr "\n" "<br>" >>doc/index.html
+          examples/sudoku/sudoku 11 >>doc/index.html
           printf "</code></body></html>" >>doc/index.html
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
