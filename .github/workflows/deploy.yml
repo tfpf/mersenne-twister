@@ -1,8 +1,8 @@
-name: Deploy
+name: deploy
 on:
   push:
   schedule:
-    - cron: '*/5 * * * *'
+    - cron: '*/474 * * * *'
   workflow_dispatch:
 
 permissions:
@@ -26,7 +26,7 @@ jobs:
       - run: make
         working-directory: examples/sudoku/
       - run: |
-          printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1><pre>" "$(date +'%A %d %B %Y')" >>doc/index.html
+          printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1><pre>" "$(date +'%H:%M %A %d %B %Y')" >>doc/index.html
           examples/sudoku/sudoku 11 >>doc/index.html
           printf "</pre></body></html>" >>doc/index.html
       - uses: actions/configure-pages@v5
