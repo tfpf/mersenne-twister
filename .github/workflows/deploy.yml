@@ -18,8 +18,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - run: ./install.sh
+      - run: make
+        working-directory: examples/sudoku/
+      - run: examples/sudoku/sudoku 11 >doc/index.html
       - uses: actions/configure-pages@v5
-      - run: echo abcd >doc/index.html
       - uses: actions/upload-pages-artifact@v3
         with:
           path: 'doc/'
