@@ -2,7 +2,7 @@ name: deploy
 on:
   push:
   schedule:
-    - cron: '*/474 * * * *'
+    - cron: '53 */8 * * *'
   workflow_dispatch:
 
 permissions:
