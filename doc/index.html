@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="generator" content=
+  "HTML Tidy for HTML5 for Linux version 5.7.45">
+  <title>Sudoku</title>
+</head>
+<body>
+  <h1>Sudoku</h1>
+  <h2 id="date_time"></h2>
+  <pre id="sudoku_problem">
+  </pre>
+  <script type="text/javascript">
+          window.onload = function generate_sudoku(){
+            now = new Date();
+            document.getElementById("date_time").innerHTML = now.toLocaleString()
+            document.getElementById("sudoku_problem").innerHTML = "aaaaaaaaaaa"
+          }
+  </script>
+</body>
+</html>
