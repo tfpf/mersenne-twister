@@ -31,7 +31,7 @@ jobs:
             printf "<h2>✍️</h2><pre>"
             examples/sudoku/sudoku 11 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
             printf "</pre><h2>✍️✍️</h2><pre>"
-            examples/sudoku/sudoku 12.5 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
+            examples/sudoku/sudoku 12 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
             printf "</pre></body></html>"
           ) >doc/index.html
         env:
