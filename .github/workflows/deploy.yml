@@ -27,9 +27,10 @@ jobs:
         working-directory: examples/sudoku/
       - run: |
           (
-            printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1><pre>" "$(date +'%H:%M %Z %A %d %B %Y')"
+            printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1>" "$(date +'%H:%M %Z %A %d %B %Y')"
+            printf "<h2>🧠</h2><pre>"
             examples/sudoku/sudoku 11 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
-            printf "\n"
+            printf "</pre><h2>🧠🧠</h2><pre>"
             examples/sudoku/sudoku 12.5 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
             printf "</pre></body></html>"
           ) >doc/index.html
