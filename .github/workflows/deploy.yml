@@ -28,9 +28,9 @@ jobs:
       - run: |
           (
             printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1>" "$(date +'%H:%M %Z %A %d %B %Y')"
-            printf "<h2>🧠</h2><pre>"
+            printf "<h2>✍️</h2><pre>"
             examples/sudoku/sudoku 11 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
-            printf "</pre><h2>🧠🧠</h2><pre>"
+            printf "</pre><h2>✍️✍️</h2><pre>"
             examples/sudoku/sudoku 12.5 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
             printf "</pre></body></html>"
           ) >doc/index.html
