@@ -26,11 +26,16 @@ jobs:
       - run: make
         working-directory: examples/sudoku/
       - run: |
-          printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1><pre>" "$(date +'%H:%M %Z %A %d %B %Y')" >>doc/index.html
-          examples/sudoku/sudoku 11 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g' >>doc/index.html
-          printf "</pre></body></html>" >>doc/index.html
+          (
+            printf "<!DOCTYPE html><html><head><title>Sudoku</title></head><body><h1>%s</h1><pre>" "$(date +'%H:%M %Z %A %d %B %Y')"
+            examples/sudoku/sudoku 11 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
+            printf "\n"
+            examples/sudoku/sudoku 12.5 | sed -e 's/   / ┃ /g' -e 's/^$/  ━━━━━━━━━━━━━━━━━━━━━━━━━━━/g'
+            printf "</pre></body></html>"
+          ) >doc/index.html
         env:
           TZ: 'Asia/Kolkata'
+        working-directory: doc/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
