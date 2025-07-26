@@ -23,7 +23,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - run: ./install.sh
-      - run: make && ./multigen.py >../../doc/index.html
+      - run: make && ./multigen.py && mv index.html ../../doc/
         working-directory: examples/sudoku/
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
