@@ -4,6 +4,25 @@ import datetime
 import subprocess
 import sys
 
+html_begin = """
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Sudoku</title>
+    <style type="text/css">
+      td {border: 1px solid; height: 30px; text-align: center; width: 30px;}
+      td.even {background-image: linear-gradient(to bottom right, #D0E0E8, #FFFFFF)}
+      td.odd {background-image: linear-gradient(to bottom left, #F3CFCC, #FFFFFF)}
+    </style>
+  </head>
+  <body>
+"""
+
+html_end = """
+  </body>
+</html>
+"""
+
 def main():
     try:
         num_of_puzzles = int(sys.argv[1])
@@ -11,21 +30,15 @@ def main():
         num_of_puzzles = 31
 
     with open("index.html", "w", encoding="utf8") as writer:
-        print("<!DOCTYPE html><html><head><title>Sudoku</title></head><body>", file=writer)
+        print(html_begin, file=writer)
         date = datetime.date.today()
         for _ in range(num_of_puzzles):
-            print("<h1>", date.strftime("%A %d %B %Y"), "</h1>", file=writer, sep="")
+            print("    <h1>", date.strftime("%A %d %B %Y"), "</h1>", file=writer, sep="")
             for idx, difficulty in enumerate(["11", "12"], 1):
-                print("<h2>", "✍️" * idx, "</h2><pre>", file=writer, flush=True, sep="")
-                subprocess.check_call(["./sudoku", difficulty], stdout=writer)
-                print("</pre>", file=writer)
+                print("    <h2>", "✍️" * idx, "</h2>", file=writer, flush=True, sep="")
+                subprocess.check_call(["./sudoku", difficulty, "dummy argument to get HTML output"], stdout=writer)
             date += datetime.timedelta(1)
-        print("</body></html>", file=writer)
-
-    with open("index.html", "r", encoding="utf8") as reader:
-        contents = reader.read()
-    with open("index.html", "w", encoding="utf8") as writer:
-        print(contents.replace("   ", " ┃ ").replace("\n\n", "\n  ━━━━━━━━━━━━━━━━━━━━━━━━━━━\n"), file=writer)
+        print(html_end, file=writer)
 
 
 if __name__ == '__main__':

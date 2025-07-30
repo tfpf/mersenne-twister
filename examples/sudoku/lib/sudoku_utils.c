@@ -117,6 +117,29 @@ void write_sudoku(int const table[][9])
 }
 
 /******************************************************************************
+ * Write HTML code for the sudoku table.
+ *
+ * @param table Sudoku table.
+ *****************************************************************************/
+void write_sudoku_html(int const table[][9])
+{
+    printf("    <table>\n");
+    for(int i = 0; i < 9; ++i)
+    {
+        int iquot3 = i / 3;
+        printf("      <tr>");
+        for(int j = 0; j < 9; ++j)
+        {
+            int jquot3 = j / 3;
+            char const *cls = (iquot3 + jquot3) % 2 == 0 ? "even" : "odd";
+            printf("<td class=\"%s\">%c</td>", cls, table[i][j] == 0 ? ' ' : table[i][j] + '0');
+        }
+        printf("</tr>\n");
+    }
+    printf("    </table>\n");
+}
+
+/******************************************************************************
  * Check whether the number given may be placed in the given row.
  *
  * @param table Sudoku table.
@@ -457,8 +480,9 @@ void solve_sudoku(int table[][9])
  *
  * @param table Sudoku table.
  * @param difficulty Difficulty level on a scale of 0 to 20.
+ * @param html Whether to write HTML code or plain text.
  *****************************************************************************/
-void generate_sudoku(int table[][9], double difficulty)
+void generate_sudoku(int table[][9], double difficulty, bool html)
 {
     solve_sudoku(table);
 
@@ -523,7 +547,14 @@ void generate_sudoku(int table[][9], double difficulty)
     }
 
     fprintf(stderr, "Difficulty Level: %g/20\n", difficulty);
-    write_sudoku(table);
+    if(html)
+    {
+        write_sudoku_html(table);
+    }
+    else
+    {
+        write_sudoku(table);
+    }
 }
 
 /******************************************************************************

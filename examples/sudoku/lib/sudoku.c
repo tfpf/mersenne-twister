@@ -29,13 +29,13 @@ int main(int const argc, char const *argv[])
     // Generate a puzzle if the first argument is a number.
     int table[9][9] = {{0}};
     char const *fname = NULL;
-    if(argc >= 2)
+    if(argc > 1)
     {
         char *endptr;
         double difficulty = strtod(argv[1], &endptr);
         if(*endptr == '\0')
         {
-            generate_sudoku(table, difficulty);
+            generate_sudoku(table, difficulty, argc > 2);
             return EXIT_SUCCESS;
         }
         fname = argv[1];
