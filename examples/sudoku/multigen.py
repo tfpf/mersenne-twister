@@ -12,7 +12,7 @@ html_begin = """
     <style type="text/css">
       td {border: 1px solid; height: 30px; text-align: center; width: 30px;}
       td.even {background-image: linear-gradient(to bottom right, #D0E0E8, #FFFFFF)}
-      td.odd {background-image: linear-gradient(to bottom left, #F3CFCC, #FFFFFF)}
+      td.odd {background-image: linear-gradient(to bottom left, #EADB99, #FFFFFF)}
     </style>
   </head>
   <body>
