@@ -27,7 +27,7 @@ def main():
     try:
         num_of_puzzles = int(sys.argv[1])
     except (IndexError, ValueError):
-        num_of_puzzles = 31
+        num_of_puzzles = 32
 
     with open("index.html", "w", encoding="utf8") as writer:
         print(html_begin, file=writer)
