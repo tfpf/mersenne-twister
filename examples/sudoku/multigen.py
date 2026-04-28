@@ -11,8 +11,9 @@ html_begin = """
     <title>Sudoku</title>
     <script>
         window.addEventListener("load", () => {
-            const today = new Date();
-            const headerId = today.getFullYear() + "-" + (today.getMonth() + 1) + "-" + today.getDate();
+            let today = new Date();
+            today = new Date(today.getTime() - today.getTimezoneOffset() * 60 * 1000);
+            const headerId = today.toISOString().slice(0, 10);
             const headerElement = document.getElementById(headerId);
             headerElement.scrollIntoView({behavior: "smooth", block: "start"});
         });
@@ -44,19 +45,7 @@ def main():
         for _ in range(num_of_puzzles):
             # JavaScript does not have a built-in method to write local dates
             # in the ISO 8601 format, so write the numbers manually.
-            print(
-                '    <h1 id="',
-                date.year,
-                "-",
-                date.month,
-                "-",
-                date.day,
-                '">',
-                date.strftime("%A %d %B %Y"),
-                "</h1>",
-                file=writer,
-                sep="",
-            )
+            print('    <h1 id="', date.strftime("%F"), '">', date.strftime("%A %d %B %Y"), "</h1>", file=writer, sep="")
             for idx, difficulty in enumerate(["11", "12"], 1):
                 print("    <h2>", "✍️" * idx, "</h2>", file=writer, flush=True, sep="")
                 subprocess.check_call(["./sudoku", difficulty, "dummy argument to get HTML output"], stdout=writer)
